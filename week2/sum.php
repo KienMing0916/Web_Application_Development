@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 <meta charset="UTF-8">
@@ -13,33 +13,25 @@
 </head>
 
 <body>
-
     <div class="container">
-        <div class="row">
-            <div class="col fs-4">
-                <?php
-                $sum = 0;
-
-                echo '<div class="container">';
-                echo '<p>';
-                for ($num = 1; $num <= 100; $num++) {
-                    if ($num % 2 === 0) {
-                        echo '<b>' . $num . '</b>';
-                    } else {
-                        echo $num;
-                    }
-
-                    if ($num !== 100) {
-                        echo ' + ';
-                    }
-
-                    $sum += $num;
+    <?php
+        $totalsum = 0;
+        for($num = 1; $num <= 100; $num++){
+            if($num !== 100){
+                if($num % 2 == 0){ //even number
+                    echo "<span class=\"fw-bold\">". $num ."</span>";
+                }else{ // odd number
+                    echo "<span class=\"\">". $num ."</span>";
                 }
-                echo ' = ' . $sum;
-                echo '</p>';
-                echo '</div>';
-                ?></div>
-        </div>
+                echo " + ";
+            }else{ //when the num >= 100
+                echo "<span class=\"fw-bold\">". $num ."</span>";
+                echo " = ";
+            }
+            $totalsum += $num;
+        }
+        echo $totalsum
+        ?>
     </div>
 </body>
 
