@@ -9,34 +9,44 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
     <title>Exercise 2</title>
-
 </head>
 
 <body>
     <div class="container-fluid">
-        <div class="row row-cols-2">
             <?php
             $num_x = rand(1, 100);
             $num_y = rand(1, 100);
             
             if ($num_x > $num_y) {
-
-                echo '<div class= "col fs-1 fw-bold">' . "First number: " . $num_x . '</div>';
-                echo '<div class= "col fs-3">' . "Second number: " . $num_y . '</div>';
-                //echo $num_x . " is bigger than " . $num_y . ".";
+                echo "<div class=\"row \">
+                    <div class = \"col-sm fs-1 fw-bold bg-primary my-1\">
+                        <p>First number: $num_x</p>
+                    </div>
+                    <div class =\"col-sm fs-2 fw-bold bg-secondary my-1\">
+                        <p>Second number: $num_y</p>
+                    </div>
+                </div>";
             } else if ($num_y > $num_x){
-                echo '<div class= "col fs-3">' . "First number: " . $num_x . '</div>';
-                echo '<div class= "col fs-1 fw-bold" "fw-bold">' . "Second number: " . $num_y . '</div>';
-                //echo $num_y . " is bigger than " . $num_x . ".";
+                echo "<div class=\"row\">
+                    <div class = \"col-sm fs-2 fw-bold bg-secondary my-1\">
+                        <p>First number: $num_x</p>
+                    </div>
+                    <div class =\"col-sm fs-1 fw-bold bg-primary my-1\">
+                        <p>Second number: $num_y</p>
+                    </div>
+                </div>";
             } else {
-                echo '<div class= "col fs-1 fw-bold">' . "First number: " . $num_x . '</div>';
-                echo '<div class= "col fs-1 fw-bold">' . "Second number: " . $num_y . '</div>';
-                echo "The two number is equal.";
+                echo "<div class=\"row\">
+                    <div class = \"col-sm fs-1 fw-bold bg-primary my-1\">
+                        <p>First number: $num_x</p>
+                    </div>
+                    <div class =\"col-sm fs-1 fw-bold bg-primary my-1\">
+                        <p>Second number: $num_y</p>
+                    </div>
+                </div>";
             }
             ?>
         </div>
     </div>
 </body>
-
-
 </html>
