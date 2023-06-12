@@ -32,6 +32,7 @@
                 echo '<div class = "alert alert-danger role="alert">'. "Please fill in a number larger than 1." . '</div>';
             }else {
                 for ($i = $number; $i >= 1; $i--) {
+                    $i = (int)$i;
                     $sum += $i;
                 }
                 $result = implode(' + ', range(1, $number)) . ' = ' . $sum;
