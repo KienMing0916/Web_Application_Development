@@ -23,7 +23,7 @@
             <div class="row my-3">
             
             <div class="col-sm">
-                <select class="form-select form-select-lg mb-3" name="selected_day" aria-label=".form-select-lg example" required>
+                <select class="fs-6 form-select form-select-lg mb-3" name="selected_day" aria-label=".form-select-lg example" required>
                     <option value="" disabled selected hidden>DAY</option>
                     <?php
                     for ($day = 1; $day <= 31; $day++) {
@@ -34,7 +34,7 @@
             </div>
 
             <div class="col-sm">
-                <select class="form-select form-select-lg mb-3" name="selected_month" aria-label=".form-select-lg example" required>
+                <select class="fs-6 form-select form-select-lg mb-3" name="selected_month" aria-label=".form-select-lg example" required>
                     <option value="" disabled selected hidden>MONTH</option>
                     <?php
                     $month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -46,7 +46,7 @@
             </div>
 
             <div class="col-sm">
-                <select class="form-select form-select-lg mb-3" name="selected_year" aria-label=".form-select-lg example" required>
+                <select class="fs-6 form-select form-select-lg mb-3" name="selected_year" aria-label=".form-select-lg example" required>
                     <option value="" disabled selected hidden>YEAR</option>
                     <?php
                     for ($year = 1990; $year <= 2023; $year++) {
