@@ -35,6 +35,7 @@
                     $i = (int)$i;
                     $sum += $i;
                 }
+                $number = (int)$number;
                 $result = implode(' + ', range(1, $number)) . ' = ' . $sum;
                 echo '<div class = "alert alert-success role="alert">' . $result . '</div>';
             }
