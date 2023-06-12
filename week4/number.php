@@ -30,9 +30,7 @@
             $firstNumber = $_POST['firstNumber'];
             $secondNumber = $_POST['secondNumber'];
 
-            if (empty($firstNumber) || empty($secondNumber)){
-                echo '<div class = "alert alert-danger role="alert">'. "Please fill in all the text boxes." . '</div>';
-            }else if (!is_numeric($firstNumber) || !is_numeric($secondNumber)) {
+            if (!is_numeric($firstNumber) || !is_numeric($secondNumber)) {
                 echo '<div class = "alert alert-danger">'. "Please fill in a number." . '</div>';
             }else {
                 echo '<div class = "alert alert-success role="alert">' . "The sum of two numbers is: " . $firstNumber + $secondNumber . '</div>';
