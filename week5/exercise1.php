@@ -49,7 +49,7 @@
                 <select class="fs-6 form-select form-select-lg mb-3" name="selected_year" aria-label=".form-select-lg example" required>
                     <option value="" disabled selected hidden>YEAR</option>
                     <?php
-                    for ($year = 1990; $year <= 2023; $year++) {
+                    for ($year = 1900; $year <= 2023; $year++) {
                         echo "<option value=\"$year\">$year</option>";
                     }
                     ?>
