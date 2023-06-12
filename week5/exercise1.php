@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-        crossorigin="anonymous"></script>
     <title>Week 5 Q1</title>
 </head>
 <body>
@@ -27,7 +24,7 @@
             
             <div class="col-sm">
                 <select class="form-select form-select-lg mb-3" name="selected_day" aria-label=".form-select-lg example" required>
-                    <option value="day" disabled selected hidden>DAY</option>
+                    <option value="" disabled selected hidden>DAY</option>
                     <?php
                     for ($day = 1; $day <= 31; $day++) {
                         echo "<option value=\"$day\">$day</option>";
@@ -38,7 +35,7 @@
 
             <div class="col-sm">
                 <select class="form-select form-select-lg mb-3" name="selected_month" aria-label=".form-select-lg example" required>
-                    <option value="month" disabled selected hidden>MONTH</option>
+                    <option value="" disabled selected hidden>MONTH</option>
                     <?php
                     $month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                     for ($i = 0; $i < count($month); $i++) {
@@ -50,7 +47,7 @@
 
             <div class="col-sm">
                 <select class="form-select form-select-lg mb-3" name="selected_year" aria-label=".form-select-lg example" required>
-                    <option value="year" disabled selected hidden>YEAR</option>
+                    <option value="" disabled selected hidden>YEAR</option>
                     <?php
                     for ($year = 1990; $year <= 2023; $year++) {
                         echo "<option value=\"$year\">$year</option>";
@@ -64,34 +61,38 @@
         </form>
 
         <?php
-        if(isset($_POST['submit'])) {  
+        if(isset($_POST['submit'])) {
             $firstName = $_POST['firstName'];
             $lastName = $_POST['lastName'];
             $selectedDay = $_POST['selected_day'];
             $selectedMonth = $_POST['selected_month'];
-            $selectedYear = $_POST['selected_year'];       
+            $selectedYear = $_POST['selected_year'];
 
-            if ($firstName == "" || $lastName == "" || $selectedDay == "" || $selectedMonth == "" || $selectedYear == "") {
-                echo '<div class="alert alert-danger" role="alert">Please fill in all the fields.</div>';
-            } else {
-                // string to lower -> first character to upper
-                $formattedFirstName = ucwords(strtolower($firstName));
-                $formattedLastName = ucwords(strtolower($lastName));
+            // string to lower -> first character to upper
+            $formattedFirstName = ucwords(strtolower($firstName));
+            $formattedLastName = ucwords(strtolower($lastName));
+            //current year
+            date_default_timezone_set('Asia/Kuala_Lumpur');
+            $currentYear = date('Y');
+            $currentMonth = date('m');
+            $currentDay = date('d');
 
-                //current year
-                date_default_timezone_set('Asia/Kuala_Lumpur');
-                $currentYear = date('Y');
-                $currentMonth = date('m');
-                $currentDay = date('d');
-
-                $age = $currentYear - $selectedYear;
-                // haven't birthday yet
-                if ($selectedMonth > $currentMonth || ($selectedMonth == $currentMonth && $selectedDay > $currentDay)) {
-                    $age--;
-                }
-
-                echo '<div class="alert alert-success" role="alert">' . "Name: " . $formattedLastName . " " . $formattedFirstName . "<br>Birthday: " . $selectedDay . " " . $month[$selectedMonth - 1] . " " . $selectedYear . "<br>Age: " . $age . '</div>';
+            $age = $currentYear - $selectedYear;
+            // haven't had birthday yet
+            if ($selectedMonth > $currentMonth || ($selectedMonth == $currentMonth && $selectedDay > $currentDay)) {
+                $age--;
             }
+
+            if($age < 18){
+                echo '<div class="alert alert-danger" role="alert">' . "Name: " . $formattedLastName . " " . $formattedFirstName . "<br>Birthday: " . $selectedDay . " " . $month[$selectedMonth - 1] . " " . $selectedYear . "<br>Age: " . $age . '</div>'; 
+                echo '<div class = "alert alert-danger role="alert">'. "Your age is below 18." . '</div>';
+            }else{
+                echo '<div class="alert alert-success" role="alert">' . "Name: " . $formattedLastName . " " . $formattedFirstName . "<br>Birthday: " . $selectedDay . " " . $month[$selectedMonth - 1] . " " . $selectedYear . "<br>Age: " . $age . '</div>'; 
+                echo '<div class="alert alert-success" role="alert">' . "Welcome" . '</div>'; 
+            }
+
+
+            //echo '<div class="alert alert-success" role="alert">' . "Name: " . $formattedLastName . " " . $formattedFirstName . "<br>Birthday: " . $selectedDay . " " . $month[$selectedMonth - 1] . " " . $selectedYear . "<br>Age: " . $age . '</div>';   
         }
         ?>
     </div>
