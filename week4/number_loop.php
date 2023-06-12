@@ -26,9 +26,7 @@
             $number = $_POST['number'];
             $sum = 0;
 
-            if (empty($number)){
-                echo '<div class = "alert alert-danger role="alert">'. "Please fill in the text box." . '</div>';
-            }else if (!is_numeric($number)) {
+            if (!is_numeric($number)) {
                 echo '<div class = "alert alert-danger role="alert">'. "Please fill in a number." . '</div>';
             }else if ($number <= 1){
                 echo '<div class = "alert alert-danger role="alert">'. "Please fill in a number larger than 1." . '</div>';
