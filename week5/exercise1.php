@@ -21,42 +21,41 @@
             </div>
             
             <div class="row my-3">
-            
-            <div class="col-sm">
-                <select class="fs-6 form-select form-select-lg mb-3" name="selected_day" aria-label=".form-select-lg example" required>
-                    <option value="" disabled selected hidden>DAY</option>
-                    <?php
-                    for ($day = 1; $day <= 31; $day++) {
-                        echo "<option value=\"$day\">$day</option>";
-                    }
-                    ?>
-                </select>
-            </div>
+                <label for="dateofbirth">Date of birth:</label>
+                <div class="col-sm">
+                    <select class="fs-6 form-select form-select-lg mb-2" name="selected_day" aria-label=".form-select-lg example" required>
+                        <option value="" disabled selected hidden>DAY</option>
+                        <?php
+                        for ($day = 1; $day <= 31; $day++) {
+                            echo "<option value=\"$day\">$day</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
 
-            <div class="col-sm">
-                <select class="fs-6 form-select form-select-lg mb-3" name="selected_month" aria-label=".form-select-lg example" required>
-                    <option value="" disabled selected hidden>MONTH</option>
-                    <?php
-                    $month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                    for ($i = 0; $i < count($month); $i++) {
-                        echo "<option value=\"" . ($i + 1) . "\">$month[$i]</option>";
-                    }
-                    ?>
-                </select>
-            </div>
+                <div class="col-sm">
+                    <select class="fs-6 form-select form-select-lg mb-2" name="selected_month" aria-label=".form-select-lg example" required>
+                        <option value="" disabled selected hidden>MONTH</option>
+                        <?php
+                        $month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                        for ($i = 0; $i < count($month); $i++) {
+                            echo "<option value=\"" . ($i + 1) . "\">$month[$i]</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
 
-            <div class="col-sm">
-                <select class="fs-6 form-select form-select-lg mb-3" name="selected_year" aria-label=".form-select-lg example" required>
-                    <option value="" disabled selected hidden>YEAR</option>
-                    <?php
-                    for ($year = 1900; $year <= 2023; $year++) {
-                        echo "<option value=\"$year\">$year</option>";
-                    }
-                    ?>
-                </select>
+                <div class="col-sm">
+                    <select class="fs-6 form-select form-select-lg mb-2" name="selected_year" aria-label=".form-select-lg example" required>
+                        <option value="" disabled selected hidden>YEAR</option>
+                        <?php
+                        for ($year = 1900; $year <= 2023; $year++) {
+                            echo "<option value=\"$year\">$year</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
             </div>
-        </div>
-
             <button type="submit" class="btn btn-primary my-2" name="submit">Submit</button>
         </form>
 
