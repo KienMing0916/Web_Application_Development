@@ -68,42 +68,71 @@
 
 
             $zodiac = array("Monkey", "Rooster", "Dog", "Pig", "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat");
-            $mmdd = $selectedMonth.$selectedDay;
+            
+            // $mmdd = $selectedMonth.$selectedDay;
+            // $constellation = "";
+
+            // if ($mmdd >= "0419" && $mmdd <= "0513") {
+            //     $constellation = "Aries";
+            // }else if ($mmdd >= "0514" && $mmdd <= "0619") {
+            //     $constellation = "Taurus";
+            // }else if ($mmdd >= "0620" && $mmdd <= "0720") {
+            //     $constellation = "Gemini";
+            // }else if ($mmdd >= "0721" && $mmdd <= "0809") {
+            //     $constellation = "Cancer";
+            // }else if ($mmdd >= "0810" && $mmdd <= "0915") {
+            //     $constellation = "Leo";
+            // }else if ($mmdd >= "0916" && $mmdd <= "1030") {
+            //     $constellation = "Virgo";
+            // }else if ($mmdd >= "1031" && $mmdd <= "1122") {
+            //     $constellation = "Libra";
+            // }else if ($mmdd >= "1123" && $mmdd <= "1129") {
+            //     $constellation = "Scorpio";
+            // }else if ($mmdd >= "1130" && $mmdd <= "1217") {
+            //     $constellation = "Ophiuchus";
+            // } else if (($mmdd >= "1218" && $mmdd <= "1231") || ($mmdd >= "0101" && $mmdd <= "0118")) {
+            //     $constellation = "Sagittarius";
+            // } else if ($mmdd >= "0119" && $mmdd <= "0215") {
+            //     $constellation = "Capricorn";
+            // } else if ($mmdd >= "0216" && $mmdd <= "0311") {
+            //     $constellation = "Aquarius";
+            // } else if ($mmdd >= "0312" && $mmdd <= "0418") {
+            //     $constellation = "Pisces";
+            // }
+
             $constellation = "";
 
-            if ($mmdd >= "0419" && $mmdd <= "0513") {
+            if (($selectedMonth == 4 && $selectedDay >= 19) || ($selectedMonth == 5 && $selectedDay <= 13)) {
                 $constellation = "Aries";
-            }else if ($mmdd >= "0514" && $mmdd <= "0619") {
+            }else if(($selectedMonth == 5 && $selectedDay >= 14) || ($selectedMonth == 6 && $selectedDay <= 19)) {
                 $constellation = "Taurus";
-            }else if ($mmdd >= "0620" && $mmdd <= "0720") {
+            }else if(($selectedMonth == 6 && $selectedDay >= 20) || ($selectedMonth == 7 && $selectedDay <= 20)) {
                 $constellation = "Gemini";
-            }else if ($mmdd >= "0721" && $mmdd <= "0809") {
+            }else if(($selectedMonth == 7 && $selectedDay >= 21) || ($selectedMonth == 8 && $selectedDay <= 9)) {
                 $constellation = "Cancer";
-            }else if ($mmdd >= "0810" && $mmdd <= "0915") {
+            }else if(($selectedMonth == 8 && $selectedDay >= 10) || ($selectedMonth == 9 && $selectedDay <= 15)) {
                 $constellation = "Leo";
-            }else if ($mmdd >= "0916" && $mmdd <= "1030") {
+            }else if(($selectedMonth == 9 && $selectedDay >= 16) || ($selectedMonth == 10 && $selectedDay <= 30)) {
                 $constellation = "Virgo";
-            }else if ($mmdd >= "1031" && $mmdd <= "1122") {
+            }else if(($selectedMonth == 10 && $selectedDay >= 31) || ($selectedMonth == 11 && $selectedDay <= 22)) {
                 $constellation = "Libra";
-            }else if ($mmdd >= "1123" && $mmdd <= "1129") {
+            }else if(($selectedMonth == 11 && $selectedDay >= 23) || ($selectedMonth == 11 && $selectedDay <= 29)) {
                 $constellation = "Scorpio";
-            }else if ($mmdd >= "1130" && $mmdd <= "1217") {
+            }else if(($selectedMonth == 11 && $selectedDay >= 30) || ($selectedMonth == 12 && $selectedDay <= 17)) {
                 $constellation = "Ophiuchus";
-            } else if (($mmdd >= "1218" && $mmdd <= "1231") || ($mmdd >= "0101" && $mmdd <= "0118")) {
+            }else if(($selectedMonth == 12 && $selectedDay >= 18) || ($selectedMonth == 1 && $selectedDay <= 18)) {
                 $constellation = "Sagittarius";
-            } else if ($mmdd >= "0119" && $mmdd <= "0215") {
+            }else if(($selectedMonth == 1 && $selectedDay >= 19) || ($selectedMonth == 2 && $selectedDay <= 15)) {
                 $constellation = "Capricorn";
-            } else if ($mmdd >= "0216" && $mmdd <= "0311") {
+            }else if(($selectedMonth == 2 && $selectedDay >= 16) || ($selectedMonth == 3 && $selectedDay <= 11)) {
                 $constellation = "Aquarius";
-            } else if ($mmdd >= "0312" && $mmdd <= "0418") {
+            }else if(($selectedMonth == 3 && $selectedDay >= 12) || ($selectedMonth == 4 && $selectedDay <= 18)) {
                 $constellation = "Pisces";
             }
 
 
             if (checkdate($selectedMonth, $selectedDay, $selectedYear)){
-                echo '<div class="alert alert-success" role="alert">' . "Your age is " . $age . ".". '</div>'; 
-                echo '<div class="alert alert-success" role="alert">' . "Your chinese zodiac is " . $zodiac[$selectedYear % 12] . "." . '</div>'; 
-                echo '<div class="alert alert-success" role="alert">' . "Your constellation is $constellation.". '</div>'; 
+                echo '<div class="alert alert-success" role="alert">' . "Your age is " . $age . ".<br>Your chinese zodiac is " . $zodiac[$selectedYear % 12] . ".<br>Your constellation is " . $constellation . "." . '</div>';  
             }else{
                 echo '<div class="alert alert-danger" role="alert">' . "Invalid date of birth." . '</div>'; 
             }
