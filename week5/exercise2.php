@@ -54,7 +54,7 @@
                     <select class="fs-6 form-select form-select-lg" name="selected_year" aria-label=".form-select-lg example" required>
                         <option value="" <?php if (!isset($_POST['selected_year'])) echo 'selected'; ?> disabled hidden>YEAR</option>
                         <?php
-                        for ($year = 1900; $year <= 2023; $year++) {
+                        for ($year = 1900; $year <= date('Y') ; $year++) {
                             $selected = (isset($_POST['selected_year']) && $_POST['selected_year'] == $year) ? 'selected' : '';
                             echo "<option value=\"$year\" $selected>$year</option>";
                         }
