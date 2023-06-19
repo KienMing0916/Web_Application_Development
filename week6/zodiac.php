@@ -68,38 +68,7 @@
 
 
             $zodiac = array("Monkey", "Rooster", "Dog", "Pig", "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat");
-
-            // $zodiacSigns = array(
-            //     "Aries" => array("start" => "0419", "end" => "0513"),
-            //     "Taurus" => array("start" => "0514", "end" => "0619"),
-            //     "Gemini" => array("start" => "0620", "end" => "0720"),
-            //     "Cancer" => array("start" => "0721", "end" => "0809"),
-            //     "Leo" => array("start" => "0810", "end" => "0915"),
-            //     "Virgo" => array("start" => "0916", "end" => "1030"),
-            //     "Libra" => array("start" => "1031", "end" => "1122"),
-            //     "Scorpio" => array("start" => "1123", "end" => "1129"),
-            //     "Ophiuchus" => array("start" => "1130", "end" => "1217"),
-            //     "Sagittarius" => array("start" => "1218", "end" => "0118"),
-            //     "Capricorn" => array("start" => "0119", "end" => "0215"),
-            //     "Aquarius" => array("start" => "0216", "end" => "0311"),
-            //     "Pisces" => array("start" => "0312", "end" => "0418")
-            // );
-
-            // $mmdd = $selectedMonth.$selectedDay;
-
-            // $constellation = "";
-            // foreach ($zodiacSigns as $sign => $dates) {
-            //     $start = ($dates['start']);
-            //     $end = ($dates['end']);
-
-            //     if ($mmdd >= $start && $mmdd <= $end) {
-            //         $constellation = $sign;
-            //         break;
-            //     }
-            // }
-
             $mmdd = $selectedMonth.$selectedDay;
-
             $constellation = "";
 
             if ($mmdd >= "0419" && $mmdd <= "0513") {
