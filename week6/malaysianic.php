@@ -61,10 +61,10 @@
                         $constellation = "Virgo";
                     }else if(($monthOfBirth == 10 && $dayOfBirth >= 31) || ($monthOfBirth == 11 && $dayOfBirth <= 22)) {
                         $constellation = "Libra";
-                    }else if(($monthOfBirth == 11 && $dayOfBirth >= 23) || ($monthOfBirth == 11 && $dayOfBirth <= 29)) {
-                        $constellation = "Scorpio";
                     }else if(($monthOfBirth == 11 && $dayOfBirth >= 30) || ($monthOfBirth == 12 && $dayOfBirth <= 17)) {
                         $constellation = "Ophiuchus";
+                    }else if(($monthOfBirth == 11 && $dayOfBirth >= 23) || ($monthOfBirth == 11 && $dayOfBirth <= 29)) {
+                        $constellation = "Scorpio";
                     }else if(($monthOfBirth == 12 && $dayOfBirth >= 18) || ($monthOfBirth == 1 && $dayOfBirth <= 18)) {
                         $constellation = "Sagittarius";
                     }else if(($monthOfBirth == 1 && $dayOfBirth >= 19) || ($monthOfBirth == 2 && $dayOfBirth <= 15)) {
