@@ -26,7 +26,7 @@
 
             $malaysianIC = $_POST['malaysianIC'];
             $ICPattern = "/^\d{12}$/";
-            $month = array('JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC');
+            $month = array("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
 
             if (!empty($malaysianIC) && preg_match($ICPattern, $malaysianIC)) {
 
