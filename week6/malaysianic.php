@@ -48,31 +48,31 @@
                     $zodiac = $zodiacArray[$yearOfBirth % 12];
 
                     if (($monthOfBirth == 4 && $dayOfBirth >= 19) || ($monthOfBirth == 5 && $dayOfBirth <= 13)) {
-                        $constellation = "Aries";
+                        $horoscope = "Aries";
                     }else if(($monthOfBirth == 5 && $dayOfBirth >= 14) || ($monthOfBirth == 6 && $dayOfBirth <= 19)) {
-                        $constellation = "Taurus";
+                        $horoscope = "Taurus";
                     }else if(($monthOfBirth == 6 && $dayOfBirth >= 20) || ($monthOfBirth == 7 && $dayOfBirth <= 20)) {
-                        $constellation = "Gemini";
+                        $horoscope = "Gemini";
                     }else if(($monthOfBirth == 7 && $dayOfBirth >= 21) || ($monthOfBirth == 8 && $dayOfBirth <= 9)) {
-                        $constellation = "Cancer";
+                        $horoscope = "Cancer";
                     }else if(($monthOfBirth == 8 && $dayOfBirth >= 10) || ($monthOfBirth == 9 && $dayOfBirth <= 15)) {
-                        $constellation = "Leo";
+                        $horoscope = "Leo";
                     }else if(($monthOfBirth == 9 && $dayOfBirth >= 16) || ($monthOfBirth == 10 && $dayOfBirth <= 30)) {
-                        $constellation = "Virgo";
+                        $horoscope = "Virgo";
                     }else if(($monthOfBirth == 10 && $dayOfBirth >= 31) || ($monthOfBirth == 11 && $dayOfBirth <= 22)) {
-                        $constellation = "Libra";
+                        $horoscope = "Libra";
                     }else if(($monthOfBirth == 11 && $dayOfBirth >= 30) || ($monthOfBirth == 12 && $dayOfBirth <= 17)) {
-                        $constellation = "Ophiuchus";
+                        $horoscope = "Ophiuchus";
                     }else if(($monthOfBirth == 11 && $dayOfBirth >= 23) || ($monthOfBirth == 11 && $dayOfBirth <= 29)) {
-                        $constellation = "Scorpio";
+                        $horoscope = "Scorpio";
                     }else if(($monthOfBirth == 12 && $dayOfBirth >= 18) || ($monthOfBirth == 1 && $dayOfBirth <= 18)) {
-                        $constellation = "Sagittarius";
+                        $horoscope = "Sagittarius";
                     }else if(($monthOfBirth == 1 && $dayOfBirth >= 19) || ($monthOfBirth == 2 && $dayOfBirth <= 15)) {
-                        $constellation = "Capricorn";
+                        $horoscope = "Capricorn";
                     }else if(($monthOfBirth == 2 && $dayOfBirth >= 16) || ($monthOfBirth == 3 && $dayOfBirth <= 11)) {
-                        $constellation = "Aquarius";
+                        $horoscope = "Aquarius";
                     }else if(($monthOfBirth == 3 && $dayOfBirth >= 12) || ($monthOfBirth == 4 && $dayOfBirth <= 18)) {
-                        $constellation = "Pisces";
+                        $horoscope = "Pisces";
                     }
 
                     $placeArray = ['01' => 'Johor', '02' => 'Kedah', '03' => 'Kelantan', '04' => 'Malacca', '05' => 'Negeri Sembilan', '06' => 'Pahang', '07' => 'Pulau Pinang', '08' => 'Perak', '09' => 'Perlis', '10' => 'Selangor', '11' => 'Terengganu', '12' => 'Sabah', '13' => 'Sarawak', '14' => 'Federal Territory of Kuala Lumpur', '15' => 'Federal Territory of Labuan', '16' => 'Federal Territory of Putrajaya', '21' => 'Johor', '22' => 'Johor', '23' => 'Johor', '24' => 'Johor', '25' => 'Kedah', '26' => 'Kedah', '27' => 'Kedah', '28' => 'Kelantan', '29' => 'Kelantan', '30' => 'Malacca', '31' => 'Negeri Sembilan', '32' => 'Pahang', '33' => 'Pahang', '34' => 'Pulau Pinang', '35' => 'Pulau Pinang', '36' => 'Perak', '37' => 'Perak', '38' => 'Perak', '39' => 'Perak', '40' => 'Perlis', '41' => 'Selangor', '42' => 'Selangor', '43' => 'Selangor', '44' => 'Selangor', '45' => 'Terengganu', '46' => 'Terengganu', '47' => 'Sabah', '48' => 'Sabah', '49' => 'Sabah', '50' => 'Sarawak', '51' => 'Sarawak', '52' => 'Sarawak', '53' => 'Sarawak', '54' => 'Federal Territory of Kuala Lumpur', '55' => 'Federal Territory of Kuala Lumpur', '56' => 'Federal Territory of Kuala Lumpur', '57' => 'Federal Territory of Kuala Lumpur', '58' => 'Federal Territory of Labuan', '59' => 'Negeri Sembilan'];
@@ -91,8 +91,8 @@
                         echo '</div>';
 
                         echo '<div class="col p-0 m-0 text-center">';
-                            echo '<div class="alert alert-success" role="alert">' . "Your constellation: $constellation." . '</div>';
-                            echo '<img class="constellation" src="img/' . strtolower($constellation) . '.png" alt="constellation img">';
+                            echo '<div class="alert alert-success" role="alert">' . "Your horoscope: $horoscope." . '</div>';
+                            echo '<img class="horoscope" src="img/' . strtolower($horoscope) . '.png" alt="horoscope img">';
                         echo '</div>';
 
                         echo '<div class="col p-0 m-0 text-center">';
