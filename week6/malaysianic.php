@@ -6,6 +6,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <title>Week 6 Q2</title>
+    <style>
+        .image-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .image-row img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -15,7 +28,7 @@
             <div class="row my-2">
                 <div class="form-group my-1">
                     <label for="malaysianIC">Malaysian IC:</label>
-                    <input type="text" class="form-control" id="malaysianIC" name="malaysianIC">
+                    <input type="text" class="form-control" id="malaysianIC" name="malaysianIC" placeholder="e.g. 010203101234"  required>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary my-2" name="submit">Submit</button>
@@ -23,64 +36,73 @@
 
         <?php
         if(isset($_POST['submit'])) {
-            $malaysianIC = $_POST['malaysianIC'];
 
+            $malaysianIC = $_POST['malaysianIC'];
             $ICPattern = "/^\d{12}$/";
 
-            //current year
-            date_default_timezone_set('Asia/Kuala_Lumpur');
-            $currentYear = date('Y');
-            $currentMonth = date('m');
-            $currentDay = date('d');
+            if (!empty($malaysianIC) && preg_match($ICPattern, $malaysianIC)) {
 
-            if (!preg_match($ICPattern, $malaysianIC)) {
-                echo '<div class="alert alert-danger" role="alert">' . "Please enter a valid Malaysian ID that contains only 12 digits." . '</div>'; 
-            }else {
+                // extract 2 numbers start from index X
                 $yearOfBirth = substr($malaysianIC, 0, 2);
                 $monthOfBirth = substr($malaysianIC, 2, 2);
-                $DateOfBirth = substr($malaysianIC, 4, 2);
-            }
+                $dayOfBirth = substr($malaysianIC, 4, 2);
+                $placeOfBirth = substr($malaysianIC, 6, 2);
 
-        
-            $zodiac = array("Monkey", "Rooster", "Dog", "Pig", "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat");
+                if (checkdate($monthOfBirth, $dayOfBirth, $yearOfBirth)) {
+                    
+                    $zodiacArray = array("Monkey", "Rooster", "Dog", "Pig", "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat");
+                    $zodiac = $zodiacArray[($yearOfBirth + 8) % 12];
 
-            $mmdd = $selectedMonth.$selectedDay;
-            $constellation = "";
+                    if (($monthOfBirth == 4 && $dayOfBirth >= 19) || ($monthOfBirth == 5 && $dayOfBirth <= 13)) {
+                        $constellation = "Aries";
+                    }else if(($monthOfBirth == 5 && $dayOfBirth >= 14) || ($monthOfBirth == 6 && $dayOfBirth <= 19)) {
+                        $constellation = "Taurus";
+                    }else if(($monthOfBirth == 6 && $dayOfBirth >= 20) || ($monthOfBirth == 7 && $dayOfBirth <= 20)) {
+                        $constellation = "Gemini";
+                    }else if(($monthOfBirth == 7 && $dayOfBirth >= 21) || ($monthOfBirth == 8 && $dayOfBirth <= 9)) {
+                        $constellation = "Cancer";
+                    }else if(($monthOfBirth == 8 && $dayOfBirth >= 10) || ($monthOfBirth == 9 && $dayOfBirth <= 15)) {
+                        $constellation = "Leo";
+                    }else if(($monthOfBirth == 9 && $dayOfBirth >= 16) || ($monthOfBirth == 10 && $dayOfBirth <= 30)) {
+                        $constellation = "Virgo";
+                    }else if(($monthOfBirth == 10 && $dayOfBirth >= 31) || ($monthOfBirth == 11 && $dayOfBirth <= 22)) {
+                        $constellation = "Libra";
+                    }else if(($monthOfBirth == 11 && $dayOfBirth >= 23) || ($monthOfBirth == 11 && $dayOfBirth <= 29)) {
+                        $constellation = "Scorpio";
+                    }else if(($monthOfBirth == 11 && $dayOfBirth >= 30) || ($monthOfBirth == 12 && $dayOfBirth <= 17)) {
+                        $constellation = "Ophiuchus";
+                    }else if(($monthOfBirth == 12 && $dayOfBirth >= 18) || ($monthOfBirth == 1 && $dayOfBirth <= 18)) {
+                        $constellation = "Sagittarius";
+                    }else if(($monthOfBirth == 1 && $dayOfBirth >= 19) || ($monthOfBirth == 2 && $dayOfBirth <= 15)) {
+                        $constellation = "Capricorn";
+                    }else if(($monthOfBirth == 2 && $dayOfBirth >= 16) || ($monthOfBirth == 3 && $dayOfBirth <= 11)) {
+                        $constellation = "Aquarius";
+                    }else if(($monthOfBirth == 3 && $dayOfBirth >= 12) || ($monthOfBirth == 4 && $dayOfBirth <= 18)) {
+                        $constellation = "Pisces";
+                    }
 
-            if ($mmdd >= "0419" && $mmdd <= "0513") {
-                $constellation = "Aries";
-            }else if ($mmdd >= "0514" && $mmdd <= "0619") {
-                $constellation = "Taurus";
-            }else if ($mmdd >= "0620" && $mmdd <= "0720") {
-                $constellation = "Gemini";
-            }else if ($mmdd >= "0721" && $mmdd <= "0809") {
-                $constellation = "Cancer";
-            }else if ($mmdd >= "0810" && $mmdd <= "0915") {
-                $constellation = "Leo";
-            }else if ($mmdd >= "0916" && $mmdd <= "1030") {
-                $constellation = "Virgo";
-            }else if ($mmdd >= "1031" && $mmdd <= "1122") {
-                $constellation = "Libra";
-            }else if ($mmdd >= "1123" && $mmdd <= "1129") {
-                $constellation = "Scorpio";
-            }else if ($mmdd >= "1130" && $mmdd <= "1217") {
-                $constellation = "Ophiuchus";
-            } else if (($mmdd >= "1218" && $mmdd <= "1231") || ($mmdd >= "0101" && $mmdd <= "0118")) {
-                $constellation = "Sagittarius";
-            } else if ($mmdd >= "0119" && $mmdd <= "0215") {
-                $constellation = "Capricorn";
-            } else if ($mmdd >= "0216" && $mmdd <= "0311") {
-                $constellation = "Aquarius";
-            } else if ($mmdd >= "0312" && $mmdd <= "0418") {
-                $constellation = "Pisces";
-            }
+                    $placeArray = ['01' => 'Johor', '02' => 'Kedah', '03' => 'Kelantan', '04' => 'Malacca', '05' => 'Negeri Sembilan', '06' => 'Pahang', '07' => 'Pulau Pinang', '08' => 'Perak', '09' => 'Perlis', '10' => 'Selangor', '11' => 'Terengganu', '12' => 'Sabah', '13' => 'Sarawak', '14' => 'Federal Territory of Kuala Lumpur', '15' => 'Federal Territory of Labuan', '16' => 'Federal Territory of Putrajaya', '21' => 'Johor', '22' => 'Johor', '23' => 'Johor', '24' => 'Johor', '25' => 'Kedah', '26' => 'Kedah', '27' => 'Kedah', '28' => 'Kelantan', '29' => 'Kelantan', '30' => 'Malacca', '31' => 'Negeri Sembilan', '32' => 'Pahang', '33' => 'Pahang', '34' => 'Pulau Pinang', '35' => 'Pulau Pinang', '36' => 'Perak', '37' => 'Perak', '38' => 'Perak', '39' => 'Perak', '40' => 'Perlis', '41' => 'Selangor', '42' => 'Selangor', '43' => 'Selangor', '44' => 'Selangor', '45' => 'Terengganu', '46' => 'Terengganu', '47' => 'Sabah', '48' => 'Sabah', '49' => 'Sabah', '50' => 'Sarawak', '51' => 'Sarawak', '52' => 'Sarawak', '53' => 'Sarawak', '54' => 'Federal Territory of Kuala Lumpur', '55' => 'Federal Territory of Kuala Lumpur', '56' => 'Federal Territory of Kuala Lumpur', '57' => 'Federal Territory of Kuala Lumpur', '58' => 'Federal Territory of Labuan', '59' => 'Negeri Sembilan'];
+                    if (isset($placeArray[$placeOfBirth])) {
+                        $place = $placeArray[$placeOfBirth];
+                    } else {
+                        $place = "notfound";
+                    }
 
+                    echo '<div class="image-row">';
+                        echo '<div class="alert alert-success" role="alert">' . "Your Chinese Zodiac: $zodiac.". '</div>'; 
+                        echo '<img class="chinesezodiac" src="img/' . strtolower($zodiac) . '.png" alt="chinesezodiac img">';
+                        echo '<div class="alert alert-success" role="alert">' . "Your constellation: $constellation.". '</div>'; 
+                        echo '<img class="constellation" src="img/' . strtolower($constellation) . '.png" alt="constellation img">';
+                        echo '<div class="alert alert-success" role="alert">' . "Your birthplace: $place.". '</div>'; 
+                        echo '<img class="place" src="img/' . strtolower(str_replace(' ', '', $place)) . '.png" alt="place img">';
+                    echo '</div>';
+                    
+                }else {
+                    echo '<div class="alert alert-danger" role="alert">' . "Invalid date of birth." . '</div>'; 
+                }
 
-            if (checkdate($selectedMonth, $selectedDay, $selectedYear)){
-                echo '<div class="alert alert-success" role="alert">' . "Your chinese zodiac is " . $zodiac[$selectedYear % 12] . "." . '</div>'; 
-                echo '<div class="alert alert-success" role="alert">' . "Your constellation is $constellation.". '</div>'; 
-            }else{
-                echo '<div class="alert alert-danger" role="alert">' . "Invalid date of birth." . '</div>'; 
+            } else {
+                echo '<div class="alert alert-danger" role="alert">' . "Please enter a valid Malaysian ID that contains 12 digits." . '</div>'; 
             }
         }
         ?>
