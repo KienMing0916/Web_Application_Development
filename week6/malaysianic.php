@@ -98,19 +98,19 @@
                     echo "<div class='alert alert-success role=alert'> Date of birth: " . $month[$monthOfBirth-1] . " " . $dayOfBirth . ", " . $yearOfBirth . "<br>" . "</div>";
 
                     echo '<div class="row p-0 m-0">';
-                        echo '<div class="col p-0 m-0">';
+                        echo '<div class="col p-0 m-0 text-center">';
                             echo '<div class="alert alert-success" role="alert">' . "Your Chinese Zodiac: $zodiac." . '</div>';
                             echo '<img class="chinesezodiac" src="img/' . strtolower($zodiac) . '.png" alt="chinesezodiac img">';
                         echo '</div>';
 
-                        echo '<div class="col">';
+                        echo '<div class="col p-0 m-0 text-center">';
                             echo '<div class="alert alert-success" role="alert">' . "Your constellation: $constellation." . '</div>';
                             echo '<img class="constellation" src="img/' . strtolower($constellation) . '.png" alt="constellation img">';
                         echo '</div>';
 
-                        echo '<div class="col">';
+                        echo '<div class="col p-0 m-0 text-center">';
                             echo '<div class="alert alert-success" role="alert">' . "Your birthplace: $place." . '</div>';
-                            echo '<img class="place" src="img/' . strtolower(str_replace(' ', '', $place)) . '.png" alt="place img">';
+                            echo '<img class="place" src="img/' . strtolower(str_replace(' ', '', $place)) . '.jpg" alt="place img">';
                         echo '</div>';
                     echo '</div>';
                     
