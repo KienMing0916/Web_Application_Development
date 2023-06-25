@@ -6,7 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <title>Week 6 Q2</title>
-    <style>
+    <!-- <style>
         .image-row {
             display: flex;
             flex-wrap: wrap;
@@ -18,7 +18,7 @@
             max-width: 100%;
             height: auto;
         }
-    </style>
+    </style> -->
 </head>
 <body>
     <div class="container">
@@ -39,6 +39,7 @@
 
             $malaysianIC = $_POST['malaysianIC'];
             $ICPattern = "/^\d{12}$/";
+            $month = array('JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC');
 
             if (!empty($malaysianIC) && preg_match($ICPattern, $malaysianIC)) {
 
@@ -48,10 +49,16 @@
                 $dayOfBirth = substr($malaysianIC, 4, 2);
                 $placeOfBirth = substr($malaysianIC, 6, 2);
 
+                if ($yearOfBirth > (date('Y') - 2000) || ($yearOfBirth == (date('Y') - 2000) && $monthOfBirth > date('m')) || ($yearOfBirth == (date('Y') - 2000) && $monthOfBirth == date('m') && $dayOfBirth > date('d'))) {
+                    $yearOfBirth += 1900;
+                }else {
+                    $yearOfBirth += 2000;
+                }
+
                 if (checkdate($monthOfBirth, $dayOfBirth, $yearOfBirth)) {
                     
                     $zodiacArray = array("Monkey", "Rooster", "Dog", "Pig", "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat");
-                    $zodiac = $zodiacArray[($yearOfBirth + 8) % 12];
+                    $zodiac = $zodiacArray[$yearOfBirth % 12];
 
                     if (($monthOfBirth == 4 && $dayOfBirth >= 19) || ($monthOfBirth == 5 && $dayOfBirth <= 13)) {
                         $constellation = "Aries";
@@ -88,13 +95,23 @@
                         $place = "notfound";
                     }
 
-                    echo '<div class="image-row">';
-                        echo '<div class="alert alert-success" role="alert">' . "Your Chinese Zodiac: $zodiac.". '</div>'; 
-                        echo '<img class="chinesezodiac" src="img/' . strtolower($zodiac) . '.png" alt="chinesezodiac img">';
-                        echo '<div class="alert alert-success" role="alert">' . "Your constellation: $constellation.". '</div>'; 
-                        echo '<img class="constellation" src="img/' . strtolower($constellation) . '.png" alt="constellation img">';
-                        echo '<div class="alert alert-success" role="alert">' . "Your birthplace: $place.". '</div>'; 
-                        echo '<img class="place" src="img/' . strtolower(str_replace(' ', '', $place)) . '.png" alt="place img">';
+                    echo "<div class='alert alert-success role=alert'> Date of birth: " . $month[$monthOfBirth-1] . " " . $dayOfBirth . ", " . $yearOfBirth . "<br>" . "</div>";
+
+                    echo '<div class="row p-0 m-0">';
+                        echo '<div class="col p-0 m-0">';
+                            echo '<div class="alert alert-success" role="alert">' . "Your Chinese Zodiac: $zodiac." . '</div>';
+                            echo '<img class="chinesezodiac" src="img/' . strtolower($zodiac) . '.png" alt="chinesezodiac img">';
+                        echo '</div>';
+
+                        echo '<div class="col">';
+                            echo '<div class="alert alert-success" role="alert">' . "Your constellation: $constellation." . '</div>';
+                            echo '<img class="constellation" src="img/' . strtolower($constellation) . '.png" alt="constellation img">';
+                        echo '</div>';
+
+                        echo '<div class="col">';
+                            echo '<div class="alert alert-success" role="alert">' . "Your birthplace: $place." . '</div>';
+                            echo '<img class="place" src="img/' . strtolower(str_replace(' ', '', $place)) . '.png" alt="place img">';
+                        echo '</div>';
                     echo '</div>';
                     
                 }else {
