@@ -27,6 +27,7 @@
             $malaysianIC = $_POST['malaysianIC'];
             $ICPattern = "/^\d{12}$/";
             $month = array("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
+            $zodiacArray = array("Monkey", "Rooster", "Dog", "Pig", "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat");
 
             if (!empty($malaysianIC) && preg_match($ICPattern, $malaysianIC)) {
 
@@ -44,7 +45,6 @@
 
                 if (checkdate($monthOfBirth, $dayOfBirth, $yearOfBirth)) {
                     
-                    $zodiacArray = array("Monkey", "Rooster", "Dog", "Pig", "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat");
                     $zodiac = $zodiacArray[$yearOfBirth % 12];
 
                     if (($monthOfBirth == 4 && $dayOfBirth >= 19) || ($monthOfBirth == 5 && $dayOfBirth <= 13)) {
@@ -82,7 +82,7 @@
                         $place = "notfound";
                     }
 
-                    echo "<div class='alert alert-success role=alert'> Date of birth: " . $month[$monthOfBirth-1] . " " . $dayOfBirth . ", " . $yearOfBirth . "<br>" . "</div>";
+                    echo '<div class="alert alert-success role=alert"> Date of birth: ' . $month[$monthOfBirth-1] . " " . $dayOfBirth . ", " . $yearOfBirth . "<br>" . '</div>';
 
                     echo '<div class="row p-0 m-0">';
                         echo '<div class="col p-0 m-0 text-center">';
