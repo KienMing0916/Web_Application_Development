@@ -13,7 +13,7 @@
             include 'menu.php';
         ?>
 
-        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <!-- <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 <button class="buttoncontrol active" type="button" data-bs-target="#carouselExampleControls"
                     data-bs-slide-to="0" aria-current="true" aria-label="Slide 1"></button>
@@ -43,7 +43,7 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
-        </div>
+        </div> -->
 
         <div class="parttwo bg-light text-center">
             <h1>Welcome to KM Trading Company</h1>
