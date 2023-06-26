@@ -83,10 +83,10 @@
                     $constellation = "Virgo";
                 }else if(($selectedMonth == 10 && $selectedDay >= 31) || ($selectedMonth == 11 && $selectedDay <= 22)) {
                     $constellation = "Libra";
-                }else if(($selectedMonth == 11 && $selectedDay >= 23) || ($selectedMonth == 11 && $selectedDay <= 29)) {
-                    $constellation = "Scorpio";
                 }else if(($selectedMonth == 11 && $selectedDay >= 30) || ($selectedMonth == 12 && $selectedDay <= 17)) {
                     $constellation = "Ophiuchus";
+                }else if(($selectedMonth == 11 && $selectedDay >= 23) || ($selectedMonth == 11 && $selectedDay <= 29)) {
+                        $constellation = "Scorpio";
                 }else if(($selectedMonth == 12 && $selectedDay >= 18) || ($selectedMonth == 1 && $selectedDay <= 18)) {
                     $constellation = "Sagittarius";
                 }else if(($selectedMonth == 1 && $selectedDay >= 19) || ($selectedMonth == 2 && $selectedDay <= 15)) {
