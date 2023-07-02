@@ -9,16 +9,16 @@
     <div class="collapse navbar-collapse justify-content-end pe-3" id="navbarNav">
         <ul class="navbar-nav ps-3">
             <li class="nav-item p-1">
-                <a class="nav-link active" href="index.php">Home</a>
+                <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/index.php') echo 'active'; ?>" href="index.php">Home</a>
             </li>
             <li class="nav-item p-1">
-                <a class="nav-link" href="product_create.php">Create Product</a>
+                <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/product_create.php') echo 'active'; ?>" href="product_create.php">Create Product</a>
             </li>
             <li class="nav-item p-1">
-                <a class="nav-link" href="customer_create.php">Create Customer</a>
+                <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/customer_create.php') echo 'active'; ?>" href="customer_create.php">Create Customer</a>
             </li>
             <li class="nav-item p-1">
-                <a class="nav-link" href="contactus.php">Contact Us</a>
+                <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/contactus.php') echo 'active'; ?>" href="contactus.php">Contact Us</a>
             </li>
         </ul>
     </div>
