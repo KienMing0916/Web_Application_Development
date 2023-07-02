@@ -35,8 +35,10 @@
             }
             if(empty($email)) {
                 $errorMessage[] = "Email field is empty.";
-            }else if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errorMessage[] = "Invalid email format.";
+            }else {
+                if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $errorMessage[] = "Invalid email format.";
+                }
             }
             if(empty($phonenumber)) {
                 $errorMessage[] = "Phone number field is empty.";
@@ -56,7 +58,7 @@
                 }
                 echo "</div>";
             } else {
-                // Send the email
+                //Send the email
                 // $to = 'your-email@example.com';
                 // $subject = 'Contact Form Submission';
                 // $messageBody = "First Name: $firstName\n";
@@ -67,11 +69,11 @@
                 // $messageBody .= "Message: $message\n";
                 // $headers = "From: $email";
 
-                // if (mail($to, $subject, $messageBody, $headers)) {
-                //     echo "<div class='alert alert-success m-3'>Message sent successfully!</div>";
-                // } else {
-                //     echo "<div class='alert alert-danger m-3'>Failed to send the message. Please try again.</div>";
-                // }
+                if (mail($to, $subject, $messageBody, $headers)) {
+                    echo "<div class='alert alert-success m-3'>Message sent successfully!</div>";
+                } else {
+                    echo "<div class='alert alert-danger m-3'>Failed to send the message. Please try again.</div>";
+                }
             }
         }
         ?>
