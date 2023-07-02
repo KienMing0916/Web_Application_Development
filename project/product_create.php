@@ -46,13 +46,21 @@
                 }
                 if(empty($price)) {
                     $errorMessage[] = "Price field is empty.";
-                }else if(!is_numeric($price)) {
-                    $errorMessage[] = "Prices can only be numbers.";
-                }
+                }else if($price <=0){
+                    $errorMessage[] = "Please enter a valid price.";
+                }else{
+                    if (!is_numeric($price)) {
+                        $errorMessage[] = "Prices can only be numbers.";
+                    }
+                }  
                 if(empty($promotion_price)) {
                     $errorMessage[] = "Promotion price field is empty.";
-                }else if(!is_numeric($promotion_price)) {
-                    $errorMessage[] = "Promotion prices can only be numbers.";
+                }else if($promotion_price <=0){
+                    $errorMessage[] = "Please enter a valid promotion price.";
+                }else {
+                    if(!is_numeric($promotion_price)) {
+                        $errorMessage[] = "Promotion prices can only be numbers.";
+                    }
                 }
                 if(empty($manufacture_date)) {
                     $errorMessage[] = "Manufacture date field is empty.";
@@ -75,6 +83,9 @@
                         }
                     echo "</div>";
                 }else {
+                    // format to two decimal places
+                    $price = number_format((float)$price, 2);
+                    $promotion_price = number_format((float)$promotion_price, 2);
                     // Bind the parameters
                     $stmt->bindParam(':name', $name);
                     $stmt->bindParam(':description', $description);
@@ -106,8 +117,8 @@
             <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="POST">
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
-                        <td>Name</td>
-                        <td><input type='text' name='name' id='name' class='form-control' value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>" /></td>
+                        <td class="col-4">Name</td>
+                        <td class="col-8"><input type='text' name='name' id='name' class='form-control' value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>" /></td>
                     </tr>
                     <tr>
                         <td>Description</td>
@@ -115,11 +126,11 @@
                     </tr>
                     <tr>
                         <td>Price</td>
-                        <td><input type='text' name='price'  id='price' class='form-control' value="<?php echo isset($_POST['price']) ? $_POST['price'] : ''; ?>" /></td>
+                        <td><input type='number' name='price'  id='price' class='form-control' step="0.01" value="<?php echo isset($_POST['price']) ? $_POST['price'] : ''; ?>" /></td>
                     </tr>
                     <tr>
                         <td>Promotion Price</td>
-                        <td><input type='text' name='promotion_price' id='promotion_price' class='form-control' value="<?php echo isset($_POST['promotion_price']) ? $_POST['promotion_price'] : ''; ?>" /></td>
+                        <td><input type='number' name='promotion_price' id='promotion_price' class='form-control' step="0.01" value="<?php echo isset($_POST['promotion_price']) ? $_POST['promotion_price'] : ''; ?>" /></td>
                     </tr>
                     <tr>
                         <td>Manufacture Date</td>
