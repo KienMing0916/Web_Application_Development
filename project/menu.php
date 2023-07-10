@@ -15,7 +15,13 @@
                 <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/product_create.php') echo 'active'; ?>" href="product_create.php">Create Product</a>
             </li>
             <li class="nav-item p-1">
+                <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/product_read.php') echo 'active'; ?>" href="product_read.php">Read Product</a>
+            </li>
+            <li class="nav-item p-1">
                 <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/customer_create.php') echo 'active'; ?>" href="customer_create.php">Create Customer</a>
+            </li>
+            <li class="nav-item p-1">
+                <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/customer_read.php') echo 'active'; ?>" href="customer_read.php">Read Customer</a>
             </li>
             <li class="nav-item p-1">
                 <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/contactus.php') echo 'active'; ?>" href="contactus.php">Contact Us</a>
