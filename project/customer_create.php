@@ -27,6 +27,7 @@
                 $stmt = $con->prepare($query);
                 $username = $_POST['username'];
                 $password = $_POST['password'];
+                $confirmpassword = $_POST['confirmpassword'];
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $firstname = $_POST['firstname'];
                 $lastname = $_POST['lastname'];
@@ -45,6 +46,14 @@
                     $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/";
                     if (!preg_match($passwordPattern, $password)) {
                         $errorMessage[] = "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number. No special symbols allowed.";
+                    }
+                }
+                if (empty($confirmpassword)) {
+                    $errorMessage[] = "Confirm password field is empty.";
+                }
+                if (!empty($password) && !empty($confirmpassword)) {
+                    if ($password !== $confirmpassword) {
+                        $errorMessage[] = "Password and confirm password do not match.";
                     }
                 }
                 if(empty($firstname)) {
@@ -92,7 +101,12 @@
             }
             // show error
             catch(PDOException $exception){
-                die('ERROR: ' . $exception->getMessage());
+                if ($exception->getCode() == 23000){
+                    echo "<div class='alert alert-danger m-3'>Username has been taken. Please enter a new username.</div>";
+                }else{
+                    echo "<div class='alert alert-danger m-3'>ERROR: " . $exception->getMessage() . "</div>";
+                    //die('ERROR: ' . $exception->getMessage());
+                }
             }
         }
         ?>
@@ -108,6 +122,10 @@
                     <tr>
                         <td>Password</td>
                         <td><input type='password' name='password' id='password' class='form-control' value="<?php echo isset($_POST['password']) ? $_POST['password'] : ''; ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td>Confirm Password</td>
+                        <td><input type='password' name='confirmpassword' id='confirmpassword' class='form-control' value="<?php echo isset($_POST['confirmpassword']) ? $_POST['confirmpassword'] : ''; ?>" /></td>
                     </tr>
                     <tr>
                         <td>First Name</td>
