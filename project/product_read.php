@@ -18,18 +18,14 @@
         // include database connection
         include 'config/database.php';
 
-        // Check if a search query is provided
         $searchKeyword = isset($_GET['search']) ? $_GET['search'] : '';
-
         $query = "SELECT id, name, description, price, promotion_price FROM products";
         if (!empty($searchKeyword)) {
             $query .= " WHERE name LIKE :keyword";
             $searchKeyword = "%{$searchKeyword}%";
         }
         $query .= " ORDER BY id ASC";
-
         $stmt = $con->prepare($query);
-
         if (!empty($searchKeyword)) {
             $stmt->bindParam(':keyword', $searchKeyword);
         }
