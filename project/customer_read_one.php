@@ -20,7 +20,7 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT Customer_ID, username, firstname, lastname, gender, birthdate, RegistrationDateTime, status FROM customers WHERE Customer_ID = :id ";
+            $query = "SELECT Customer_ID, username, firstname, lastname, gender, birthdate, RegistrationDateTime, email, status FROM customers WHERE Customer_ID = :id ";
             $stmt = $con->prepare( $query );
             $stmt->bindParam(":id", $id);
             $stmt->execute();
@@ -33,6 +33,7 @@
             $gender = $row['gender'];
             $birthdate = $row['birthdate'];
             $RegistrationDateTime = $row['RegistrationDateTime'];
+            $email = $row['email'];
             $status = $row['status'];
         }
         
@@ -63,6 +64,10 @@
                 <tr>
                     <td>Date of Birth</td>
                     <td><?php echo htmlspecialchars($birthdate, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><?php echo htmlspecialchars($email, ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
                     <td>Registration Time</td>

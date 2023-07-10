@@ -13,13 +13,23 @@
         <div class="page-header p-3 pb-1">
             <h1>Read Customers</h1>
         </div>
-     
+
         <?php
         // include database connection
         include 'config/database.php';
 
-        $query = "SELECT Customer_ID, username, firstname, lastname, status FROM customers ORDER BY CUSTOMER_ID ASC";
+        $searchKeyword = isset($_GET['search']) ? $_GET['search'] : '';
+        $query = "SELECT Customer_ID, username, firstname, lastname, email, status FROM customers";
+        if (!empty($searchKeyword)) {
+            $query .= " WHERE username LIKE :keyword OR firstname LIKE :keyword OR lastname LIKE :keyword OR email LIKE :keyword";
+            $searchKeyword = "%{$searchKeyword}%";
+        }
+        $query .= " ORDER BY CUSTOMER_ID ASC";
         $stmt = $con->prepare($query);
+        if (!empty($searchKeyword)) {
+            $stmt->bindParam(':keyword', $searchKeyword);
+        }
+
         $stmt->execute();
         
         // this is how to get number of rows returned
@@ -27,6 +37,16 @@
         // link to create record form
         echo '<div class="p-3 pt-2">
             <a href="customer_create.php" class="btn btn-primary m-b-1em">Create New Customer</a>
+        </div>';
+
+        // Search form
+        echo '<div class="p-3">
+            <form method="GET" action="">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="search" placeholder="Search product..." value="' . str_replace('%', '', $searchKeyword) . '">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </form>
         </div>';
 
         if($num > 0){
@@ -38,6 +58,7 @@
                         echo "<th>Username</th>";
                         echo "<th>First Name</th>";
                         echo "<th>Last Name</th>";
+                        echo "<th>Email</th>";
                         echo "<th>Status</th>";
                         echo "<th>Action</th>";
                     echo "</tr>";
@@ -50,6 +71,7 @@
                             echo "<td>{$username}</td>";
                             echo "<td>{$firstname}</td>";
                             echo "<td>{$lastname}</td>";
+                            echo "<td>{$email}</td>";
                             echo "<td>{$status}</td>";
                 
                             echo "<td class='col-3'>";

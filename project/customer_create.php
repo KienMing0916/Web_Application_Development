@@ -22,7 +22,7 @@
             include 'config/database.php';
             try{
                 // insert query
-                $query = "INSERT INTO customers SET username=:username, password=:password, firstname=:firstname, lastname=:lastname, gender=:gender, birthdate=:birthdate , status=:status";
+                $query = "INSERT INTO customers SET username=:username, password=:password, firstname=:firstname, lastname=:lastname, gender=:gender, birthdate=:birthdate ,email=:email, status=:status";
                 // prepare query for execution
                 $stmt = $con->prepare($query);
                 $username = $_POST['username'];
@@ -33,6 +33,7 @@
                 $lastname = $_POST['lastname'];
                 $gender = $_POST['gender'];
                 $birthdate = $_POST['birthdate'];
+                $email = $_POST['email'];
                 $status = $_POST['status'];
 
                 $errorMessage = array();
@@ -73,6 +74,13 @@
                         $errorMessage[] = "Date of birth cannot be in the future.";
                     }
                 }
+                if(empty($email)) {
+                    $errorMessage[] = "Email field is empty.";
+                }else {
+                    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        $errorMessage[] = "Invalid email format.";
+                    }
+                }
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
@@ -88,6 +96,7 @@
                     $stmt->bindParam(':lastname', $lastname);
                     $stmt->bindParam(':gender', $gender);
                     $stmt->bindParam(':birthdate', $birthdate);
+                    $stmt->bindParam(':email', $email);
                     $stmt->bindParam(':status', $status);
                     
                     // Execute the query
@@ -155,6 +164,10 @@
                     <tr>
                         <td>Date of Birth</td>
                         <td><input type='date' name='birthdate' class='form-control' value="<?php echo isset($_POST['birthdate']) ? $_POST['birthdate'] : ''; ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td><input type='email' name='email' id='email' class='form-control' value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>" /></td>
                     </tr>
                     <tr>
                         <td>Account Status</td>
