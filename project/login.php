@@ -1,5 +1,9 @@
 <?php
-    session_start();
+session_start();
+if (isset($_SESSION['user_id'])) {
+  header("Location: index.php");
+  exit();
+}
 ?>
 
 <!DOCTYPE HTML>
@@ -55,7 +59,7 @@
                                 header("Location: index.php");
                                 exit();
                             }else {
-                                echo "<div class='alert alert-danger m-3'>Inactive account.</div>";
+                                echo "<div class='alert alert-danger m-3'>" . $row['status'] . " account.</div>";
                             }
                         }else {
                             echo "<div class='alert alert-danger m-3'>Password incorrect.</div>";
