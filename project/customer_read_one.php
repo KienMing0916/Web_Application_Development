@@ -26,7 +26,7 @@ if (!isset($_SESSION['user_id'])) {
         $id=isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
         include 'config/database.php';
         try {
-            $query = "SELECT Customer_ID, username, firstname, lastname, gender, birthdate, RegistrationDateTime, email, status FROM customers WHERE Customer_ID = :id ";
+            $query = "SELECT Customer_ID, username, firstname, lastname, gender, birthdate, registrationdatetime, email, status FROM customers WHERE Customer_ID = :id ";
             $stmt = $con->prepare( $query );
             $stmt->bindParam(":id", $id);
             $stmt->execute();
@@ -37,7 +37,7 @@ if (!isset($_SESSION['user_id'])) {
             $lastname = $row['lastname'];
             $gender = $row['gender'];
             $birthdate = $row['birthdate'];
-            $RegistrationDateTime = $row['RegistrationDateTime'];
+            $registrationdatetime = $row['registrationdatetime'];
             $email = $row['email'];
             $status = $row['status'];
         }
@@ -74,7 +74,7 @@ if (!isset($_SESSION['user_id'])) {
                 </tr>
                 <tr>
                     <td>Registration Time</td>
-                    <td><?php echo htmlspecialchars($RegistrationDateTime, ENT_QUOTES);  ?></td>
+                    <td><?php echo htmlspecialchars($registrationdatetime, ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
                     <td>Status</td>
