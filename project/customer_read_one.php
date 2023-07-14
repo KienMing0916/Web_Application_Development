@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header("Location: login.php");
+  exit();
+}
+?>
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -17,16 +25,13 @@
         <?php
         $id=isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
         include 'config/database.php';
-        // read current record's data
         try {
-            // prepare select query
             $query = "SELECT Customer_ID, username, firstname, lastname, gender, birthdate, RegistrationDateTime, email, status FROM customers WHERE Customer_ID = :id ";
             $stmt = $con->prepare( $query );
             $stmt->bindParam(":id", $id);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-            // values to fill up our form
+    
             $username = $row['username'];
             $firstname = $row['firstname'];
             $lastname = $row['lastname'];
@@ -36,8 +41,6 @@
             $email = $row['email'];
             $status = $row['status'];
         }
-        
-        // show error
         catch(PDOException $exception){
             die('ERROR: ' . $exception->getMessage());
         }

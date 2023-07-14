@@ -1,12 +1,18 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header("Location: login.php");
+  exit();
+}
+?>
+
 <!DOCTYPE HTML>
 <html>
 <head>
     <title>PDO - Create a Customer - PHP CRUD Tutorial</title>
-    <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>  
-    <!-- container -->
     <div class="container p-0 bg-light">
         <?php
             include 'menu.php';
@@ -18,10 +24,8 @@
       
         <?php
         if($_POST){
-            // include database connection
             include 'config/database.php';
             try{
-                // insert query
                 $query = "INSERT INTO customers SET username=:username, password=:password, firstname=:firstname, lastname=:lastname, gender=:gender, birthdate=:birthdate ,email=:email, status=:status";
                 // prepare query for execution
                 $stmt = $con->prepare($query);
@@ -108,10 +112,14 @@
                     }
                 }
             }
-            // show error
             catch(PDOException $exception){
                 if ($exception->getCode() == 23000){
-                    echo "<div class='alert alert-danger m-3'>Username has been taken. Please enter a new username.</div>";
+                    //error code 23000 could be a duplicate username or email. Find keyword username or email to differentiate the error message.
+                    if (strpos($exception->getMessage(), 'username') != false) {
+                        echo "<div class='alert alert-danger m-3'>Username already taken. Please enter a new username.</div>";
+                    }else if (strpos($exception->getMessage(), 'email') != false) {
+                        echo "<div class='alert alert-danger m-3'>Email already taken. Please enter a new email.</div>";
+                    }
                 }else{
                     echo "<div class='alert alert-danger m-3'>ERROR: " . $exception->getMessage() . "</div>";
                     //die('ERROR: ' . $exception->getMessage());
@@ -121,7 +129,6 @@
         ?>
 
         <div class="p-3">
-            <!-- html form here where the customer information will be entered -->
             <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="POST">
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
@@ -190,7 +197,6 @@
             </form>
         </div>
     </div> 
-    <!-- end container -->  
 </body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>

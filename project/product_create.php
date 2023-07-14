@@ -1,12 +1,18 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header("Location: login.php");
+  exit();
+}
+?>
+
 <!DOCTYPE HTML>
 <html>
 <head>
     <title>PDO - Create a Record - PHP CRUD Tutorial</title>
-    <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>  
-    <!-- container -->
     <div class="container p-0 bg-light">
         <?php
             include 'menu.php';
@@ -18,7 +24,6 @@
       
         <?php
         if($_POST){
-            // include database connection
             include 'config/database.php';
             try{
                 // insert query
@@ -35,7 +40,6 @@
                 //Datetime objects
                 $dateStart = new DateTime($manufacture_date);
                 $dateEnd = new DateTime($expired_date);
-
                 $errorMessage = array();
 
                 if(empty($name)) {
@@ -105,7 +109,6 @@
                     }
                 }
             }
-            // show error
             catch(PDOException $exception){
                 die('ERROR: ' . $exception->getMessage());
             }
@@ -113,7 +116,6 @@
         ?>
 
         <div class="p-3">
-            <!-- html form here where the product information will be entered -->
             <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="POST">
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
@@ -151,7 +153,6 @@
             </form>
         </div>
     </div> 
-    <!-- end container -->  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>

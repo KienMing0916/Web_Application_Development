@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header("Location: login.php");
+  exit();
+}
+?>
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -25,7 +33,6 @@
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
-            // values to fill up our form
             $name = $row['name'];
             $description = $row['description'];
             $price = $row['price'];
@@ -34,7 +41,6 @@
             $expired_date = $row['expired_date'];
         }
         
-        // show error
         catch(PDOException $exception){
             die('ERROR: ' . $exception->getMessage());
         }

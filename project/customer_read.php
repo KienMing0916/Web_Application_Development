@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+  header("Location: login.php");
+  exit();
+}
+?>
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -15,7 +23,6 @@
         </div>
 
         <?php
-        // include database connection
         include 'config/database.php';
 
         $searchKeyword = isset($_GET['search']) ? $_GET['search'] : '';
@@ -31,15 +38,12 @@
         }
 
         $stmt->execute();
-        
-        // this is how to get number of rows returned
         $num = $stmt->rowCount();
-        // link to create record form
+
         echo '<div class="p-3 pt-2">
             <a href="customer_create.php" class="btn btn-primary m-b-1em">Create New Customer</a>
         </div>';
 
-        // Search form
         echo '<div class="p-3">
             <form method="GET" action="">
                 <div class="input-group mb-3">
@@ -62,10 +66,8 @@
                         echo "<th>Status</th>";
                         echo "<th>Action</th>";
                     echo "</tr>";
-                    // retrieve our table contents
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                         extract($row);
-                        // creating new table row per record
                         echo "<tr>";
                             echo "<td>{$Customer_ID}</td>";
                             echo "<td>{$username}</td>";
