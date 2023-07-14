@@ -66,7 +66,6 @@ if (isset($_SESSION['user_id'])) {
                         }
                     }else {
                         echo "<div class='alert alert-danger m-3'>Username or email not found.</div>";
-                        $_POST = array();
                     }
                 }catch (PDOException $exception) {
                     echo "<div class='alert alert-danger m-3'>ERROR: " . $exception->getMessage() . "</div>";
