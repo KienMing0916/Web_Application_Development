@@ -60,6 +60,20 @@
             $currentMonth = date('m');
             $currentDay = date('d');
 
+            $requiredFields = ['selected_day', 'selected_month', 'selected_year'];
+            $hasError = false;
+
+            foreach($requiredFields as $field) {
+                if (!isset($_POST[$field])) {
+                    $hasError = true;
+                    break;
+                }
+            }
+            if ($hasError) {
+                handleError("Please select all the fields.");
+                exit;
+            }
+
             $selectedDay = $_POST['selected_day'];
             $selectedMonth = $_POST['selected_month'];
             $selectedYear = $_POST['selected_year'];
@@ -100,11 +114,15 @@
                 if (checkdate($selectedMonth, $selectedDay, $selectedYear)){
                     echo '<div class="alert alert-success" role="alert">' . "Your age is " . $age . ".<br>Your Chinese zodiac is " . $zodiac[$selectedYear % 12] . ".<br>Your constellation is " . $constellation . "." . '</div>';  
                 } else {
-                    echo '<div class="alert alert-danger" role="alert">' . "Invalid date of birth." . '</div>'; 
+                    handleError("Invalid date of birth.");
                 }
             } else {
-                echo '<div class="alert alert-danger" role="alert">' . "Please select a valid date of birth." . '</div>'; 
+                handleError("Please select a valid date of birth.");
             }
+        }
+
+        function handleError($error) {
+            echo '<div class="alert alert-danger mt-3" role="alert">' . $error . '</div>';
         }
         ?>
     </div>
