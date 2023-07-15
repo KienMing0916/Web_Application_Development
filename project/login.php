@@ -23,55 +23,61 @@ if (isset($_SESSION['user_id'])) {
         </nav>
 
         <?php
-        if ($_POST) {
-            include 'config/database.php';
-
-            $useraccountinput = $_POST['username'];
-            $userpasswordinput = $_POST['password'];
-            $errorMessage = array();
-
-            if(empty($useraccountinput)) {
-                $errorMessage[] = "Please enter your username.";
-            }
-
-            if(empty($userpasswordinput)) {
-                $errorMessage[] = "Please enter your password.";
-            }
-
-            if(!empty($errorMessage)) {
-                echo "<div class='alert alert-danger m-3'>";
-                    foreach ($errorMessage as $displayErrorMessage) {
-                        echo $displayErrorMessage . "<br>";
-                    }
-                echo "</div>";
-            }else {
-                try {
-                    $query = "SELECT Customer_ID, password, status FROM customers WHERE username=:username OR email=:username";
-                    $stmt = $con->prepare($query);
-                    $stmt->bindParam(':username', $useraccountinput);
-                    $stmt->execute();
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                    if ($row) {
-                        if (password_verify($userpasswordinput, $row['password'])) {
-                            if ($row['status'] == 'Active') {
-                                $_SESSION['user_id'] = $row['Customer_ID'];
-                                header("Location: index.php");
-                                exit();
-                            }else {
-                                echo "<div class='alert alert-danger m-3'>" . $row['status'] . " account.</div>";
-                            }
-                        }else {
-                            echo "<div class='alert alert-danger m-3'>Password incorrect.</div>";
-                        }
-                    }else {
-                        echo "<div class='alert alert-danger m-3'>Username or email not found.</div>";
-                    }
-                }catch (PDOException $exception) {
-                    echo "<div class='alert alert-danger m-3'>ERROR: " . $exception->getMessage() . "</div>";
+        function validateLogin() {
+            if ($_POST) {
+                include 'config/database.php';
+    
+                $useraccountinput = $_POST['username'];
+                $userpasswordinput = $_POST['password'];
+                $errorMessage = array();
+    
+                if(empty($useraccountinput)) {
+                    $errorMessage[] = "Please enter your username.";
                 }
-            }            
+    
+                if(empty($userpasswordinput)) {
+                    $errorMessage[] = "Please enter your password.";
+                }
+    
+                if(!empty($errorMessage)) {
+                    echo "<div class='alert alert-danger m-3'>";
+                        foreach ($errorMessage as $displayErrorMessage) {
+                            echo $displayErrorMessage . "<br>";
+                        }
+                    echo "</div>";
+                }else {
+                    try {
+                        $query = "SELECT Customer_ID, password, status FROM customers WHERE username=:username OR email=:username";
+                        $stmt = $con->prepare($query);
+                        $stmt->bindParam(':username', $useraccountinput);
+                        $stmt->execute();
+                        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+                        if (!$row) {
+                            echo "<div class='alert alert-danger m-3'>Username or email not found.</div>";
+                            return;
+                        }
+
+                        if (!password_verify($userpasswordinput, $row['password'])) {
+                            echo "<div class='alert alert-danger m-3'>Password incorrect.</div>";
+                            return;
+                        }
+    
+                        if ($row['status'] !== 'Active') {
+                            echo "<div class='alert alert-danger m-3'>" . $row['status'] . " account.</div>";
+                            return;
+                        }
+    
+                        $_SESSION['user_id'] = $row['Customer_ID'];
+                        header("Location: index.php");
+                        exit();
+                    }catch (PDOException $exception) {
+                        echo "<div class='alert alert-danger m-3'>ERROR: " . $exception->getMessage() . "</div>";
+                    }
+                }            
+            }
         }
+        validateLogin();
         ?>
 
         <div class="row m-3 p-5 d-flex justify-content-center">
