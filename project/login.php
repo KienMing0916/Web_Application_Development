@@ -17,10 +17,13 @@ if (isset($_SESSION['user_id'])) {
     <div class="container p-0" style="background: linear-gradient(to bottom, #f2f2f2, #d9d9d9);">     
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="d-flex align-items-center ms-1">
-                <img src="img/factorylogo.png" alt="factorylogo" width="50" height="40" class="d-inline-block align-text-top ms-3 m-1">
-                <a class="navbar-brand ms-2" href="#">KM</a>
+                <a class="navbar-brand ms-2" href="#">
+                    <img src="img/factorylogo.png" alt="factorylogo" width="50" height="40" class="ms-3">
+                    <span style="vertical-align: middle;">KM</span>
+                </a>
             </div>
         </nav>
+
 
         <?php
         function validateLogin() {
