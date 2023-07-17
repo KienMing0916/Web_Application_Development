@@ -29,7 +29,6 @@ if (!isset($_SESSION['user_id'])) {
         $query = "SELECT products.id, products.name, products.description, products.price, products.promotion_price, categories.category_name 
                   FROM products INNER JOIN categories ON products.Category_ID = categories.Category_ID";
 
-
         if (!empty($searchKeyword)) {
             $query .= " WHERE products.name LIKE :keyword";
             $searchKeyword = "%{$searchKeyword}%";
