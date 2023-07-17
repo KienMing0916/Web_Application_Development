@@ -29,6 +29,7 @@ if (!isset($_SESSION['user_id'])) {
             // prepare select query
             $query = "SELECT products.id, products.name, products.description, products.price, products.promotion_price, products.manufacture_date, products.expired_date, products.Category_ID, categories.category_name 
             FROM products INNER JOIN categories ON products.Category_ID = categories.Category_ID WHERE products.id =:id";
+            
             $stmt = $con->prepare($query);
             $stmt->bindParam(":id", $id);
             $stmt->execute();
