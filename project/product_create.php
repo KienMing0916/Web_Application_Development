@@ -91,7 +91,7 @@ if (!isset($_SESSION['user_id'])) {
                     // format to two decimal places
                     $price = number_format((float)$price, 2);
                     $promotion_price = number_format((float)$promotion_price, 2);
-                    // Bind the parameters
+
                     $stmt->bindParam(':name', $name);
                     $stmt->bindParam(':description', $description);
                     $stmt->bindParam(':price', $price);
