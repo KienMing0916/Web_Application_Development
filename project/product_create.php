@@ -26,16 +26,17 @@ if (!isset($_SESSION['user_id'])) {
         if($_POST){
             include 'config/database.php';
             try{
-                // insert query
-                $query = "INSERT INTO products SET name=:name, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date, created=:created";
-                // prepare query for execution
+                //query for insert
+                $query = "INSERT INTO products SET name=:name, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date, created=:created, Category_ID=:category_id";
                 $stmt = $con->prepare($query);
+
                 $name = $_POST['name'];
                 $description = $_POST['description'];
                 $price = $_POST['price'];
                 $promotion_price = $_POST['promotion_price'];
                 $manufacture_date = $_POST['manufacture_date'];
                 $expired_date = $_POST['expired_date'];
+                $category_id = $_POST['category_id'];
 
                 //Datetime objects
                 $dateStart = new DateTime($manufacture_date);
@@ -99,6 +100,7 @@ if (!isset($_SESSION['user_id'])) {
                     $stmt->bindParam(':expired_date', $expired_date);
                     $created = date('Y-m-d H:i:s'); // get the current date and time
                     $stmt->bindParam(':created', $created);
+                    $stmt->bindParam(':category_id', $category_id);
                     
                     // Execute the query
                     if ($stmt->execute()) {
@@ -143,10 +145,30 @@ if (!isset($_SESSION['user_id'])) {
                         <td><input type='date' name='expired_date' class='form-control' value="<?php echo isset($_POST['expired_date']) ? $_POST['expired_date'] : ''; ?>" /></td>
                     </tr>
                     <tr>
+                        <td>Category</td>
+                        <td>
+                            <select name="category_id" class="form-select">
+                                <?php
+                                    include 'config/database.php';
+                                    // Fetch categories from the database
+                                    $categoryQuery = "SELECT category_id, category_name FROM categories";
+                                    $categoryStmt = $con->prepare($categoryQuery);
+                                    $categoryStmt->execute();
+
+                                    while ($row = $categoryStmt->fetch(PDO::FETCH_ASSOC)) {
+                                        $categoryID = $row['category_id'];
+                                        $categoryName = $row['category_name'];
+                                        echo "<option value='$categoryID'>$categoryName</option>";
+                                    }                       
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td></td>
                         <td>
                             <input type='submit' value='Save' class='btn btn-primary' />
-                            <a href='index.php' class='btn btn-danger'>Back to read products</a>
+                            <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
                         </td>
                     </tr>
                 </table>

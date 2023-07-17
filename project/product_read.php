@@ -26,12 +26,15 @@ if (!isset($_SESSION['user_id'])) {
         include 'config/database.php';
 
         $searchKeyword = isset($_GET['search']) ? $_GET['search'] : '';
-        $query = "SELECT id, name, description, price, promotion_price FROM products";
+        $query = "SELECT products.id, products.name, products.description, products.price, products.promotion_price, categories.category_name 
+                  FROM products INNER JOIN categories ON products.Category_ID = categories.Category_ID";
+
+
         if (!empty($searchKeyword)) {
-            $query .= " WHERE name LIKE :keyword";
+            $query .= " WHERE products.name LIKE :keyword";
             $searchKeyword = "%{$searchKeyword}%";
         }
-        $query .= " ORDER BY id ASC";
+        $query .= " ORDER BY products.id ASC";
         $stmt = $con->prepare($query);
         if (!empty($searchKeyword)) {
             $stmt->bindParam(':keyword', $searchKeyword);
@@ -62,6 +65,7 @@ if (!isset($_SESSION['user_id'])) {
                     echo "<th>Name</th>";
                     echo "<th>Description</th>";
                     echo "<th>Price</th>";
+                    echo "<th>Category Name</th>";
                     echo "<th>Action</th>";
                 echo "</tr>";
 
@@ -79,6 +83,8 @@ if (!isset($_SESSION['user_id'])) {
                         }else{
                             echo "<td class='text-end'>" . number_format((float)$price, 2, '.', '') . "</td>";
                         }
+                        echo "<td class='text-end'>{$category_name}</td>";
+
                         echo "<td class='col-3'>";
                             echo "<a href='product_read_one.php?id={$id}' class='btn btn-info m-r-1em text-white mx-2'>Read</a>";
                             echo "<a href='product_update.php?id={$id}' class='btn btn-primary m-r-1em mx-2'>Edit</a>";
@@ -89,7 +95,9 @@ if (!isset($_SESSION['user_id'])) {
                 echo "</table>";
             echo "</div>";    
         }else{
-            echo "<div class='alert alert-danger'>No records found.</div>";
+            echo '<div class="p-3">
+                <div class="alert alert-danger">No records found.</div>
+            </div>';
         }
         ?>   
     </div>

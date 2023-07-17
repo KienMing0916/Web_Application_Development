@@ -27,8 +27,9 @@ if (!isset($_SESSION['user_id'])) {
         include 'config/database.php';
         try {
             // prepare select query
-            $query = "SELECT id, name, description, price, promotion_price, manufacture_date, expired_date FROM products WHERE id = :id ";
-            $stmt = $con->prepare( $query );
+            $query = "SELECT products.id, products.name, products.description, products.price, products.promotion_price, products.manufacture_date, products.expired_date, products.Category_ID, categories.category_name 
+            FROM products INNER JOIN categories ON products.Category_ID = categories.Category_ID WHERE products.id =:id";
+            $stmt = $con->prepare($query);
             $stmt->bindParam(":id", $id);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -39,6 +40,8 @@ if (!isset($_SESSION['user_id'])) {
             $promotion_price = $row['promotion_price'];
             $manufacture_date = $row['manufacture_date'];
             $expired_date = $row['expired_date'];
+            $category_id = $row['Category_ID'];
+            $category_name = $row['category_name'];
         }
         
         catch(PDOException $exception){
@@ -71,6 +74,14 @@ if (!isset($_SESSION['user_id'])) {
                 <tr>
                     <td>Expired Date</td>
                     <td><?php echo htmlspecialchars($expired_date, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Category ID</td>
+                    <td><?php echo htmlspecialchars($category_id, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Category Name</td>
+                    <td><?php echo htmlspecialchars($category_name, ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
                     <td></td>

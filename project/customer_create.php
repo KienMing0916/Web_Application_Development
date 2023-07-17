@@ -190,7 +190,7 @@ if (!isset($_SESSION['user_id'])) {
                         <td></td>
                         <td>
                             <input type='submit' value='Save' class='btn btn-primary' />
-                            <a href='index.php' class='btn btn-danger'>Back to customer list</a>
+                            <a href='customer_read.php' class='btn btn-danger'>Back to customer list</a>
                         </td>
                     </tr>
                 </table>

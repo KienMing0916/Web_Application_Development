@@ -86,7 +86,9 @@ if (!isset($_SESSION['user_id'])) {
                 echo "</table>";
             echo "</div>";    
         }else{
-            echo "<div class='alert alert-danger'>No records found.</div>";
+            echo '<div class="p-3">
+                <div class="alert alert-danger">No records found.</div>
+            </div>';
         }
         ?>   
     </div>

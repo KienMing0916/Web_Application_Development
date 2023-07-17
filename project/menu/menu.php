@@ -22,6 +22,13 @@ if (isset($_GET['logout'])) {
                 <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/index.php') echo 'active'; ?>" href="index.php">Home</a>
             </li>
             <li class="nav-item p-1 dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Category</a>
+                <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                    <li><a class="dropdown-item" href="category_create.php">Create Category</a></li>
+                    <li><a class="dropdown-item" href="category_read.php">Read Category</a></li>
+                </ul>
+            </li>
+            <li class="nav-item p-1 dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="productDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Product</a>
                 <ul class="dropdown-menu" aria-labelledby="productDropdown">
                     <li><a class="dropdown-item" href="product_create.php">Create Product</a></li>
