@@ -49,7 +49,6 @@ if (!isset($_SESSION['user_id'])) {
         }
         ?>
 
-
         <?php
         if($_POST){
             try{
@@ -59,7 +58,7 @@ if (!isset($_SESSION['user_id'])) {
                 $name=htmlspecialchars(strip_tags($_POST['name']));
                 $description=htmlspecialchars(strip_tags($_POST['description']));
                 $price=htmlspecialchars(strip_tags($_POST['price'])); 
-                // bind the parameters
+
                 $stmt->bindParam(':name', $name);
                 $stmt->bindParam(':description', $description);
                 $stmt->bindParam(':price', $price);
