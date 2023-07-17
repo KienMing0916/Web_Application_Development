@@ -54,7 +54,6 @@ if (!isset($_SESSION['user_id'])) {
         </div>';
 
         if($num > 0){
-        
             echo "<div class='p-3'>";
                 echo "<table class='table table-hover table-responsive table-bordered'>";//start table
                     echo "<tr>";
