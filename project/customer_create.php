@@ -93,7 +93,6 @@ if (!isset($_SESSION['user_id'])) {
                         }
                     echo "</div>";
                 }else {
-                    // Bind the parameters
                     $stmt->bindParam(':username', $username);
                     $stmt->bindParam(':password', $hashedPassword);
                     $stmt->bindParam(':firstname', $firstname);
