@@ -30,7 +30,7 @@ if (isset($_SESSION['user_id'])) {
             if ($_POST) {
                 include 'config/database.php';
     
-                $useraccountinput = $_POST['username'];
+                $useraccountinput = $_POST['useraccount'];
                 $userpasswordinput = $_POST['password'];
                 $errorMessage = array();
     
@@ -50,9 +50,9 @@ if (isset($_SESSION['user_id'])) {
                     echo "</div>";
                 }else {
                     try {
-                        $query = "SELECT Customer_ID, password, status FROM customers WHERE username=:username OR email=:username";
+                        $query = "SELECT Customer_ID, password, status FROM customers WHERE username=:useraccount OR email=:useraccount";
                         $stmt = $con->prepare($query);
-                        $stmt->bindParam(':username', $useraccountinput);
+                        $stmt->bindParam(':useraccount', $useraccountinput);
                         $stmt->execute();
                         $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
@@ -88,8 +88,8 @@ if (isset($_SESSION['user_id'])) {
                 <h2 class="text-center pb-3">Login</h2>
                 <form method="POST" action="">
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username / Email</label>
-                        <input type="text" class="form-control" id="username" name="username" value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''; ?>" required>
+                        <label for="useraccount" class="form-label">Username / Email</label>
+                        <input type="text" class="form-control" id="useraccount" name="useraccount" value="<?php echo isset($_POST['useraccount']) ? $_POST['useraccount'] : ''; ?>" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
