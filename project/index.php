@@ -17,7 +17,7 @@ if (!isset($_SESSION['user_id'])) {
     <div class="container p-0">
         
         <?php
-            include 'menu/menu.php';
+            include 'menu/nav.php';
         ?>
 
         <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">

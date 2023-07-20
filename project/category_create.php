@@ -15,7 +15,7 @@ if (!isset($_SESSION['user_id'])) {
 <body>  
     <div class="container p-0 bg-light">
         <?php
-            include 'menu/menu.php';
+            include 'menu/nav.php';
         ?>
 
         <div class="page-header p-3 pb-1">

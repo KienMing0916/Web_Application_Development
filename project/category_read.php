@@ -15,7 +15,7 @@ if (!isset($_SESSION['user_id'])) {
 <body>
     <div class="container p-0 bg-light">
         <?php
-            include 'menu/menu.php';
+            include 'menu/nav.php';
         ?>
 
         <div class="page-header p-3 pb-1">
@@ -73,8 +73,8 @@ if (!isset($_SESSION['user_id'])) {
                         echo "<td class='col-3'>";
                             //tempo
                             echo "<a href='category_read_one.php?id={$Category_ID}' class='btn btn-info m-r-1em text-white mx-2'>Read</a>";
-                            echo "<a href='product_update.php?id={$Category_ID}' class='btn btn-primary m-r-1em mx-2'>Edit</a>";
-                            echo "<a href='#' onclick='delete_product({$Category_ID});'  class='btn btn-danger mx-2'>Delete</a>";
+                            echo "<a href='category_update.php?id={$Category_ID}' class='btn btn-primary m-r-1em mx-2'>Edit</a>";
+                            echo "<a href='#' onclick='delete_category({$Category_ID});'  class='btn btn-danger mx-2'>Delete</a>";
                         echo "</td>";
                     echo "</tr>";
                 }

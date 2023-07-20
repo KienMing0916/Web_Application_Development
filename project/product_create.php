@@ -15,7 +15,7 @@ if (!isset($_SESSION['user_id'])) {
 <body>  
     <div class="container p-0 bg-light">
         <?php
-            include 'menu/menu.php';
+            include 'menu/nav.php';
         ?>
 
         <div class="page-header p-3 pb-1">
@@ -41,44 +41,9 @@ if (!isset($_SESSION['user_id'])) {
                 //Datetime objects
                 $dateStart = new DateTime($manufacture_date);
                 $dateEnd = new DateTime($expired_date);
-                $errorMessage = array();
 
-                if(empty($name)) {
-                    $errorMessage[] = "Name field is empty.";
-                }
-                if(empty($description)) {
-                    $errorMessage[] = "Description field is empty.";
-                }
-                if(empty($price)) {
-                    $errorMessage[] = "Price field is empty.";
-                }else if($price <=0){
-                    $errorMessage[] = "Please enter a valid price.";
-                }else{
-                    if (!is_numeric($price)) {
-                        $errorMessage[] = "Prices can only be numbers.";
-                    }
-                }  
-                if(empty($promotion_price)) {
-                    $errorMessage[] = "Promotion price field is empty.";
-                }else if($promotion_price <=0){
-                    $errorMessage[] = "Please enter a valid promotion price.";
-                }else {
-                    if(!is_numeric($promotion_price)) {
-                        $errorMessage[] = "Promotion prices can only be numbers.";
-                    }
-                }
-                if(empty($manufacture_date)) {
-                    $errorMessage[] = "Manufacture date field is empty.";
-                }
-                if(empty($expired_date)) {
-                    $errorMessage[] = "Expired date field is empty.";
-                }
-                if($promotion_price >= $price) {
-                    $errorMessage[] = "Promotion price must be cheaper than the original price.";
-                }
-                if($expired_date <= $manufacture_date) {
-                    $errorMessage[] = "Expired date must be later than the manufacture date.";
-                }
+                include 'menu/common_use_function.php';
+                $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id);
 
 
                 if(!empty($errorMessage)) {
@@ -151,12 +116,12 @@ if (!isset($_SESSION['user_id'])) {
                                 <?php
                                     include 'config/database.php';
                                     // Fetch categories from the database
-                                    $categoryQuery = "SELECT category_id, category_name FROM categories";
+                                    $categoryQuery = "SELECT Category_ID, category_name FROM categories";
                                     $categoryStmt = $con->prepare($categoryQuery);
                                     $categoryStmt->execute();
 
                                     while ($row = $categoryStmt->fetch(PDO::FETCH_ASSOC)) {
-                                        $categoryID = $row['category_id'];
+                                        $categoryID = $row['Category_ID'];
                                         $categoryName = $row['category_name'];
                                         echo "<option value='$categoryID'>$categoryName</option>";
                                     }                       
