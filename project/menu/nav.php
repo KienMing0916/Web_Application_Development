@@ -42,12 +42,26 @@ if (isset($_GET['logout'])) {
                     <li><a class="dropdown-item" href="customer_read.php">Read Customer</a></li>
                 </ul>
             </li>
+            <li class="nav-item p-1 dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="orderDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Order</a>
+                <ul class="dropdown-menu" aria-labelledby="orderDropdown">
+                    <li><a class="dropdown-item" href="order_create.php">Create Order</a></li>
+                </ul>
+            </li>
             <li class="nav-item p-1">
                 <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/contactus.php') echo 'active'; ?>" href="contactus.php">Contact Us</a>
             </li>
-            <li class="nav-item p-1">
-                <a class="nav-link" href="?logout=true">Logout</a>
+
+            <li class="nav-item p-1 dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+                <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                    <li><a class="dropdown-item" href="manage_password.php">Manage Password</a></li>
+                    <li><a class="dropdown-item" href="?logout=true">Logout</a></li>
+                </ul>
             </li>
+            <!-- <li class="nav-item p-1">
+                <a class="nav-link" href="?logout=true">Logout</a>
+            </li> -->
         </ul>
     </div>
 </nav>
