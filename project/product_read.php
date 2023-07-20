@@ -26,14 +26,14 @@ if (!isset($_SESSION['user_id'])) {
         include 'config/database.php';
 
         $searchKeyword = isset($_GET['search']) ? $_GET['search'] : '';
-        $query = "SELECT products.id, products.name, products.description, products.price, products.promotion_price, categories.category_name 
+        $query = "SELECT products.Product_ID, products.name, products.description, products.price, products.promotion_price, categories.category_name 
                   FROM products INNER JOIN categories ON products.Category_ID = categories.Category_ID";
 
         if (!empty($searchKeyword)) {
             $query .= " WHERE products.name LIKE :keyword";
             $searchKeyword = "%{$searchKeyword}%";
         }
-        $query .= " ORDER BY products.id ASC";
+        $query .= " ORDER BY products.Product_ID ASC";
         $stmt = $con->prepare($query);
         if (!empty($searchKeyword)) {
             $stmt->bindParam(':keyword', $searchKeyword);
@@ -71,7 +71,7 @@ if (!isset($_SESSION['user_id'])) {
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                     extract($row);
                     echo "<tr>";
-                        echo "<td>{$id}</td>";
+                        echo "<td>{$Product_ID}</td>";
                         echo "<td>{$name}</td>";
                         echo "<td>{$description}</td>";
                         if ($promotion_price < $price && ($promotion_price != 0)){
@@ -85,9 +85,9 @@ if (!isset($_SESSION['user_id'])) {
                         echo "<td class='text-end'>{$category_name}</td>";
 
                         echo "<td class='col-3'>";
-                            echo "<a href='product_read_one.php?id={$id}' class='btn btn-info m-r-1em text-white mx-2'>Read</a>";
-                            echo "<a href='product_update.php?id={$id}' class='btn btn-primary m-r-1em mx-2'>Edit</a>";
-                            echo "<a href='#' onclick='delete_product({$id});'  class='btn btn-danger mx-2'>Delete</a>";
+                            echo "<a href='product_read_one.php?id={$Product_ID}' class='btn btn-info m-r-1em text-white mx-2'>Read</a>";
+                            echo "<a href='product_update.php?id={$Product_ID}' class='btn btn-primary m-r-1em mx-2'>Edit</a>";
+                            echo "<a href='#' onclick='delete_product({$Product_ID});'  class='btn btn-danger mx-2'>Delete</a>";
                         echo "</td>";
                     echo "</tr>";
                 }
