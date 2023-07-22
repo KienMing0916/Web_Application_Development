@@ -85,6 +85,9 @@ if (!isset($_SESSION['user_id'])) {
                         $errorMessage[] = "Invalid email format.";
                     }
                 }
+                if(empty($status)) {
+                    $errorMessage[] = "Account status field is empty.";
+                }
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
