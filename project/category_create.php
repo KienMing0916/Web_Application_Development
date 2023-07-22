@@ -26,21 +26,13 @@ if (!isset($_SESSION['user_id'])) {
         if($_POST){
             include 'config/database.php';
             try{
-                // insert query
-                $query = "INSERT INTO categories SET category_name=:name, description=:description";
-                // prepare query for execution
+                $query = "INSERT INTO categories SET category_name=:category_name, description=:description";
                 $stmt = $con->prepare($query);
-                $name = $_POST['name'];
+                $category_name = $_POST['category_name'];
                 $description = $_POST['description'];
-                $errorMessage = array();
 
-                if(empty($name)) {
-                    $errorMessage[] = "Name field is empty.";
-                }
-                if(empty($description)) {
-                    $errorMessage[] = "Description field is empty.";
-                }
-
+                include 'menu/common_use_function.php';
+                $errorMessage = validateCategoryForm($category_name, $description);
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
@@ -49,11 +41,9 @@ if (!isset($_SESSION['user_id'])) {
                         }
                     echo "</div>";
                 }else {
-                    // Bind the parameters
-                    $stmt->bindParam(':name', $name);
+                    $stmt->bindParam(':category_name', $category_name);
                     $stmt->bindParam(':description', $description);
-                    
-                    // Execute the query
+
                     if ($stmt->execute()) {
                         echo "<div class='alert alert-success m-3'>Record was saved.</div>";
                         $_POST = array();
@@ -73,7 +63,7 @@ if (!isset($_SESSION['user_id'])) {
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td class="col-4">Category Name</td>
-                        <td class="col-8"><input type='text' name='name' id='name' class='form-control' value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>" /></td>
+                        <td class="col-8"><input type='text' name='category_name' id='category_name' class='form-control' value="<?php echo isset($_POST['category_name']) ? $_POST['category_name'] : ''; ?>" /></td>
                     </tr>
                     <tr>
                         <td>Description</td>
