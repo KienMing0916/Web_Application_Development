@@ -123,7 +123,8 @@ if (!isset($_SESSION['user_id'])) {
                                     while ($row = $categoryStmt->fetch(PDO::FETCH_ASSOC)) {
                                         $categoryID = $row['Category_ID'];
                                         $categoryName = $row['category_name'];
-                                        echo "<option value='$categoryID'>$categoryName</option>";
+                                        $selected = (isset($_POST['category_id']) && $_POST['category_id'] == $categoryID) ? 'selected' : '';
+                                        echo "<option value='$categoryID' $selected>$categoryName</option>";
                                     }                       
                                 ?>
                             </select>
