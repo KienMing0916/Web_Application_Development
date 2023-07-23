@@ -32,7 +32,6 @@ if (!isset($_SESSION['user_id'])) {
                 $username = $_POST['username'];
                 $password = $_POST['password'];
                 $confirmpassword = $_POST['confirmpassword'];
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $firstname = $_POST['firstname'];
                 $lastname = $_POST['lastname'];
                 $gender = $_POST['gender'];
@@ -40,54 +39,8 @@ if (!isset($_SESSION['user_id'])) {
                 $email = $_POST['email'];
                 $status = $_POST['status'];
 
-                $errorMessage = array();
-
-                if(empty($username)) {
-                    $errorMessage[] = "Username field is empty.";
-                }
-                if(empty($password)) {
-                    $errorMessage[] = "Password field is empty.";
-                }else {
-                    $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/";
-                    if (!preg_match($passwordPattern, $password)) {
-                        $errorMessage[] = "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number. No special symbols allowed.";
-                    }
-                }
-                if (empty($confirmpassword)) {
-                    $errorMessage[] = "Confirm password field is empty.";
-                }
-                if (!empty($password) && !empty($confirmpassword)) {
-                    if ($password !== $confirmpassword) {
-                        $errorMessage[] = "Password and confirm password do not match.";
-                    }
-                }
-                if(empty($firstname)) {
-                    $errorMessage[] = "First name field is empty.";
-                }
-                if(empty($lastname)) {
-                    $errorMessage[] = "Last name field is empty.";
-                }
-                if(empty($gender)) {
-                    $errorMessage[] = "Gender field is empty.";
-                }
-                if (empty($birthdate)) {
-                    $errorMessage[] = "Date of birth field is empty.";
-                } else {
-                    $currentDate = date('Y-m-d');
-                    if ($birthdate > $currentDate) {
-                        $errorMessage[] = "Date of birth cannot be in the future.";
-                    }
-                }
-                if(empty($email)) {
-                    $errorMessage[] = "Email field is empty.";
-                }else {
-                    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                        $errorMessage[] = "Invalid email format.";
-                    }
-                }
-                if(empty($status)) {
-                    $errorMessage[] = "Account status field is empty.";
-                }
+                include 'menu/common_use_function.php';
+                $errorMessage = array_merge(validateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $status), validateCustomerFormPassword($password, $confirmpassword));
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
@@ -96,6 +49,7 @@ if (!isset($_SESSION['user_id'])) {
                         }
                     echo "</div>";
                 }else {
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                     $stmt->bindParam(':username', $username);
                     $stmt->bindParam(':password', $hashedPassword);
                     $stmt->bindParam(':firstname', $firstname);
