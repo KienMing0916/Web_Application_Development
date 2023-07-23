@@ -28,6 +28,7 @@ if (!isset($_SESSION['user_id'])) {
         $productStmt = $con->prepare($productQuery);
         $productStmt->execute();
         $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
+        $totalAmount = 0;
         
         if ($_POST) {
             function requiredFieldsAreFilled($fields) {
@@ -119,8 +120,8 @@ if (!isset($_SESSION['user_id'])) {
                                 $selectedProduct = isset($_POST["product{$i}"]) ? $_POST["product{$i}"] : '';
                                 $selectedProductPrice = $selectedProduct ? $products[$selectedProduct - 1]['promotion_price'] : '';
                                 $selectedQuantity = isset($_POST["quantity{$i}"]) ? $_POST["quantity{$i}"] : 1;
-                                $selectedAmount = $selectedProduct ? $selectedProductPrice * $selectedQuantity : '';
-                                //$priceInputClass = $selectedProduct ? '' : ' d-none';
+                                $selectedAmount = $selectedProduct ? $selectedProductPrice * $selectedQuantity : '0';
+                                $totalAmount += $selectedAmount;
                                 foreach ($products as $product) {
                                     $selected = $selectedProduct == $product['Product_ID'] ? 'selected' : '';
                                     echo "<option value='" . $product['Product_ID'] . "' data-product-price='" . $product['promotion_price'] . "' $selected>" . $product['name'] . "</option>";
@@ -152,7 +153,7 @@ if (!isset($_SESSION['user_id'])) {
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td><b>Total amount: RM <span id="totalAmount">0.00</span></b></td>
+                    <td><b>Total amount: RM <span id="totalAmount"><?php echo number_format((float)$totalAmount, 2); ?></span></b></td>
                 </tr>
             </table>
             <input type='submit' value='Place Order' class='btn btn-primary' />
