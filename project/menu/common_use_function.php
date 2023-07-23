@@ -10,18 +10,18 @@ function validateProductForm($name, $description, $price, $promotion_price, $man
     }
     if(empty($price)) {
         $errorMessage[] = "Price field is empty.";
-    } else if($price <= 0) {
+    }else if($price <= 0) {
         $errorMessage[] = "Please enter a valid price.";
-    } else {
+    }else {
         if (!is_numeric($price)) {
             $errorMessage[] = "Prices can only be numbers.";
         }
     }
     if(empty($promotion_price)) {
         $errorMessage[] = "Promotion price field is empty.";
-    } else if($promotion_price <= 0) {
+    }else if($promotion_price <= 0) {
         $errorMessage[] = "Please enter a valid promotion price.";
-    } else {
+    }else {
         if(!is_numeric($promotion_price)) {
             $errorMessage[] = "Promotion prices can only be numbers.";
         }
@@ -58,5 +58,64 @@ function validateCategoryForm($category_name, $description) {
     return $errorMessage;
 }
 
+function validateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $status) {
+    $errorMessage = array();
+
+    if(empty($username)) {
+        $errorMessage[] = "Username field is empty.";
+    }
+    if(empty($firstname)) {
+        $errorMessage[] = "First name field is empty.";
+    }
+    if(empty($lastname)) {
+        $errorMessage[] = "Last name field is empty.";
+    }
+    if(empty($gender)) {
+        $errorMessage[] = "Gender field is empty.";
+    }
+    if(empty($birthdate)) {
+        $errorMessage[] = "Date of birth field is empty.";
+    }else {
+        $currentDate = date('Y-m-d');
+        if($birthdate > $currentDate) {
+            $errorMessage[] = "Date of birth cannot be in the future.";
+        }
+    }
+    if(empty($email)) {
+        $errorMessage[] = "Email field is empty.";
+    }else{
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errorMessage[] = "Invalid email format.";
+        }
+    }
+    if(empty($status)) {
+        $errorMessage[] = "Account status field is empty.";
+    }
+
+    return $errorMessage;
+}
+
+function validateCustomerFormPassword($password, $confirmpassword) {
+    $errorMessage = array();
+
+    if(empty($password)) {
+        $errorMessage[] = "Password field is empty.";
+    }else {
+        $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/";
+        if (!preg_match($passwordPattern, $password)) {
+            $errorMessage[] = "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number. No special symbols allowed.";
+        }
+    }
+    if (empty($confirmpassword)) {
+        $errorMessage[] = "Confirm password field is empty.";
+    }
+    if (!empty($password) && !empty($confirmpassword)) {
+        if ($password !== $confirmpassword) {
+            $errorMessage[] = "Password and confirm password do not match.";
+        }
+    }
+
+    return $errorMessage;
+}
 
 ?>
