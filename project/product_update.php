@@ -73,10 +73,12 @@ if (!isset($_SESSION['user_id'])) {
                         }
                     echo "</div>";
                 }else {
+                    $price = number_format((float)$price, 2);
+                    $promotion_price = number_format((float)$promotion_price, 2);
+                    $stmt->bindParam(':id', $id);
                     $stmt->bindParam(':name', $name);
                     $stmt->bindParam(':description', $description);
                     $stmt->bindParam(':price', $price);
-                    $stmt->bindParam(':id', $id);
                     $stmt->bindParam(':promotion_price', $promotion_price);
                     $stmt->bindParam(':manufacture_date', $manufacture_date);
                     $stmt->bindParam(':expired_date', $expired_date);
@@ -108,12 +110,12 @@ if (!isset($_SESSION['user_id'])) {
                 </tr>
                 <tr>
                     <td>Price</td>
-                    <td><input type='text' name='price' value="<?php echo htmlspecialchars($price, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td><input type='text' name='price' step="0.01" value="<?php echo htmlspecialchars($price, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
 
                 <tr>
                     <td>Promotion Price</td>
-                    <td><input type='text' name='promotion_price' value="<?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td><input type='text' name='promotion_price' step="0.01" value="<?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>Manufacture Date</td>
