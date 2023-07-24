@@ -46,6 +46,7 @@ if (isset($_GET['logout'])) {
                 <a class="nav-link dropdown-toggle" href="#" id="orderDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Order</a>
                 <ul class="dropdown-menu" aria-labelledby="orderDropdown">
                     <li><a class="dropdown-item" href="order_create.php">Create Order</a></li>
+                    <li><a class="dropdown-item" href="order_read.php">Read Order</a></li>
                 </ul>
             </li>
             <li class="nav-item p-1">
