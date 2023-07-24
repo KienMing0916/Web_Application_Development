@@ -47,7 +47,7 @@ if (!isset($_SESSION['user_id'])) {
         echo '<div class="p-3">
             <form method="GET" action="">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="search" placeholder="Search product..." value="' . str_replace('%', '', $searchKeyword) . '">
+                    <input type="text" class="form-control" name="search" placeholder="Search category..." value="' . str_replace('%', '', $searchKeyword) . '">
                     <button class="btn btn-primary" type="submit">Search</button>
                 </div>
             </form>
