@@ -47,6 +47,7 @@ if (!isset($_SESSION['user_id'])) {
             for ($i = 1; $i <= 3; $i++) {
                 $requiredFields[] = "product{$i}";
                 $requiredFields[] = "quantity{$i}";
+                //$requiredFields[] = "product" . $i;
             }
 
             try {
@@ -86,14 +87,14 @@ if (!isset($_SESSION['user_id'])) {
                     <option value="" disabled selected hidden>Choose a customer</option>
                     <?php
                     try {
-                        $customerQuery = "SELECT Customer_ID, username FROM customers";
+                        $customerQuery = "SELECT Customer_ID, firstname, lastname FROM customers";
                         $customerStmt = $con->prepare($customerQuery);
                         $customerStmt->execute();
                         $customers = $customerStmt->fetchAll(PDO::FETCH_ASSOC);
 
                         foreach ($customers as $customer) {
                             $selected = isset($_POST['customerSelectionBox']) && $_POST['customerSelectionBox'] == $customer['Customer_ID'] ? 'selected' : '';
-                            echo "<option value='{$customer['Customer_ID']}' $selected>{$customer['username']}</option>";
+                            echo "<option value='{$customer['Customer_ID']}' $selected>{$customer['firstname']} {$customer['lastname']}</option>";
                         }
                     } catch (PDOException $exception) {
                         echo "<option value='' selected>Error loading customers</option>";
