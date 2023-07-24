@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>
-    <div class="container bg-light">
+    <div class="container p-0 bg-light">
         <?php
         include 'menu/nav.php';
         ?>
@@ -44,7 +44,7 @@ if (!isset($_SESSION['user_id'])) {
             }
 
             $requiredFields = ['customerSelectionBox'];
-            for ($i = 1; $i <= 3; $i++) {
+            for ($i = 1; $i <= 1; $i++) {
                 $requiredFields[] = "product{$i}";
                 $requiredFields[] = "quantity{$i}";
                 //$requiredFields[] = "product" . $i;
@@ -61,7 +61,7 @@ if (!isset($_SESSION['user_id'])) {
                 $orderSummaryStmt->execute();  
                 $order_id = $con->lastInsertId();
         
-                for ($i = 1; $i <= 3; $i++) {
+                for ($i = 1; $i <= 1; $i++) {
                     $product_id = $_POST["product{$i}"];
                     $quantity = $_POST["quantity{$i}"];
                     //$quantity = $_POST["quantity" . $i]; 
@@ -82,7 +82,7 @@ if (!isset($_SESSION['user_id'])) {
         }
         ?>
 
-        <form class="p-3" action="" method="post">
+        <form class="p-3" action="" method="POST">
             <div class="mb-3">
                 <select name="customerSelectionBox" id="customerSelectionBox" class="form-select">
                     <option value="" disabled selected hidden>Choose a customer</option>
@@ -113,7 +113,7 @@ if (!isset($_SESSION['user_id'])) {
                     <td class="col-2"><b>Amount (RM)</b></td>
                     <td class="col-1"><b>Action</b></td>
                 </tr>
-                <?php for ($i = 1; $i <= 3; $i++): ?>
+                <?php for ($i = 1; $i <= 1; $i++): ?>
                     <tr class="pRow">
                         <td><?php echo $i; ?></td>
                         <td>
@@ -197,7 +197,7 @@ if (!isset($_SESSION['user_id'])) {
         }
 
         let totalAmount = 0;
-        for (let i = 1; i <= 3; i++) {
+        for (let i = 1; i <= 1; i++) {
             const amountField = document.getElementById(`amount${i}`);
             const amountValue = parseFloat(amountField.value);
             if (!isNaN(amountValue)) {
@@ -214,38 +214,38 @@ if (!isset($_SESSION['user_id'])) {
 
 
     document.addEventListener('click', function(event) {
-                if (event.target.matches('.add_one')) {
-                    var rows = document.getElementsByClassName('pRow');
-                    // Get the last row in the table
-                    var lastRow = rows[rows.length - 1];
-                    // Clone the last row
-                    var clone = lastRow.cloneNode(true);
-                    // Insert the clone after the last row
-                    lastRow.insertAdjacentElement('afterend', clone);
+        if (event.target.matches('.add_one')) {
+            var rows = document.getElementsByClassName('pRow');
+            // Get the last row in the table
+            var lastRow = rows[rows.length - 1];
+            // Clone the last row
+            var clone = lastRow.cloneNode(true);
+            // Insert the clone after the last row
+            lastRow.insertAdjacentElement('afterend', clone);
 
-                    // Loop through the rows
-                    for (var i = 0; i < rows.length; i++) {
-                        // Set the inner HTML of the first cell to the current loop iteration number
-                        rows[i].cells[0].innerHTML = i + 1;
-                    }
-                }
-            }, false);
-
-            function deleteRow(r) {
-                var total = document.querySelectorAll('.pRow').length;
-                if (total > 1) {
-                    var i = r.parentNode.parentNode.rowIndex;
-                    document.getElementById("row_del").deleteRow(i);
-
-                    var rows = document.getElementsByClassName('pRow');
-                    for (var i = 0; i < rows.length; i++) {
-                        // Set the inner HTML of the first cell to the current loop iteration number
-                        rows[i].cells[0].innerHTML = i + 1;
-                    }
-                } else {
-                    alert("You need order at least one item.");
-                }
+            // Loop through the rows
+            for (var i = 0; i < rows.length; i++) {
+                // Set the inner HTML of the first cell to the current loop iteration number
+                rows[i].cells[0].innerHTML = i + 1;
             }
+        }
+    }, false);
+
+    function deleteRow(r) {
+        var total = document.querySelectorAll('.pRow').length;
+        if (total > 1) {
+            var i = r.parentNode.parentNode.rowIndex;
+            document.getElementById("row_del").deleteRow(i);
+
+            var rows = document.getElementsByClassName('pRow');
+            for (var i = 0; i < rows.length; i++) {
+                // Set the inner HTML of the first cell to the current loop iteration number
+                rows[i].cells[0].innerHTML = i + 1;
+            }
+        } else {
+            alert("You need order at least one item.");
+        }
+    }
 
 
 
