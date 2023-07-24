@@ -35,7 +35,7 @@ if (!isset($_SESSION['user_id'])) {
             echo "<div class='p-3'>";
                 echo "<table class='table table-hover table-responsive table-bordered'>";
                 echo "<tr>";
-                    echo "<th>OrderDetail ID</th>";
+                    echo "<th>Order Detail ID</th>";
                     echo "<th>Order ID</th>";
                     echo "<th>Product Name</th>";
                     echo "<th>Quantity</th>";
