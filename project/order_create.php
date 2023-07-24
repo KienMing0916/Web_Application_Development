@@ -64,6 +64,7 @@ if (!isset($_SESSION['user_id'])) {
                 for ($i = 1; $i <= 3; $i++) {
                     $product_id = $_POST["product{$i}"];
                     $quantity = $_POST["quantity{$i}"];
+                    //$quantity = $_POST["quantity" . $i]; 
         
                     $orderDetailsQuery = "INSERT INTO order_details SET Order_ID=:order_id, Product_ID=:product_id, quantity=:quantity"; // secpnd execute
                     $orderDetailsStmt = $con->prepare($orderDetailsQuery);
