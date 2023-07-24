@@ -104,16 +104,17 @@ if (!isset($_SESSION['user_id'])) {
                 </select>
             </div>
 
-            <table class='table table-hover table-responsive table-bordered'>
+            <table class='table table-hover table-responsive table-bordered' id='row_del'>
                 <tr>
                     <td class="col-1"><b>No</b></td>
                     <td class="col-4"><b>Product</b></td>
-                    <td class="col-3"><b>Price (RM)</b></td>
+                    <td class="col-2"><b>Price (RM)</b></td>
                     <td class="col-1"><b>Quantity</b></td>
-                    <td class="col-3"><b>Amount (RM)</b></td>
+                    <td class="col-2"><b>Amount (RM)</b></td>
+                    <td class="col-1"><b>Action</b></td>
                 </tr>
                 <?php for ($i = 1; $i <= 3; $i++): ?>
-                    <tr>
+                    <tr class="pRow">
                         <td><?php echo $i; ?></td>
                         <td>
                             <select name="product<?php echo $i; ?>" class="form-select" onchange="updateRow(<?php echo $i; ?>)">
@@ -147,6 +148,9 @@ if (!isset($_SESSION['user_id'])) {
 
                             ?>
                         </td>
+                        <td><input href='#' onclick='deleteRow(this)' class='btn btn-danger' value="Delete" /></td>
+                        <!-- <td><input type='submit' onclick='deleteRow(this)' value='Delete' class='btn btn-danger' /></td> -->
+
 
                     </tr>
                 <?php endfor; ?>
@@ -156,8 +160,10 @@ if (!isset($_SESSION['user_id'])) {
                     <td></td>
                     <td></td>
                     <td><b>Total amount: RM <span id="totalAmount"><?php echo number_format((float)$totalAmount, 2); ?></span></b></td>
+                    <td></td>
                 </tr>
             </table>
+            <input type="button" value="Add More Product" class="btn btn-success add_one" />
             <input type='submit' value='Place Order' class='btn btn-primary' />
         </form>
     </div>
@@ -200,6 +206,68 @@ if (!isset($_SESSION['user_id'])) {
         }
         document.getElementById("totalAmount").textContent = totalAmount.toFixed(2);
     }
+
+
+
+
+
+
+
+    document.addEventListener('click', function(event) {
+                if (event.target.matches('.add_one')) {
+                    var rows = document.getElementsByClassName('pRow');
+                    // Get the last row in the table
+                    var lastRow = rows[rows.length - 1];
+                    // Clone the last row
+                    var clone = lastRow.cloneNode(true);
+                    // Insert the clone after the last row
+                    lastRow.insertAdjacentElement('afterend', clone);
+
+                    // Loop through the rows
+                    for (var i = 0; i < rows.length; i++) {
+                        // Set the inner HTML of the first cell to the current loop iteration number
+                        rows[i].cells[0].innerHTML = i + 1;
+                    }
+                }
+            }, false);
+
+            function deleteRow(r) {
+                var total = document.querySelectorAll('.pRow').length;
+                if (total > 1) {
+                    var i = r.parentNode.parentNode.rowIndex;
+                    document.getElementById("row_del").deleteRow(i);
+
+                    var rows = document.getElementsByClassName('pRow');
+                    for (var i = 0; i < rows.length; i++) {
+                        // Set the inner HTML of the first cell to the current loop iteration number
+                        rows[i].cells[0].innerHTML = i + 1;
+                    }
+                } else {
+                    alert("You need order at least one item.");
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </script>
 </body>
 </html>
