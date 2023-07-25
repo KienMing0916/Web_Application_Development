@@ -40,7 +40,7 @@ if (!isset($_SESSION['user_id'])) {
                 $status = $_POST['status'];
 
                 include 'menu/common_use_function.php';
-                $errorMessage = array_merge(validateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $status), validateCustomerFormPassword($password, $confirmpassword));
+                $errorMessage = validateCreateCustomerForm($username, $password, $confirmpassword, $firstname, $lastname, $gender, $birthdate, $email, $status);
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
