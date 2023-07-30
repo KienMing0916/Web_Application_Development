@@ -176,8 +176,6 @@ function validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedPr
         if(empty($selectedProductID[$i])) {
             $errorMessage[] = "Please select the product for No. " . $i + 1 . ".";
         }
-        
-
         if(empty($selectedProductQuantity[$i]) || !is_numeric($selectedProductQuantity[$i])){
             $errorMessage[] = "Please enter a number between 1-10 for purchase quantity of product No. " . $i + 1 . ".";
         }else{
@@ -186,7 +184,6 @@ function validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedPr
             }
         }
     }
-
     return $errorMessage;
 }
 
