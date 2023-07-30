@@ -8,6 +8,7 @@ include 'menu/validate_login.php';
     <title>Order Form</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
+
 <body>
     <div class="container p-0 bg-light">
         <?php
@@ -20,246 +21,240 @@ include 'menu/validate_login.php';
 
         <?php
         include 'config/database.php';
-        $productQuery = "SELECT Product_ID, name, promotion_price FROM products";
-        $productStmt = $con->prepare($productQuery);
-        $productStmt->execute();
-        $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
-        $totalAmount = 0;
+        $customer_query = "SELECT Customer_ID, firstname, lastname FROM customers";
+        $customer_stmt = $con->prepare($customer_query);
+        $customer_stmt->execute();
+        $customers = $customer_stmt->fetchAll(PDO::FETCH_ASSOC);
+        $customersRowCount = $customer_stmt->rowCount();
+
+        $product_query = "SELECT Product_ID, name FROM products";
+        $product_stmt = $con->prepare($product_query);
+        $product_stmt->execute();
+        $products = $product_stmt->fetchAll(PDO::FETCH_ASSOC);
+        $productsRowCount = $product_stmt->rowCount();
+
         $selectedProductRow = 1;
-        $rowNumber = 1;
-        
+
         if ($_POST) {
-            function requiredFieldsAreFilled($fields) {
-                foreach ($fields as $field) {
-                    if (!isset($_POST[$field])) {
-                        return false;
-                    }
-                }
-                return true; 
-            }
-            function handleError($error) {
-                echo '<div class="alert alert-danger m-3" role="alert">' . $error . '</div>';
-            }
-
-            $requiredFields = ['customerSelectionBox'];
-            for ($i = 1; $i <= $rowNumber; $i++) {
-                $requiredFields[] = "product{$i}";
-                $requiredFields[] = "quantity{$i}";
-                //$requiredFields[] = "product" . $i;
-            }
-
             try {
-                if (!requiredFieldsAreFilled($requiredFields)) {
-                    throw new Exception("Please select all the fields.");
+                $selectedCustomerID = isset($_POST['customer']) ? $_POST['customer'] : '';
+
+                if(isset($_POST['product'])){
+                    $selectedProductID = $_POST['product'];
+                    $selectedProductRow = count($_POST['product']);
+                }else{
+                    $selectedProductID = '';
                 }
-                $selectedCustomerID = $_POST['customerSelectionBox'];
-                $orderSummaryQuery = "INSERT INTO order_summary SET Customer_ID=:customer_id";
-                $orderSummaryStmt = $con->prepare($orderSummaryQuery);
-                $orderSummaryStmt->bindParam(':customer_id', $selectedCustomerID);
-                $orderSummaryStmt->execute();  
-                $order_id = $con->lastInsertId();
-        
-                for ($i = 1; $i <= $rowNumber; $i++) {
-                    $product_id = $_POST["product{$i}"];
-                    $quantity = $_POST["quantity{$i}"];
-                    //$quantity = $_POST["quantity" . $i]; 
-        
-                    $orderDetailsQuery = "INSERT INTO order_details SET Order_ID=:order_id, Product_ID=:product_id, quantity=:quantity"; // secpnd execute
-                    $orderDetailsStmt = $con->prepare($orderDetailsQuery);
-                    $orderDetailsStmt->bindParam(':order_id', $order_id);
-                    $orderDetailsStmt->bindParam(':product_id', $product_id);
-                    $orderDetailsStmt->bindParam(':quantity', $quantity);
-                    $orderDetailsStmt->execute();
+
+                $selectedProductQuantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
+
+                include 'menu/validate_function.php';
+                $errorMessage = validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedProductID, $selectedProductQuantity);
+
+                if(!empty($errorMessage)) {
+                    echo "<div class='alert alert-danger m-3'>";
+                        foreach ($errorMessage as $displayErrorMessage) {
+                            echo $displayErrorMessage . "<br>";
+                        }
+                    echo "</div>";
+                }else {
+                    $ordersummaryQuery = "INSERT INTO order_summary SET Customer_ID=:customer_id";
+                    $orderSummaryStmt = $con->prepare($ordersummaryQuery);
+                    $orderSummaryStmt->bindParam(":customer_id", $selectedCustomerID);
+                    $orderSummaryStmt->execute();
+                    $order_id = $con->lastInsertId();
+    
+                    for ($i = 0; $i < $selectedProductRow; $i++) {
+                        $orderDetailsQuery = "INSERT INTO order_details SET Order_ID=:order_id, Product_ID=:product_id, quantity=:quantity";
+                        $orderDetailsStmt = $con->prepare($orderDetailsQuery);
+                        $orderDetailsStmt->bindParam(":order_id", $order_id);
+                        $orderDetailsStmt->bindParam(":product_id", $selectedProductID[$i]);
+                        $orderDetailsStmt->bindParam(":quantity", $selectedProductQuantity[$i]);
+                        $orderDetailsStmt->execute();
+                    }
+    
+                    echo "<div class='alert alert-success m-3'>Order placed successfully.</div>";
+                    $_POST = array();
+                    $selectedProductRow = 1; // reset the row to 1
                 }
-                echo "<div class='alert alert-success m-3'>Order placed successfully.</div>";
-                $_POST = array();
-            } catch (Exception $exception) {
-                handleError($exception->getMessage());
-                // echo "<div class='alert alert-danger m-3'>Unable to place the order.</div>";
+            } catch (PDOException $exception) {
+                //handleError($exception->getMessage());
+                echo "<div class='alert alert-danger m-3'>Unable to place the order.</div>";
             }
         }
         ?>
 
-        <form class="p-3" action="" method="POST">
-            <div class="mb-3">
-                <select name="customerSelectionBox" id="customerSelectionBox" class="form-select">
-                    <option value="" disabled selected hidden>Choose a customer</option>
-                    <?php
-                    try {
-                        $customerQuery = "SELECT Customer_ID, firstname, lastname FROM customers";
-                        $customerStmt = $con->prepare($customerQuery);
-                        $customerStmt->execute();
-                        $customers = $customerStmt->fetchAll(PDO::FETCH_ASSOC);
-
-                        foreach ($customers as $customer) {
-                            $selected = isset($_POST['customerSelectionBox']) && $_POST['customerSelectionBox'] == $customer['Customer_ID'] ? 'selected' : '';
-                            echo "<option value='{$customer['Customer_ID']}' $selected>{$customer['firstname']} {$customer['lastname']}</option>";
+        <div>
+            <form class="p-3" action="" method="POST">
+                <div class="mb-3">
+                    <select name="customer" id="customer" class="form-select">
+                        <option value="" selected hidden>Choose a customer</option>
+                        <?php
+                        for ($i = 0; $i < $customersRowCount; $i++) {
+                            $selected = isset($_POST["customer"]) && $customers[$i]['Customer_ID'] == $_POST["customer"] ? "selected" : "";
+                            echo "<option value='{$customers[$i]['Customer_ID']}' $selected>{$customers[$i]['firstname']} {$customers[$i]['lastname']}</option>";
                         }
-                    } catch (PDOException $exception) {
-                        echo "<option value='' selected>Error loading customers</option>";
-                    }
-                    ?>
-                </select>
-            </div>
+                        ?>
+                    </select>
+                </div>
 
-            <table class='table table-hover table-responsive table-bordered' id='row_del'>
-                <tr>
-                    <td class="col-1"><b>No</b></td>
-                    <td class="col-4"><b>Product</b></td>
-                    <td class="col-2"><b>Price (RM)</b></td>
-                    <td class="col-1"><b>Quantity</b></td>
-                    <td class="col-2"><b>Amount (RM)</b></td>
-                    <td class="col-1"><b>Action</b></td>
-                </tr>
-                
-                <?php for ($i = 1; $i <= $rowNumber; $i++): ?>
-                    <tr class="pRow">
-                        <td><?php echo $i; ?></td>
-                        <td>
-                            <select name="product<?php echo $i; ?>" class="form-select" onchange="updateRow(<?php echo $i; ?>)">
-                                <option value="" disabled selected hidden>Choose a product</option>
-                                <?php
-                                $selectedProduct = isset($_POST["product{$i}"]) ? $_POST["product{$i}"] : '';
-                                $selectedProductPrice = $selectedProduct ? $products[$selectedProduct - 1]['promotion_price'] : '';
-                                $selectedQuantity = isset($_POST["quantity{$i}"]) ? $_POST["quantity{$i}"] : 1;
-                                $selectedAmount = $selectedProduct ? $selectedProductPrice * $selectedQuantity : '0';
-                                $totalAmount += $selectedAmount;
-                                foreach ($products as $product) {
-                                    $selected = $selectedProduct == $product['Product_ID'] ? 'selected' : '';
-                                    echo "<option value='" . $product['Product_ID'] . "' data-product-price='" . $product['promotion_price'] . "' $selected>" . $product['name'] . "</option>";
-                                }
-                                ?>
-                            </select>
-                        </td>
-                        <td>
-                            <?php
-                                echo '<input type="number" id="price' . $i . '" value="' . number_format((float)$selectedProductPrice, 2) . 
-                                    '" readonly class="form-control' . ($selectedProduct ? '' : ' d-none') . '">';
-                            ?>
-                        </td>
-                        <td>
-                            <input type="number" name="quantity<?php echo $i; ?>" value="<?php echo $selectedQuantity; ?>" min="1" max="10" class="form-control" onchange="updateRow(<?php echo $i; ?>)">
-                        </td>
-                        <td>
-                            <?php
-                                echo '<input type="number" id="amount' . $i . '" value="' . number_format((float)$selectedAmount, 2) . 
-                                    '" readonly class="form-control' . ($selectedProduct ? '' : ' d-none') . '">';
-
-                            ?>
-                        </td>
-                        <td><input href='#' onclick='deleteRow(this)' class='btn btn-danger' value="Delete" /></td>
-
-
+                <table class="table table-hover table-responsive table-bordered" id="order-table">
+                    <tr>
+                        <th class="col-1">No.</th>
+                        <th class="col-6">Product</th>
+                        <th class="col-3">Quantity</th>
+                        <th class="col-2">Action</th>
                     </tr>
-                <?php endfor; ?>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><b>Total amount: RM <span id="totalAmount"><?php echo number_format((float)$totalAmount, 2); ?></span></b></td>
-                    <td></td>
-                </tr>
-            </table>
-            <input type="button" value="Add More Product" class="btn btn-success add_one" />
-            <input type='submit' value='Place Order' class='btn btn-primary' />
-        </form>
+                    <?php for ($x = 0; $x < $selectedProductRow; $x++): ?>
+                        <tr class="product-row">
+                            <td class="col-1" style="vertical-align: middle;">
+                                <?php echo $x + 1; ?>
+                            </td>
+                            <td>
+                                <select name="product[]" id="product" class="form-select" value>
+                                    <option value="" selected hidden>Choose a product</option>
+                                    <?php
+                                    for ($i = 0; $i < $productsRowCount; $i++) {
+                                        $selected = isset($_POST["product"]) && $products[$i]['Product_ID'] == $_POST["product"][$x] ? "selected" : "";
+                                        echo "<option value='{$products[$i]['Product_ID']}' $selected>{$products[$i]['name']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" name="quantity[]" id="quantity" value="<?php echo isset($_POST['quantity']) ? $_POST['quantity'][$x] : 1; ?>" min="1" max="10">
+
+                            </td>
+                            <td>
+                                <input type="button" href='#' onclick='deleteRow(this)' class='btn btn-danger' value="Delete" />
+                            </td>
+
+                        </tr>
+                    <?php endfor; ?>
+                </table>
+                <div class="pt-2">
+                    <button type="button" class="btn btn-success add_one">Add more product</button>
+                    <a href="order_read.php" class="btn btn-danger">Back to order summary list</a>
+                    <button type="submit" class="btn btn-primary">Place order</button>
+
+                </div>
+            </form>    
+        </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    
     <script>
+        // start of add and delete product rows
+        const orderTable = document.getElementById("order-table");
+        const addRowBtn = document.querySelector('.add_one');
+        addRowBtn.addEventListener('click', addRow);
 
-    function updateRow(index) {
-        const selectedProduct = document.querySelector(`select[name="product${index}"]`);
-        const selectedOption = selectedProduct.options[selectedProduct.selectedIndex];
-        const priceField = document.getElementById(`price${index}`);
-        const selectedPrice = parseFloat(selectedOption.getAttribute("data-product-price")).toFixed(2); // Convert to two decimal places
-        priceField.value = selectedPrice;
-
-        const quantityField = document.querySelector(`input[name="quantity${index}"]`);
-        const quantity = parseInt(quantityField.value);
-        const amountField = document.getElementById(`amount${index}`);
-        const amount = (selectedPrice * quantity).toFixed(2);
-        amountField.value = amount;
-
-        if (selectedProduct.value !== "") {
-            priceField.classList.remove("d-none");
-            priceField.classList.add("d-block");
-            amountField.classList.remove("d-none");
-            amountField.classList.add("d-block");
-        } else {
-            priceField.classList.remove("d-block");
-            priceField.classList.add("d-none");
-            amountField.classList.remove("d-block");
-            amountField.classList.add("d-none");
-        }
-
-        let totalAmount = 0;
-        for (let i = 1; i <= 1; i++) {
-            const amountField = document.getElementById(`amount${i}`);
-            const amountValue = parseFloat(amountField.value);
-            if (!isNaN(amountValue)) {
-                totalAmount += amountValue;
-            }
-        }
-        document.getElementById("totalAmount").textContent = totalAmount.toFixed(2);
-    }
-
-    document.addEventListener('click', function(event) {
-        if (event.target.matches('.add_one')) {
-            var rows = document.getElementsByClassName('pRow');
-            // Get the last row in the table
+        function addRow() {
+            var rows = document.getElementsByClassName('product-row');
             var lastRow = rows[rows.length - 1];
+            const lastRowProductsSelect = lastRow.querySelector('select[name="product[]"]');
+            const lastRowSelectedProduct = lastRowProductsSelect.value;
             // Clone the last row
             var clone = lastRow.cloneNode(true);
+            const [productsSelect, quantityInput] = clone.querySelectorAll('select[name="product[]"], input[name="quantity[]"]');
+            productsSelect.value = "";
+            quantityInput.value = 1;
             // Insert the clone after the last row
             lastRow.insertAdjacentElement('afterend', clone);
 
+            initSync(productsSelect);
+            if (lastRowSelectedProduct) {
+                hideOption(productsSelect, lastRowSelectedProduct);
+            }
+
             // Loop through the rows
-            for (var i = 0; i < rows.length; i++) {
+            for (let i = 0; i < rows.length; i++) {
                 // Set the inner HTML of the first cell to the current loop iteration number
                 rows[i].cells[0].innerHTML = i + 1;
             }
         }
-    }, false);
+        function deleteRow(deleteBtn) {
+            const productsRowCount = orderTable.querySelectorAll('.product-row').length;
+            if (productsRowCount > 1) {
+                const row = deleteBtn.closest("tr");
+                const productsSelect = row.querySelector("select[name='product[]']");
+                removeSync(productsSelect);
+                row.remove();
 
-    function deleteRow(r) {
-        var total = document.querySelectorAll('.pRow').length;
-        if (total > 1) {
-            var i = r.parentNode.parentNode.rowIndex;
-            document.getElementById("row_del").deleteRow(i);
-
-            var rows = document.getElementsByClassName('pRow');
-            for (var i = 0; i < rows.length; i++) {
-                // Set the inner HTML of the first cell to the current loop iteration number
-                rows[i].cells[0].innerHTML = i + 1;
+                const rows = orderTable.getElementsByClassName('product-row');
+                for (let i = 0; i < rows.length; i++) {
+                    // Set the inner HTML of the first cell to the current loop iteration number
+                    rows[i].cells[0].textContent = i + 1;
+                }
+            } else {
+                alert("You need order at least one item.");
             }
-        } else {
-            alert("You need order at least one item.");
         }
-    }
+        // end of add and delete product rows
 
+        // start of prevent user from selecting the same product more than once
+        const productsSelects = {
+            selects: new Set(),
+            add: function(select) {
+                this.selects.add(select);
+            },
+            delete: function(select) {
+                this.selects.delete(select);
+            },
+            get all() {
+                return this.selects;
+            }
+        };
+        const selectedProducts = {
+            products: new Set(),
+            add: function(id) {
+                this.products.add(id);
+            },
+            delete: function(id) {
+                this.products.delete(id);
+            },
+            get all() {
+                return this.products;
+            }
+        };
+        document.querySelectorAll("select[name='product[]']").forEach(initSync);
+        productsSelects.all.forEach(select => updateAllProductsSelects.apply(select));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        function initSync(select) {
+            productsSelects.add(select);
+            select.addEventListener("input", updateAllProductsSelects);
+        }
+        function removeSync(select) {
+            select.removeEventListener("input", updateAllProductsSelects);
+            productsSelects.delete(select);
+            const selectedValue = select.value;
+            if (selectedValue) {
+                selectedProducts.delete(selectedValue);
+                productsSelects.all.forEach(s => showOption(s, selectedValue));
+            }
+        }
+        function updateAllProductsSelects() {
+            const currentValue = this.value;
+            const oldValue = this.dataset.currentValue;
+            if (oldValue) {
+                selectedProducts.delete(oldValue);
+                productsSelects.all.forEach(s => showOption(s, oldValue));
+            }
+            selectedProducts.add(currentValue);
+            this.dataset.currentValue = currentValue;
+            productsSelects.all.forEach(s => {
+                if (s !== this) {
+                    hideOption(s, currentValue);
+                }
+            });
+        }
+        function showOption(select, val) {
+            select.querySelector(`option[value="${val}"]`).classList.remove("d-none");
+        }
+        function hideOption(select, val) {
+            select.querySelector(`option[value="${val}"]`).classList.add("d-none");
+        }
+        // end of prevent user from selecting the same product more than once
     </script>
 </body>
 </html>
