@@ -34,11 +34,7 @@ include 'menu/validate_login.php';
                 $email = $_POST['email'];
                 $status = $_POST['status'];
 
-                if (!isset($_POST['gender'])) {
-                    $gender = null;
-                }else {
-                    $gender = $_POST['gender'];
-                }
+                $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
 
                 include 'menu/validate_function.php';
                 $errorMessage = validateCreateCustomerForm($username, $password, $confirmpassword, $firstname, $lastname, $gender, $birthdate, $email, $status);
