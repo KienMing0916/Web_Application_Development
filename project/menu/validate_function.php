@@ -179,7 +179,7 @@ function validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedPr
         
 
         if(empty($selectedProductQuantity[$i]) || !is_numeric($selectedProductQuantity[$i])){
-            $errorMessage[] = "Please select a number for purchase quantity of product No. " . $i + 1 . ".";
+            $errorMessage[] = "Please enter a number between 1-10 for purchase quantity of product No. " . $i + 1 . ".";
         }else{
             if($selectedProductQuantity[$i] <1 || $selectedProductQuantity[$i] >10) {
                 $errorMessage[] = "The purchase quantity of product " . $i + 1 . " cannot be less than 0 or more than 10.";
