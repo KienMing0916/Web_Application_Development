@@ -151,7 +151,7 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
     if (empty($current_password) || empty($new_password) || empty($confirm_new_password)) {
         $errorMessage[] = "If you wish to change your password, please fill in all three password fields.";
         return $errorMessage;
-    } else {
+    }else {
         if (!password_verify($current_password, $db_password)) {
             $errorMessage[] = "Incorrect current password.";
         }
@@ -164,4 +164,30 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
         return $errorMessage;
     }
 }
+
+function validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedProductID, $selectedProductQuantity){
+    $errorMessage = array();
+
+    if(empty($selectedCustomerID)) {
+        $errorMessage[] = "Please select the customer name.";
+    }
+
+    for ($i = 0; $i < $selectedProductRow; $i++) {
+        if(empty($selectedProductID[$i])) {
+            $errorMessage[] = "Please select the product for No. " . $i + 1 . ".";
+        }
+        
+
+        if(empty($selectedProductQuantity[$i]) || !is_numeric($selectedProductQuantity[$i])){
+            $errorMessage[] = "Please select a number for purchase quantity of product No. " . $i + 1 . ".";
+        }else{
+            if($selectedProductQuantity[$i] <1 || $selectedProductQuantity[$i] >10) {
+                $errorMessage[] = "The purchase quantity of product " . $i + 1 . " cannot be less than 0 or more than 10.";
+            }
+        }
+    }
+
+    return $errorMessage;
+}
+
 ?>
