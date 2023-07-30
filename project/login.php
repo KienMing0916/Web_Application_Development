@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['user_id'])) {
+if (isset($_SESSION['Customer_ID'])) {
   header("Location: index.php");
   exit();
 }
@@ -71,7 +71,7 @@ if (isset($_SESSION['user_id'])) {
                             return;
                         }
     
-                        $_SESSION['user_id'] = $row['Customer_ID'];
+                        $_SESSION['Customer_ID'] = $row['Customer_ID'];
                         header("Location: index.php");
                         exit();
                     }catch (PDOException $exception) {

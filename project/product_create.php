@@ -1,9 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['user_id'])) {
-  header("Location: login.php");
-  exit();
-}
+include 'menu/validate_login.php';
 ?>
 
 <!DOCTYPE HTML>
@@ -42,9 +38,8 @@ if (!isset($_SESSION['user_id'])) {
                 $dateStart = new DateTime($manufacture_date);
                 $dateEnd = new DateTime($expired_date);
 
-                include 'menu/common_use_function.php';
+                include 'menu/validate_function.php';
                 $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id);
-
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
@@ -113,6 +108,7 @@ if (!isset($_SESSION['user_id'])) {
                         <td>Category</td>
                         <td>
                             <select name="category_id" class="form-select">
+                                <option value="" selected hidden>Choose a category</option>
                                 <?php
                                     include 'config/database.php';
                                     // Fetch categories from the database

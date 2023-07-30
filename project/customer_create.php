@@ -1,9 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['user_id'])) {
-  header("Location: login.php");
-  exit();
-}
+include 'menu/validate_login.php';
 ?>
 
 <!DOCTYPE HTML>
@@ -34,12 +30,17 @@ if (!isset($_SESSION['user_id'])) {
                 $confirmpassword = $_POST['confirmpassword'];
                 $firstname = $_POST['firstname'];
                 $lastname = $_POST['lastname'];
-                $gender = $_POST['gender'];
                 $birthdate = $_POST['birthdate'];
                 $email = $_POST['email'];
                 $status = $_POST['status'];
 
-                include 'menu/common_use_function.php';
+                if (!isset($_POST['gender'])) {
+                    $gender = null;
+                }else {
+                    $gender = $_POST['gender'];
+                }
+
+                include 'menu/validate_function.php';
                 $errorMessage = validateCreateCustomerForm($username, $password, $confirmpassword, $firstname, $lastname, $gender, $birthdate, $email, $status);
 
                 if(!empty($errorMessage)) {
@@ -111,7 +112,7 @@ if (!isset($_SESSION['user_id'])) {
                         <td>Gender</td>
                         <td>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gender" id="gender" value="male" <?php echo (isset($_POST['gender']) && $_POST['gender'] === 'male') ? 'checked' : 'checked'; ?>>
+                                <input class="form-check-input" type="radio" name="gender" id="gender" value="male" <?php echo (isset($_POST['gender']) && $_POST['gender'] === 'male') ? 'checked' : ''; ?>>
                                 <label class="form-check-label" for="gender">
                                     Male
                                 </label>
@@ -136,9 +137,10 @@ if (!isset($_SESSION['user_id'])) {
                         <td>Account Status</td>
                         <td>
                             <select name="status" class="form-select">
-                            <option value="Active" <?php echo (isset($_POST['status']) && $_POST['status'] === 'Active') ? 'selected' : ''; ?>>Active</option>
-                            <option value="Inactive" <?php echo (isset($_POST['status']) && $_POST['status'] === 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
-                            <option value="Pending" <?php echo (isset($_POST['status']) && $_POST['status'] === 'Pending') ? 'selected' : ''; ?>>Pending</option>
+                                <option value="" selected hidden>Choose an account status</option>
+                                <option value="Active" <?php echo (isset($_POST['status']) && $_POST['status'] === 'Active') ? 'selected' : ''; ?>>Active</option>
+                                <option value="Inactive" <?php echo (isset($_POST['status']) && $_POST['status'] === 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
+                                <option value="Pending" <?php echo (isset($_POST['status']) && $_POST['status'] === 'Pending') ? 'selected' : ''; ?>>Pending</option>
                             </select>
                         </td>
                     </tr>

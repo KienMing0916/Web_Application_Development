@@ -1,9 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['user_id'])) {
-  header("Location: login.php");
-  exit();
-}
+include 'menu/validate_login.php';
 ?>
 
 <!DOCTYPE HTML>
@@ -50,7 +46,7 @@ if (!isset($_SESSION['user_id'])) {
                 $category_name = htmlspecialchars(strip_tags($_POST['category_name']));
                 $description = htmlspecialchars(strip_tags($_POST['description']));
 
-                include 'menu/common_use_function.php';
+                include 'menu/validate_function.php';
                 $errorMessage = validateCategoryForm($category_name, $description);
 
 

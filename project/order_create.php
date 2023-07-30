@@ -1,9 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
+include 'menu/validate_login.php';
 ?>
 
 <!DOCTYPE HTML>
@@ -29,6 +25,8 @@ if (!isset($_SESSION['user_id'])) {
         $productStmt->execute();
         $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
         $totalAmount = 0;
+        $selectedProductRow = 1;
+        $rowNumber = 1;
         
         if ($_POST) {
             function requiredFieldsAreFilled($fields) {
@@ -44,7 +42,7 @@ if (!isset($_SESSION['user_id'])) {
             }
 
             $requiredFields = ['customerSelectionBox'];
-            for ($i = 1; $i <= 1; $i++) {
+            for ($i = 1; $i <= $rowNumber; $i++) {
                 $requiredFields[] = "product{$i}";
                 $requiredFields[] = "quantity{$i}";
                 //$requiredFields[] = "product" . $i;
@@ -61,7 +59,7 @@ if (!isset($_SESSION['user_id'])) {
                 $orderSummaryStmt->execute();  
                 $order_id = $con->lastInsertId();
         
-                for ($i = 1; $i <= 1; $i++) {
+                for ($i = 1; $i <= $rowNumber; $i++) {
                     $product_id = $_POST["product{$i}"];
                     $quantity = $_POST["quantity{$i}"];
                     //$quantity = $_POST["quantity" . $i]; 
@@ -113,7 +111,8 @@ if (!isset($_SESSION['user_id'])) {
                     <td class="col-2"><b>Amount (RM)</b></td>
                     <td class="col-1"><b>Action</b></td>
                 </tr>
-                <?php for ($i = 1; $i <= 1; $i++): ?>
+                
+                <?php for ($i = 1; $i <= $rowNumber; $i++): ?>
                     <tr class="pRow">
                         <td><?php echo $i; ?></td>
                         <td>
@@ -149,7 +148,6 @@ if (!isset($_SESSION['user_id'])) {
                             ?>
                         </td>
                         <td><input href='#' onclick='deleteRow(this)' class='btn btn-danger' value="Delete" /></td>
-                        <!-- <td><input type='submit' onclick='deleteRow(this)' value='Delete' class='btn btn-danger' /></td> -->
 
 
                     </tr>
@@ -206,12 +204,6 @@ if (!isset($_SESSION['user_id'])) {
         }
         document.getElementById("totalAmount").textContent = totalAmount.toFixed(2);
     }
-
-
-
-
-
-
 
     document.addEventListener('click', function(event) {
         if (event.target.matches('.add_one')) {

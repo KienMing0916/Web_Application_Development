@@ -1,9 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['user_id'])) {
-  header("Location: login.php");
-  exit();
-}
+include 'menu/validate_login.php';
 ?>
 
 <!DOCTYPE HTML>
@@ -62,7 +58,7 @@ if (!isset($_SESSION['user_id'])) {
                 $expired_date = htmlspecialchars(strip_tags($_POST['expired_date'])); 
                 $category_id = htmlspecialchars(strip_tags($_POST['category_id'])); 
 
-                include 'menu/common_use_function.php';
+                include 'menu/validate_function.php';
                 $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id);
 
 
