@@ -152,14 +152,14 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
         $errorMessage[] = "If you wish to change your password, please fill in all three password fields.";
         return $errorMessage;
     }else {
-        if (!password_verify($current_password, $db_password)) {
-            $errorMessage[] = "Incorrect current password.";
-        }
         if (!preg_match($passwordPattern, $new_password)) {
             $errorMessage[] = "Password must be at least 6 characters long and contain at least one uppercase letter, one lowercase letter, and one number. No special symbols allowed.";
         }
         if ($new_password !== $confirm_new_password) {
             $errorMessage[] = "New password and confirm password do not match.";
+        }
+        if (!password_verify($current_password, $db_password)) {
+            $errorMessage[] = "Incorrect current password.";
         }
         return $errorMessage;
     }
