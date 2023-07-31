@@ -21,17 +21,17 @@ include 'menu/validate_login.php';
 
         <?php
         include 'config/database.php';
-        $customer_query = "SELECT Customer_ID, firstname, lastname FROM customers";
-        $customer_stmt = $con->prepare($customer_query);
-        $customer_stmt->execute();
-        $customers = $customer_stmt->fetchAll(PDO::FETCH_ASSOC);
-        $customersRowCount = $customer_stmt->rowCount();
+        $customerQuery = "SELECT Customer_ID, firstname, lastname FROM customers";
+        $customerStmt = $con->prepare($customerQuery);
+        $customerStmt->execute();
+        $customers = $customerStmt->fetchAll(PDO::FETCH_ASSOC);
+        $customersRowCount = $customerStmt->rowCount();
 
-        $product_query = "SELECT Product_ID, name FROM products";
-        $product_stmt = $con->prepare($product_query);
-        $product_stmt->execute();
-        $products = $product_stmt->fetchAll(PDO::FETCH_ASSOC);
-        $productsRowCount = $product_stmt->rowCount();
+        $productQuery = "SELECT Product_ID, name FROM products";
+        $productStmt = $con->prepare($productQuery);
+        $productStmt->execute();
+        $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
+        $productsRowCount = $productStmt->rowCount();
 
         $selectedProductRow = 1;
 
