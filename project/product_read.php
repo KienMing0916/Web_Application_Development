@@ -74,7 +74,7 @@ include 'menu/validate_login.php';
                             echo"<td>
                                     <div class='d-flex justify-content-end'>
                                         <p class='text-decoration-line-through mx-1'>" . number_format((float)$price, 2, '.', '') . "</p>
-                                        <p class='mx-1'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
+                                        <p class='me-2'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
                                     </div>
                                 </td>";
                         }else{

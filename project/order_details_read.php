@@ -31,11 +31,11 @@ include 'menu/validate_login.php';
             echo "<div class='p-3'>";
                 echo "<table class='table table-hover table-responsive table-bordered'>";
                 echo "<tr>";
-                    echo "<th class='col-2'>Order Detail ID</th>";
-                    echo "<th class='col-2'>Order ID</th>";
-                    echo "<th class='col-4'>Product Name</th>";
-                    echo "<th class='col-2'>Price (RM) / Unit</th>";
-                    echo "<th class='col-2'>Quantity</th>";
+                    echo "<th>Order Detail ID</th>";
+                    echo "<th>Order ID</th>";
+                    echo "<th>Product Name</th>";
+                    echo "<th class='col-1'>Price (RM) / Unit</th>";
+                    echo "<th>Quantity</th>";
                     // echo "<th>Action</th>";
                 echo "</tr>";
 
@@ -49,7 +49,7 @@ include 'menu/validate_login.php';
                         echo"<td>
                             <div class='d-flex justify-content-end'>
                                 <p class='text-decoration-line-through mx-1'>" . number_format((float)$price, 2, '.', '') . "</p>
-                                <p class='mx-1'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
+                                <p class='me-3'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
                             </div>
                             </td>";
                         echo "<td>{$quantity}</td>";
