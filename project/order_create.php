@@ -39,35 +39,18 @@ include 'menu/validate_login.php';
         if ($_POST) {
             try {
                 $selectedCustomerID = isset($_POST['customer']) ? $_POST['customer'] : '';
+                $selectedProductQuantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
 
                 if(isset($_POST['product'])){
                     $selectedProductID = $_POST['product'];
+                    $selectedProductRow = count($_POST['product']);
                 }else{
                     $selectedProductID = '';
                 }
 
-                $selectedProductQuantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
-
                 include 'menu/validate_function.php';
-                $errorMessage = validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedProductID, $selectedProductQuantity);
+                $errorMessage = validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedProductID, $selectedProductQuantity, $products);
 
-                //remove the duplicate product ID if found                
-                $selectedProductRowWithoutDuplicate = array_unique($selectedProductID);
-
-                if (sizeof($selectedProductRowWithoutDuplicate) != sizeof($selectedProductID)){
-                    foreach ($selectedProductID as $key => $val){
-                        if(!array_key_exists($key, $selectedProductRowWithoutDuplicate)){
-                            $errorMessage[] = "Duplicate product was chosen - " . $products[$val - 1]['name'] . ".";
-                            unset($selectedProductID[$key]);
-                            unset($selectedProductQuantity[$key]);
-                        }
-                    }
-                    $selectedProductID = array_values($selectedProductID);
-                    $selectedProductQuantity = array_values($selectedProductQuantity);
-                }
-
-                $selectedProductRow = isset($selectedProductRowWithoutDuplicate) ? count($selectedProductRowWithoutDuplicate) : count($_POST['product']);
-                
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
                         foreach ($errorMessage as $displayErrorMessage) {
