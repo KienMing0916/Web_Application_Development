@@ -52,14 +52,13 @@ include 'menu/validate_login.php';
         </div>';
         
         if($num > 0){
-        
             echo "<div class='p-3'>";
                 echo "<table class='table table-hover table-responsive table-bordered'>";//start table
                 echo "<tr>";
                     echo "<th>ID</th>";
                     echo "<th>Name</th>";
                     echo "<th>Description</th>";
-                    echo "<th>Price</th>";
+                    echo "<th>Price (RM)</th>";
                     echo "<th>Category Name</th>";
                     echo "<th>Action</th>";
                 echo "</tr>";
@@ -70,10 +69,13 @@ include 'menu/validate_login.php';
                         echo "<td>{$Product_ID}</td>";
                         echo "<td>{$name}</td>";
                         echo "<td>{$description}</td>";
+                        // line 75 d-flex justify-content-center can't write to td, otherwise it won't take full height of td
                         if ($promotion_price < $price && ($promotion_price != 0)){
-                            echo"<td class='d-flex justify-content-end'>
-                                    <p class='text-decoration-line-through mx-1'>" . number_format((float)$price, 2, '.', '') . "</p>
-                                    <p>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
+                            echo"<td>
+                                    <div class='d-flex justify-content-end'>
+                                        <p class='text-decoration-line-through mx-1'>" . number_format((float)$price, 2, '.', '') . "</p>
+                                        <p class='mx-1'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
+                                    </div>
                                 </td>";
                         }else{
                             echo "<td class='text-end'>" . number_format((float)$price, 2, '.', '') . "</td>";

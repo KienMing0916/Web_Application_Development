@@ -57,11 +57,11 @@ include 'menu/validate_login.php';
                     <td><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
-                    <td>Price</td>
+                    <td>Price (RM)</td>
                     <td><?php echo htmlspecialchars(number_format((float)$price, 2, '.', ''), ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
-                    <td>Promotion Price</td>
+                    <td>Promotion Price (RM)</td>
                     <td><?php echo htmlspecialchars(number_format((float)$promotion_price, 2, '.', ''), ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
