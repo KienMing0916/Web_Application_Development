@@ -21,7 +21,7 @@ include 'menu/validate_login.php';
         <?php
         $id=isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
         include 'config/database.php';
-        $query = "SELECT order_details.OrderDetail_ID, order_details.Order_ID, products.name, order_details.quantity FROM order_details INNER JOIN products ON order_details.Product_ID = products.Product_ID WHERE order_details.Order_ID =:id";
+        $query = "SELECT order_details.OrderDetail_ID, order_details.Order_ID, products.name, products.price, products.promotion_price, order_details.quantity FROM order_details INNER JOIN products ON order_details.Product_ID = products.Product_ID WHERE order_details.Order_ID =:id";
         $stmt = $con->prepare($query);
         $stmt->bindParam(":id", $id);
         $stmt->execute();
@@ -31,10 +31,11 @@ include 'menu/validate_login.php';
             echo "<div class='p-3'>";
                 echo "<table class='table table-hover table-responsive table-bordered'>";
                 echo "<tr>";
-                    echo "<th>Order Detail ID</th>";
-                    echo "<th>Order ID</th>";
-                    echo "<th>Product Name</th>";
-                    echo "<th>Quantity</th>";
+                    echo "<th class='col-2'>Order Detail ID</th>";
+                    echo "<th class='col-2'>Order ID</th>";
+                    echo "<th class='col-4'>Product Name</th>";
+                    echo "<th class='col-2'>Price (RM) / Unit</th>";
+                    echo "<th class='col-2'>Quantity</th>";
                     // echo "<th>Action</th>";
                 echo "</tr>";
 
@@ -44,6 +45,13 @@ include 'menu/validate_login.php';
                         echo "<td>{$OrderDetail_ID}</td>";
                         echo "<td>{$Order_ID}</td>";
                         echo "<td>{$name}</td>";
+                        // d-flex justify-content-center can't write to td, otherwise it won't take full height of td
+                        echo"<td>
+                            <div class='d-flex justify-content-end'>
+                                <p class='text-decoration-line-through mx-1'>" . number_format((float)$price, 2, '.', '') . "</p>
+                                <p class='mx-1'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
+                            </div>
+                            </td>";
                         echo "<td>{$quantity}</td>";
                     echo "</tr>";
                 }
