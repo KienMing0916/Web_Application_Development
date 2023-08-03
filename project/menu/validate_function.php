@@ -172,7 +172,7 @@ function validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedPr
         $errorMessage[] = "Please select the customer name.";
     }
 
-    for ($i = 0; $i < $selectedProductRow; $i++) {
+    for($i = 0; $i < $selectedProductRow; $i++) {
         if(empty($selectedProductID[$i])) {
             $errorMessage[] = "Please select the product for No. " . $i + 1 . ".";
         }
