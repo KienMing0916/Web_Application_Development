@@ -165,8 +165,10 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
     }
 }
 
-function validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedProductID, $selectedProductQuantity){
+//accept $selectedProductRow, $selectedProductID, $selectedProductQuantity as references instead values
+function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selectedProductID, &$selectedProductQuantity, $products){
     $errorMessage = array();
+    $selectedProductRowWithoutDuplicate = array_unique($selectedProductID);
 
     if(empty($selectedCustomerID)) {
         $errorMessage[] = "Please select the customer name.";
@@ -183,6 +185,22 @@ function validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedPr
                 $errorMessage[] = "The purchase quantity of product " . $i + 1 . " cannot be less than 0 or more than 10.";
             }
         }
+    }
+
+    if (sizeof($selectedProductRowWithoutDuplicate) != sizeof($selectedProductID)){
+        foreach ($selectedProductID as $key => $val){
+            if(!array_key_exists($key, $selectedProductRowWithoutDuplicate)){
+                // this condition is set to block unselected products (Exp two empty product fields)
+                if($val != ''){ 
+                    $errorMessage[] = "Duplicate product was chosen - " . $products[$val - 1]['name'] . ".";
+                    unset($selectedProductID[$key]);
+                    unset($selectedProductQuantity[$key]);
+                    $selectedProductRow = isset($selectedProductRowWithoutDuplicate) ? count($selectedProductRowWithoutDuplicate) : count($_POST['product']);
+                }
+            }
+        }
+        $selectedProductID = array_values($selectedProductID);
+        $selectedProductQuantity = array_values($selectedProductQuantity);
     }
     return $errorMessage;
 }
