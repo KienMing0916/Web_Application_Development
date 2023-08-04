@@ -65,8 +65,10 @@ include 'menu/validate_login.php';
                         echo "<td>{$Order_ID}</td>";
                         echo "<td>{$firstname} {$lastname}</td>";
                         echo "<td>{$order_date}</td>";
-                        echo "<td class='col-2'>";
-                            echo "<a href='order_details_read.php?id={$Order_ID}' class='btn btn-info m-r-1em text-white mx-2'>Read Order Details</a>";
+                        echo "<td class='col-3'>";
+                            echo "<a href='order_details_read.php?id={$Order_ID}' class='btn btn-info m-r-1em text-white mx-2'>Read</a>";
+                            echo "<a href='order_update.php?id={$Order_ID}' class='btn btn-primary m-r-1em mx-2'>Edit</a>";
+                            echo "<a href='#' onclick='delete_customer({$Order_ID});'  class='btn btn-danger mx-2'>Delete</a>";
                         echo "</td>";
 
                     echo "</tr>";
