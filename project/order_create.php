@@ -34,7 +34,6 @@ include 'menu/validate_login.php';
         $productsRowCount = $productStmt->rowCount();
 
         $selectedProductRow = 1;
-        $errorMessage = array();
 
         if ($_POST) {
             try {
