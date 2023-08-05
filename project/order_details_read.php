@@ -21,7 +21,7 @@ include 'menu/validate_login.php';
         <?php
         $id=isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
         include 'config/database.php';
-        $query = "SELECT order_details.OrderDetail_ID, order_details.Order_ID, products.name, products.price, products.promotion_price, order_details.quantity FROM order_details INNER JOIN products ON order_details.Product_ID = products.Product_ID WHERE order_details.Order_ID =:id";
+        $query = "SELECT order_details.OrderDetail_ID, order_details.Order_ID, products.name, products.price, products.promotion_price, order_details.quantity FROM order_details INNER JOIN products ON order_details.Product_ID = products.Product_ID WHERE order_details.Order_ID =:id ORDER BY order_details.OrderDetail_ID ASC";
         $stmt = $con->prepare($query);
         $stmt->bindParam(":id", $id);
         $stmt->execute();
