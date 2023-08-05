@@ -20,8 +20,9 @@ include 'menu/validate_login.php';
         </div>
 
         <?php
-            $id=isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
-            include 'config/database.php';
+        $id=isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+        include 'config/database.php';
+
         try {
             // prepare select query
             $query = "SELECT Product_ID, name, description, price, promotion_price, manufacture_date, expired_date, Category_ID FROM products WHERE Product_ID = ? LIMIT 0,1";
@@ -124,16 +125,16 @@ include 'menu/validate_login.php';
                 <tr>
                     <td>Category</td>
                     <td>
-                        <select name="category_id" class="form-select">
+                        <select name="category_id" class="form-select" readonly>
                             <?php
                             include 'config/database.php';
                             // Fetch categories from the database
-                            $categoryQuery = "SELECT category_id, category_name FROM categories";
+                            $categoryQuery = "SELECT Category_ID, category_name FROM categories";
                             $categoryStmt = $con->prepare($categoryQuery);
                             $categoryStmt->execute();
 
                             while ($row = $categoryStmt->fetch(PDO::FETCH_ASSOC)) {
-                                $categoryIDFromCategoriesTable = $row['category_id'];
+                                $categoryIDFromCategoriesTable = $row['Category_ID'];
                                 $categoryName = $row['category_name'];
 
                                 $selected = ($categoryIDFromCategoriesTable == $category_id) ? 'selected' : '';
