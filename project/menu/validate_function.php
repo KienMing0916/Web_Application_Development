@@ -168,12 +168,30 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
 //accept $selectedProductRow, $selectedProductID, $selectedProductQuantity as references instead values
 function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selectedProductID, &$selectedProductQuantity, $products){
     $errorMessage = array();
-    $selectedProductRowWithoutDuplicate = array_unique($selectedProductID);
+    $selectedProductRowWithoutDuplicate = array_filter(array_unique($selectedProductID));
+    $countedValues = array_count_values($selectedProductID);
+    $countedValuesEmpty = isset($countedValues) && array_key_exists('', $countedValues) ? $countedValues[''] : 0;
 
     if(empty($selectedCustomerID)) {
         $errorMessage[] = "Please select the customer name.";
     }
 
+    if (sizeof($selectedProductRowWithoutDuplicate) != sizeof($selectedProductID)){
+        foreach ($selectedProductID as $key => $val){
+            if(!array_key_exists($key, $selectedProductRowWithoutDuplicate)){
+                // this condition is set to block unselected products (Exp two empty product fields)
+                if($val != ''){ 
+                    $errorMessage[] = "Duplicate product was chosen - " . $products[$val - 1]['name'] . ".";
+                    unset($selectedProductID[$key]);
+                    unset($selectedProductQuantity[$key]);
+                    $selectedProductRow = isset($selectedProductRowWithoutDuplicate) ? count($selectedProductRowWithoutDuplicate) + $countedValuesEmpty : count($_POST['product']);
+                }
+            }
+        }
+        $selectedProductID = array_values($selectedProductID);
+        $selectedProductQuantity = array_values($selectedProductQuantity);
+    }
+    
     for($i = 0; $i < $selectedProductRow; $i++) {
         if(empty($selectedProductID[$i])) {
             $errorMessage[] = "Please select the product for No. " . $i + 1 . ".";
@@ -187,21 +205,6 @@ function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selected
         }
     }
 
-    if (sizeof($selectedProductRowWithoutDuplicate) != sizeof($selectedProductID)){
-        foreach ($selectedProductID as $key => $val){
-            if(!array_key_exists($key, $selectedProductRowWithoutDuplicate)){
-                // this condition is set to block unselected products (Exp two empty product fields)
-                if($val != ''){ 
-                    $errorMessage[] = "Duplicate product was chosen - " . $products[$val - 1]['name'] . ".";
-                    unset($selectedProductID[$key]);
-                    unset($selectedProductQuantity[$key]);
-                    $selectedProductRow = isset($selectedProductRowWithoutDuplicate) ? count($selectedProductRowWithoutDuplicate) : count($_POST['product']);
-                }
-            }
-        }
-        $selectedProductID = array_values($selectedProductID);
-        $selectedProductQuantity = array_values($selectedProductQuantity);
-    }
     return $errorMessage;
 }
 
