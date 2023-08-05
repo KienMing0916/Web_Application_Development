@@ -169,8 +169,8 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
 function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selectedProductID, &$selectedProductQuantity, $products){
     $errorMessage = array();
     $selectedProductRowWithoutDuplicate = array_filter(array_unique($selectedProductID));
-    $countedValues = array_count_values($selectedProductID);
-    $countedValuesEmpty = isset($countedValues) && array_key_exists('', $countedValues) ? $countedValues[''] : 0;
+    $countedProduct = array_count_values($selectedProductID);
+    $countedEmptyProductFields = isset($countedProduct) && array_key_exists('', $countedProduct) ? $countedProduct[''] : 0;
 
     if(empty($selectedCustomerID)) {
         $errorMessage[] = "Please select the customer name.";
@@ -184,14 +184,14 @@ function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selected
                     $errorMessage[] = "Duplicate product was chosen - " . $products[$val - 1]['name'] . ".";
                     unset($selectedProductID[$key]);
                     unset($selectedProductQuantity[$key]);
-                    $selectedProductRow = isset($selectedProductRowWithoutDuplicate) ? count($selectedProductRowWithoutDuplicate) + $countedValuesEmpty : count($_POST['product']);
+                    $selectedProductRow = isset($selectedProductRowWithoutDuplicate) ? count($selectedProductRowWithoutDuplicate) + $countedEmptyProductFields : count($_POST['product']);
                 }
             }
         }
         $selectedProductID = array_values($selectedProductID);
         $selectedProductQuantity = array_values($selectedProductQuantity);
     }
-    
+
     for($i = 0; $i < $selectedProductRow; $i++) {
         if(empty($selectedProductID[$i])) {
             $errorMessage[] = "Please select the product for No. " . $i + 1 . ".";
