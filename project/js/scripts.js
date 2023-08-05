@@ -16,11 +16,6 @@ function addRow() {
     // Insert the clone after the last row
     lastRow.insertAdjacentElement('afterend', clone);
 
-    initSync(productsSelect);
-    if (lastRowSelectedProduct) {
-        hideOption(productsSelect, lastRowSelectedProduct);
-    }
-
     // Loop through the rows
     for (let i = 0; i < rows.length; i++) {
         // Set the inner HTML of the first cell to the current loop iteration number
@@ -32,7 +27,6 @@ function deleteRow(deleteBtn) {
     if (productsRowCount > 1) {
         const row = deleteBtn.closest("tr");
         const productsSelect = row.querySelector("select[name='product[]']");
-        removeSync(productsSelect);
         row.remove();
 
         const rows = orderTable.getElementsByClassName('product-row');
@@ -45,9 +39,6 @@ function deleteRow(deleteBtn) {
     }
 }
 // end of add and delete product rows
-
-
-
 
 
 // self learning
