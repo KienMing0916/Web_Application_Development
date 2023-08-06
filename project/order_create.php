@@ -6,7 +6,6 @@ include 'menu/validate_login.php';
 <html>
 <head>
     <title>Order Form</title>
-    <script async src="js/scripts.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 
@@ -142,5 +141,48 @@ include 'menu/validate_login.php';
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script>
+        // start of add and delete product rows
+        const orderTable = document.getElementById("order-table");
+        const addRowBtn = document.querySelector('.add_one');
+        addRowBtn.addEventListener('click', addRow);
+
+        function addRow() {
+            var rows = document.getElementsByClassName('product-row');
+            var lastRow = rows[rows.length - 1];
+            const lastRowProductsSelect = lastRow.querySelector('select[name="product[]"]');
+            const lastRowSelectedProduct = lastRowProductsSelect.value;
+            // Clone the last row
+            var clone = lastRow.cloneNode(true);
+            const [productsSelect, quantityInput] = clone.querySelectorAll('select[name="product[]"], input[name="quantity[]"]');
+            productsSelect.value = "";
+            quantityInput.value = 1;
+            // Insert the clone after the last row
+            lastRow.insertAdjacentElement('afterend', clone);
+
+            // Loop through the rows
+            for (let i = 0; i < rows.length; i++) {
+                // Set the inner HTML of the first cell to the current loop iteration number
+                rows[i].cells[0].innerHTML = i + 1;
+            }
+        }
+        function deleteRow(deleteBtn) {
+            const productsRowCount = orderTable.querySelectorAll('.product-row').length;
+            if (productsRowCount > 1) {
+                const row = deleteBtn.closest("tr");
+                const productsSelect = row.querySelector("select[name='product[]']");
+                row.remove();
+
+                const rows = orderTable.getElementsByClassName('product-row');
+                for (let i = 0; i < rows.length; i++) {
+                    // Set the inner HTML of the first cell to the current loop iteration number
+                    rows[i].cells[0].textContent = i + 1;
+                }
+            } else {
+                alert("You need order at least one item.");
+            }
+        }
+        // end of add and delete product rows
+    </script>
 </body>
 </html>
