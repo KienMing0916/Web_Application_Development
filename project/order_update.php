@@ -27,14 +27,15 @@ include 'menu/validate_login.php';
         include 'config/database.php';
 
         try {
-            // get the customer name of the order form
-            $customerNameQuery = "SELECT customers.firstname, customers.lastname FROM customers JOIN order_summary ON customers.Customer_ID = order_summary.Customer_ID WHERE order_summary.Order_ID = :id";
-            $customerNameStmt = $con->prepare($customerNameQuery);
-            $customerNameStmt->bindParam(":id", $id);
-            $customerNameStmt->execute();
-            $customer = $customerNameStmt->fetch(PDO::FETCH_ASSOC);
-            $firstname = $customer['firstname'];
-            $lastname = $customer['lastname'];
+            // get the customer name and order date of the order form
+            $customerQuery = "SELECT order_summary.order_date, customers.firstname, customers.lastname FROM order_details INNER JOIN order_summary ON order_details.Order_ID = order_summary.Order_ID INNER JOIN customers ON order_summary.Customer_ID = customers.Customer_ID WHERE order_details.Order_ID = :id ORDER BY order_details.OrderDetail_ID ASC";
+            $customerStmt = $con->prepare($customerQuery);
+            $customerStmt->bindParam(":id", $id);
+            $customerStmt->execute();
+            $customerRow = $customerStmt->fetch(PDO::FETCH_ASSOC);
+            $firstname = $customerRow['firstname'];
+            $lastname = $customerRow['lastname'];
+            $orderDateTime = $customerRow['order_date'];
             // get all the products in database
             $productQuery = "SELECT Product_ID, name FROM products";
             $productStmt = $con->prepare($productQuery);
@@ -55,7 +56,7 @@ include 'menu/validate_login.php';
 
         if ($_POST) {
             try {
-                $selectedCustomerID = isset($_POST['customer']) ? $_POST['customer'] : '';
+                $selectedCustomerID = "No changing available for customer name.";
                 $selectedProductQuantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
 
                 if(isset($_POST['product'])){
@@ -96,6 +97,8 @@ include 'menu/validate_login.php';
                     }
     
                     echo "<div class='alert alert-success m-3'>Order updated successfully.</div>";
+                    header("Location: order_details_read.php?id={$id}");
+                    exit();
                 }
             } catch (PDOException $exception) {
                 echo "<div class='alert alert-danger m-3'>Unable to update the order.</div>";
@@ -105,8 +108,9 @@ include 'menu/validate_login.php';
 
         <div>
             <form class="p-3" action="" method="POST">
-                <div class="mb-3">                    
-                    <input type='text' name='customer' value="<?php echo htmlspecialchars($firstname . ' ' . $lastname, ENT_QUOTES); ?>" class='form-control' readonly/>
+                <div class='d-flex justify-content-between'>
+                    <p class='pt-3 ps-1'><strong>Customer Name: <?php echo $firstname . " " . $lastname; ?></strong></p>
+                    <p class='pt-3 pe-1'><strong>Order Date: <?php echo $orderDateTime; ?></strong></p>
                 </div>
 
                 <table class="table table-hover table-responsive table-bordered" id="order-table">

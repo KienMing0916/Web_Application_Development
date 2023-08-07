@@ -22,7 +22,7 @@ include 'menu/validate_login.php';
         include 'config/database.php';
 
         $searchKeyword = isset($_GET['search']) ? $_GET['search'] : '';
-        $query = "SELECT order_summary.Order_ID, customers.firstname, customers.lastname, order_summary.order_date FROM order_summary INNER JOIN customers ON order_summary.Customer_ID = customers.Customer_ID";
+        $query = "SELECT order_summary.Order_ID, customers.firstname, customers.lastname, order_summary.order_date, order_summary.total_amount FROM order_summary INNER JOIN customers ON order_summary.Customer_ID = customers.Customer_ID";
         if (!empty($searchKeyword)) {
             $query .= " WHERE customers.firstname LIKE :keyword OR customers.lastname LIKE :keyword";
             $searchKeyword = "%{$searchKeyword}%";
@@ -53,10 +53,11 @@ include 'menu/validate_login.php';
             echo "<div class='p-3'>";
                 echo "<table class='table table-hover table-responsive table-bordered'>";
                 echo "<tr>";
-                    echo "<th>Order ID</th>";
-                    echo "<th>Customer Name</th>";
-                    echo "<th>Order Date</th>";
-                    echo "<th>Action</th>";
+                    echo "<th class='col-2'>Order ID</th>";
+                    echo "<th class='col-3'>Customer Name</th>";
+                    echo "<th class='col-2'>Order Date</th>";
+                    echo "<th class='col-2'>Total Amount (RM)</th>";
+                    echo "<th class='col-3'>Action</th>";
                 echo "</tr>";
 
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -65,6 +66,11 @@ include 'menu/validate_login.php';
                         echo "<td>{$Order_ID}</td>";
                         echo "<td>{$firstname} {$lastname}</td>";
                         echo "<td>{$order_date}</td>";
+                        echo"<td>
+                            <div class='d-flex justify-content-end'>
+                                <p class='me-3'>" . number_format((float)$total_amount, 2, '.', '') . "</p>
+                            </div>
+                        </td>";
                         echo "<td class='col-3'>";
                             echo "<a href='order_details_read.php?id={$Order_ID}' class='btn btn-info m-r-1em text-white mx-2'>Read</a>";
                             echo "<a href='order_update.php?id={$Order_ID}' class='btn btn-primary m-r-1em mx-2'>Edit</a>";
