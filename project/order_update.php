@@ -126,8 +126,6 @@ include 'menu/validate_login.php';
                                     <option value="" selected hidden>Choose a product</option>
                                     <?php
                                     for ($i = 0; $i < $productsRowCount; $i++) {
-                                        //$selected = $products[$i]['Product_ID'] == $selectedProducts[$x]['Product_ID'] ? "selected" : "";
-                                        //$selected = isset($_POST["product"]) && $products[$i]['Product_ID'] == $selectedProductID[$x] ? "selected" : "";
                                         if(!isset($_POST["product"])){
                                             $selected = $products[$i]['Product_ID'] == $selectedProducts[$x]['Product_ID'] ? "selected" : "";
                                         }else{
