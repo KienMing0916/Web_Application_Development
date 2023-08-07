@@ -27,13 +27,15 @@ include 'menu/validate_login.php';
         $customers = $customerStmt->fetchAll(PDO::FETCH_ASSOC);
         $customersRowCount = $customerStmt->rowCount();
 
-        $productQuery = "SELECT Product_ID, name FROM products";
+        $productQuery = "SELECT Product_ID, name, price, promotion_price FROM products";
         $productStmt = $con->prepare($productQuery);
         $productStmt->execute();
         $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
         $productsRowCount = $productStmt->rowCount();
 
         $selectedProductRow = 1;
+        $subTotal = 0;
+        $totalAmount = 0;
 
         if ($_POST) {
             try {
@@ -57,9 +59,17 @@ include 'menu/validate_login.php';
                         }
                     echo "</div>";
                 }else {
-                    $ordersummaryQuery = "INSERT INTO order_summary SET Customer_ID=:customer_id";
+
+                    for ($x = 0; $x < $selectedProductRow; $x++) {
+                        $subtotal =  ($products[$selectedProductID[$x] - 1]['promotion_price'] != 0) ?  $products[$selectedProductID[$x] - 1]['promotion_price'] * $selectedProductQuantity[$x] : $products[$selectedProductID[$x] - 1]['price'] * $selectedProductQuantity[$x];
+                        $totalAmount += $subtotal;
+                        $formattedTotalAmount = number_format((float)$totalAmount, 2, '.', '');
+                    }
+
+                    $ordersummaryQuery = "INSERT INTO order_summary SET Customer_ID=:customer_id, total_amount=:total_amount";
                     $orderSummaryStmt = $con->prepare($ordersummaryQuery);
                     $orderSummaryStmt->bindParam(":customer_id", $selectedCustomerID);
+                    $orderSummaryStmt->bindParam(":total_amount", $formattedTotalAmount);
                     $orderSummaryStmt->execute();
                     $order_id = $con->lastInsertId();
     
@@ -75,6 +85,8 @@ include 'menu/validate_login.php';
                     echo "<div class='alert alert-success m-3'>Order placed successfully.</div>";
                     $_POST = array();
                     $selectedProductRow = 1; // reset the row to 1
+                    header("Location: order_details_read.php?id={$order_id}");
+                    exit();
                 }
             } catch (PDOException $exception) {
                 //handleError($exception->getMessage());
@@ -114,8 +126,9 @@ include 'menu/validate_login.php';
                                     <option value="" selected hidden>Choose a product</option>
                                     <?php
                                     for ($i = 0; $i < $productsRowCount; $i++) {
-                                        $selected = isset($_POST["product"]) && $products[$i]['Product_ID'] == $selectedProductID[$x] ? "selected" : "";
+                                        $selected = isset($_POST["product"]) && $products[$i]['Product_ID'] == $selectedProductID[$x] ? "selected" : "";  
                                         echo "<option value='{$products[$i]['Product_ID']}' $selected>{$products[$i]['name']}</option>";
+        
                                     }
                                     ?>
                                 </select>
