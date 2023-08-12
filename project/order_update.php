@@ -23,6 +23,8 @@ include 'menu/validate_login.php';
         $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
         date_default_timezone_set('Asia/Kuala_Lumpur');
         $orderDate = date('Y-m-d H:i:s');
+        $subTotal = 0;
+        $totalAmount = 0;
 
         include 'config/database.php';
 
@@ -37,7 +39,7 @@ include 'menu/validate_login.php';
             $lastname = $customerRow['lastname'];
             $orderDateTime = $customerRow['order_date'];
             // get all the products in database
-            $productQuery = "SELECT Product_ID, name FROM products";
+            $productQuery = "SELECT Product_ID, name, price, promotion_price FROM products";
             $productStmt = $con->prepare($productQuery);
             $productStmt->execute();
             $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
@@ -77,14 +79,22 @@ include 'menu/validate_login.php';
                         }
                     echo "</div>";
                 }else {
+
+                    for ($x = 0; $x < $selectedProductRow; $x++) {
+                        $subtotal =  ($products[$selectedProductID[$x] - 1]['promotion_price'] != 0) ?  $products[$selectedProductID[$x] - 1]['promotion_price'] * $selectedProductQuantity[$x] : $products[$selectedProductID[$x] - 1]['price'] * $selectedProductQuantity[$x];
+                        $totalAmount += $subtotal;
+                        $formattedTotalAmount = number_format((float)$totalAmount, 2, '.', '');
+                    }
+
                     $deleteOrderDetailQuery = "DELETE FROM order_details WHERE Order_ID=:id";
                     $deleteOrderDetailStmt = $con->prepare($deleteOrderDetailQuery);
                     $deleteOrderDetailStmt->bindParam(":id", $id);
                     $deleteOrderDetailStmt->execute();
 
-                    $updateOrderDateQuery = "UPDATE order_summary SET order_date=:order_date WHERE Order_ID=:id";
+                    $updateOrderDateQuery = "UPDATE order_summary SET order_date=:order_date, total_amount=:total_amount WHERE Order_ID=:id";
                     $updateOrderDateStmt = $con->prepare($updateOrderDateQuery);
                     $updateOrderDateStmt->bindParam(":order_date", $orderDate);
+                    $updateOrderDateStmt->bindParam(":total_amount", $formattedTotalAmount);
                     $updateOrderDateStmt->bindParam(":id", $id);
                     $updateOrderDateStmt->execute();
     
