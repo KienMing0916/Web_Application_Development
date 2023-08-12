@@ -81,15 +81,11 @@ include 'menu/validate_login.php';
                         $orderDetailsStmt->bindParam(":quantity", $selectedProductQuantity[$i]);
                         $orderDetailsStmt->execute();
                     }
-    
-                    echo "<div class='alert alert-success m-3'>Order placed successfully.</div>";
-                    $_POST = array();
-                    $selectedProductRow = 1; // reset the row to 1
-                    header("Location: order_details_read.php?id={$order_id}");
+                    //order placed successfully
+                    header("Location: order_details_read.php?id={$order_id}&action=create_order_successfully");
                     exit();
                 }
             } catch (PDOException $exception) {
-                //handleError($exception->getMessage());
                 echo "<div class='alert alert-danger m-3'>Unable to place the order.</div>";
             }
         }

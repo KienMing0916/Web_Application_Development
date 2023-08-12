@@ -56,6 +56,7 @@ include 'menu/validate_login.php';
 
         if ($_POST) {
             try {
+                //No changing available for customer name.
                 $selectedCustomerID = "No changing available for customer name.";
                 $selectedProductQuantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
 
@@ -95,9 +96,8 @@ include 'menu/validate_login.php';
                         $orderDetailsStmt->bindParam(":quantity", $selectedProductQuantity[$i]);
                         $orderDetailsStmt->execute();
                     }
-    
-                    echo "<div class='alert alert-success m-3'>Order updated successfully.</div>";
-                    header("Location: order_details_read.php?id={$id}");
+                    // order updated successfully
+                    header("Location: order_details_read.php?id={$id}&action=update_order_successfully");
                     exit();
                 }
             } catch (PDOException $exception) {

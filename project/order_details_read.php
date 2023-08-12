@@ -5,7 +5,7 @@ include 'menu/validate_login.php';
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Order Details Receipt</title>
+    <title>Order Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>
@@ -15,11 +15,21 @@ include 'menu/validate_login.php';
         ?>
 
         <div class="page-header p-3 pb-1">
-            <h1>Order Details Receipt</h1>
+            <h1>Order Details</h1>
         </div>
          
         <?php
         $id=isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+        $action = isset($_GET['action']) ? $_GET['action'] : "";
+
+        if ($action == 'create_order_successfully') {
+            echo "<div class='alert alert-success m-3'>Order placed successfully.</div>";
+        }
+
+        if ($action == 'update_order_successfully') {
+            echo "<div class='alert alert-success m-3'>Order updated successfully.</div>";
+        }
+
         include 'config/database.php';
         $query = "SELECT order_details.OrderDetail_ID, order_details.Order_ID, products.name, products.price, products.promotion_price, order_details.quantity FROM order_details INNER JOIN products ON order_details.Product_ID = products.Product_ID WHERE order_details.Order_ID =:id ORDER BY order_details.OrderDetail_ID ASC";
         $stmt = $con->prepare($query);
@@ -40,9 +50,9 @@ include 'menu/validate_login.php';
         $orderDateTime = $customerRow['order_date'];
 
         if($num > 0){
-            echo "<div class='d-flex justify-content-between'>";
-                echo "<p class='pt-4 ps-3'><strong>Customer Name: " . $firstname . " " . $lastname . "</strong></p>";
-                echo "<p class='pt-4 pe-4'><strong>Order Date: " . $orderDateTime . "</strong></p>";
+            echo "<div class='pt-2 d-flex justify-content-between'>";
+                echo "<p class='ps-3'><strong>Customer Name: " . $firstname . " " . $lastname . "</strong></p>";
+                echo "<p class='pe-4'><strong>Order Date: " . $orderDateTime . "</strong></p>";
             echo "</div>";
             echo "<div class='pt-0 p-3'>";
                 echo "<table class='table table-hover table-responsive table-bordered'>";
@@ -79,7 +89,7 @@ include 'menu/validate_login.php';
                     }
                 echo "</table>";
                 $formattedTotalAmount = number_format((float)$totalAmount, 2, '.', '');
-                echo "<div class='d-flex justify-content-end py-2 pe-1'>";
+                echo "<div class='d-flex justify-content-end py-0 pe-1'>";
                     echo "<p><strong>Total Amount: RM" . $formattedTotalAmount . "</strong></p>";
                 echo "</div>";
                 echo "<a href='order_read.php' class='btn btn-danger'>Back to order list</a>";
