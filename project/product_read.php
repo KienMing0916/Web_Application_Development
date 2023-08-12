@@ -56,7 +56,7 @@ include 'menu/validate_login.php';
                 echo "<table class='table table-hover table-responsive table-bordered'>";//start table
                 echo "<tr>";
                     echo "<th>ID</th>";
-                    echo "<th>Name</th>";
+                    echo "<th>Product Name</th>";
                     echo "<th>Description</th>";
                     echo "<th>Price (RM)</th>";
                     echo "<th>Category Name</th>";

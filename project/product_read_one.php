@@ -49,7 +49,7 @@ include 'menu/validate_login.php';
         <div class="p-3">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
-                    <td>Name</td>
+                    <td>Product Name</td>
                     <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
