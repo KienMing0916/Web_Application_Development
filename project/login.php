@@ -4,6 +4,7 @@ if (isset($_SESSION['Customer_ID'])) {
   header("Location: index.php");
   exit();
 }
+
 ?>
 
 <!DOCTYPE HTML>
@@ -27,7 +28,14 @@ if (isset($_SESSION['Customer_ID'])) {
 
         <?php
         function validateLogin() {
-            if ($_POST) {
+            //for those who try to go to another page without permission
+            $action = isset($_GET['action']) ? $_GET['action'] : "";
+            if($action == 'warning') {
+                echo "<div class='alert alert-danger m-3'>Please login to your account first.</div>";
+                return;
+            }
+
+            if($_POST) {
                 include 'config/database.php';
     
                 $useraccountinput = $_POST['useraccount'];
@@ -56,17 +64,17 @@ if (isset($_SESSION['Customer_ID'])) {
                         $stmt->execute();
                         $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
-                        if (!$row) {
+                        if(!$row) {
                             echo "<div class='alert alert-danger m-3'>Username or email not found.</div>";
                             return;
                         }
 
-                        if (!password_verify($userpasswordinput, $row['password'])) {
+                        if(!password_verify($userpasswordinput, $row['password'])) {
                             echo "<div class='alert alert-danger m-3'>Password incorrect.</div>";
                             return;
                         }
     
-                        if ($row['status'] !== 'Active') {
+                        if($row['status'] !== 'Active') {
                             echo "<div class='alert alert-danger m-3'>" . $row['status'] . " account.</div>";
                             return;
                         }
@@ -83,10 +91,10 @@ if (isset($_SESSION['Customer_ID'])) {
         validateLogin();
         ?>
 
-        <div class="row m-3 p-5 d-flex justify-content-center">
+        <div class="row m-3 p-5 pt-4 d-flex justify-content-center">
             <div class="col-lg-6 col-md-8 col-sm-10 col-12 p-5 border border-dark border-2 rounded bg-light">
                 <h2 class="text-center pb-3">Login</h2>
-                <form method="POST" action="">
+                <form method="POST" action="login.php">
                     <div class="mb-3">
                         <label for="useraccount" class="form-label">Username / Email</label>
                         <input type="text" class="form-control" id="useraccount" name="useraccount" value="<?php echo isset($_POST['useraccount']) ? $_POST['useraccount'] : ''; ?>" required>
