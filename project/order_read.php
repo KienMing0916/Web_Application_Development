@@ -40,7 +40,7 @@ include 'menu/validate_login.php';
             <a href="order_create.php" class="btn btn-primary m-b-1em">Create New Order</a>
         </div>';
 
-        echo '<div class="p-3">
+        echo '<div class="p-3 pb-1">
             <form method="GET" action="">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" name="search" placeholder="Search customer name..." value="' . str_replace('%', '', $searchKeyword) . '">
@@ -48,6 +48,8 @@ include 'menu/validate_login.php';
                 </div>
             </form>
         </div>';
+
+        include 'menu/delete_alert_box.php';
         
         if($num > 0){
             echo "<div class='p-3'>";
@@ -74,7 +76,7 @@ include 'menu/validate_login.php';
                         echo "<td class='col-3'>";
                             echo "<a href='order_details_read.php?id={$Order_ID}' class='btn btn-info m-r-1em text-white mx-2'>Read</a>";
                             echo "<a href='order_update.php?id={$Order_ID}' class='btn btn-primary m-r-1em mx-2'>Edit</a>";
-                            echo "<a href='#' onclick='delete_customer({$Order_ID});'  class='btn btn-danger mx-2'>Delete</a>";
+                            echo "<a href='#' onclick='order_delete({$Order_ID});'  class='btn btn-danger mx-2'>Delete</a>";
                         echo "</td>";
 
                     echo "</tr>";
@@ -89,5 +91,14 @@ include 'menu/validate_login.php';
         ?>   
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script type='text/javascript'>
+    // confirm record deletion
+    function order_delete(Order_ID){
+        if (confirm('Are you sure?')){
+            // if user clicked ok, pass the id to delete.php and execute the delete query
+            window.location = 'order_delete.php?id=' + Order_ID;
+        }
+    }
+    </script>
 </body>
 </html>

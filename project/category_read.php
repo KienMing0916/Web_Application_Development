@@ -40,7 +40,7 @@ include 'menu/validate_login.php';
             <a href="category_create.php" class="btn btn-primary m-b-1em">Create New Category</a>
         </div>';
 
-        echo '<div class="p-3">
+        echo '<div class="p-3 pb-1">
             <form method="GET" action="">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" name="search" placeholder="Search category..." value="' . str_replace('%', '', $searchKeyword) . '">
@@ -48,6 +48,8 @@ include 'menu/validate_login.php';
                 </div>
             </form>
         </div>';
+
+        include 'menu/delete_alert_box.php';
         
         if($num > 0){
             echo "<div class='p-3'>";
@@ -70,7 +72,7 @@ include 'menu/validate_login.php';
                             //tempo
                             echo "<a href='category_read_one.php?id={$Category_ID}' class='btn btn-info m-r-1em text-white mx-2'>Read</a>";
                             echo "<a href='category_update.php?id={$Category_ID}' class='btn btn-primary m-r-1em mx-2'>Edit</a>";
-                            echo "<a href='#' onclick='delete_category({$Category_ID});'  class='btn btn-danger mx-2'>Delete</a>";
+                            echo "<a href='#' onclick='category_delete({$Category_ID});'  class='btn btn-danger mx-2'>Delete</a>";
                         echo "</td>";
                     echo "</tr>";
                 }
@@ -84,5 +86,14 @@ include 'menu/validate_login.php';
         ?>   
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script type='text/javascript'>
+    // confirm record deletion
+    function category_delete(Category_ID){
+        if (confirm('Are you sure?')){
+            // if user clicked ok, pass the id to delete.php and execute the delete query
+            window.location = 'category_delete.php?id=' + Category_ID;
+        }
+    }
+    </script>
 </body>
 </html>
