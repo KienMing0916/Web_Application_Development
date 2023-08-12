@@ -49,7 +49,7 @@ include 'menu/validate_login.php';
         <div class="p-3">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
-                    <td>Product Name</td>
+                    <td class='col-3'>Product Name</td>
                     <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
@@ -57,7 +57,7 @@ include 'menu/validate_login.php';
                     <td><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
-                    <td>Price (RM)</td>
+                    <td>Selling Price (RM)</td>
                     <td><?php echo htmlspecialchars(number_format((float)$price, 2, '.', ''), ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>

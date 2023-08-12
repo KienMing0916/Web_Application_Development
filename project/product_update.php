@@ -106,12 +106,12 @@ include 'menu/validate_login.php';
                     <td><textarea name='description' class='form-control'><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></textarea></td>
                 </tr>
                 <tr>
-                    <td>Price</td>
+                    <td>Selling Price (RM)</td>
                     <td><input type='text' name='price' step="0.01" value="<?php echo htmlspecialchars($price, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
 
                 <tr>
-                    <td>Promotion Price</td>
+                    <td>Promotion Price (RM)</td>
                     <td><input type='text' name='promotion_price' step="0.01" value="<?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>

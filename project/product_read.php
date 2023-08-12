@@ -58,10 +58,10 @@ include 'menu/validate_login.php';
                 echo "<table class='table table-hover table-responsive table-bordered'>";//start table
                 echo "<tr>";
                     echo "<th>ID</th>";
-                    echo "<th>Product Name</th>";
+                    echo "<th class='col-2'>Product Name</th>";
                     echo "<th>Description</th>";
-                    echo "<th>Price (RM)</th>";
-                    echo "<th>Category Name</th>";
+                    echo "<th>Selling Price (RM)</th>";
+                    echo "<th class='col-1'>Category Name</th>";
                     echo "<th>Action</th>";
                 echo "</tr>";
 
@@ -82,7 +82,7 @@ include 'menu/validate_login.php';
                         }else{
                             echo "<td class='text-end'>" . number_format((float)$price, 2, '.', '') . "</td>";
                         }
-                        echo "<td class='text-end'>{$category_name}</td>";
+                        echo "<td>{$category_name}</td>";
 
                         echo "<td class='col-3'>";
                             echo "<a href='product_read_one.php?id={$Product_ID}' class='btn btn-info m-r-1em text-white mx-2'>Read</a>";
