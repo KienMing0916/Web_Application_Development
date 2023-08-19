@@ -94,7 +94,7 @@ include 'menu/validate_login.php';
     <script type='text/javascript'>
     // confirm record deletion
     function order_delete(Order_ID){
-        if (confirm('Are you sure?')){
+        if (confirm('Are you sure to delete this order?')){
             // if user clicked ok, pass the id to delete.php and execute the delete query
             window.location = 'order_delete.php?id=' + Order_ID;
         }

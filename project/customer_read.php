@@ -93,7 +93,7 @@ include 'menu/validate_login.php';
     <script type='text/javascript'>
     // confirm record deletion
     function customer_delete(Customer_ID){
-        if (confirm('Are you sure?')){
+        if (confirm('Are you sure to delete this customer?')){
             // if user clicked ok, pass the id to delete.php and execute the delete query
             window.location = 'customer_delete.php?id=' + Customer_ID;
         }
