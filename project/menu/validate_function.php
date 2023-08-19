@@ -1,6 +1,7 @@
 <?php
-function validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id) {
+function validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image) {
     $errorMessage = array();
+    $target_directory = "uploaded_product_img/";
 
     if(empty($name)) {
         $errorMessage[] = "Name field is empty.";
@@ -42,6 +43,9 @@ function validateProductForm($name, $description, $price, $promotion_price, $man
         $errorMessage[] = "No product category found.";
     }
 
+    $errors = validateImage($image, $target_directory, $errorMessage);
+    $errorMessage = $errors;
+
     return $errorMessage;
 }
 
@@ -58,9 +62,10 @@ function validateCategoryForm($category_name, $description) {
     return $errorMessage;
 }
 
-function validateCreateCustomerForm($username, $password, $confirmpassword, $firstname, $lastname, $gender, $birthdate, $email, $status) {
+function validateCreateCustomerForm($username, $password, $confirmpassword, $firstname, $lastname, $gender, $birthdate, $email, $status, $image) {
     $errorMessage = array();
     $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/";
+    $target_directory = "uploaded_customer_img/";
 
     if(empty($username)) {
         $errorMessage[] = "Username field is empty.";
@@ -108,12 +113,16 @@ function validateCreateCustomerForm($username, $password, $confirmpassword, $fir
         $errorMessage[] = "Account status field is empty.";
     }
 
+    $errors = validateImage($image, $target_directory, $errorMessage);
+    $errorMessage = $errors;
+
     return $errorMessage;
 }
 
-function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $status, $db_password, $current_password, $new_password, $confirm_new_password) {
+function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $status, $db_password, $current_password, $new_password, $confirm_new_password, $image) {
     $errorMessage = array();
     $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/";
+    $target_directory = "uploaded_customer_img/";
 
     if(empty($username)) {
         $errorMessage[] = "Username field is empty.";
@@ -145,11 +154,18 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
     if(empty($status)) {
         $errorMessage[] = "Account status field is empty.";
     }
+
     if (empty($current_password) && empty($new_password) && empty($confirm_new_password)) {
+        $errors = validateImage($image, $target_directory, $errorMessage);
+        $errorMessage = $errors;
+
         return $errorMessage;
     }
     if (empty($current_password) || empty($new_password) || empty($confirm_new_password)) {
         $errorMessage[] = "If you wish to change your password, please fill in all three password fields.";
+        $errors = validateImage($image, $target_directory, $errorMessage);
+        $errorMessage = $errors;
+
         return $errorMessage;
     }else {
         if (!preg_match($passwordPattern, $new_password)) {
@@ -161,6 +177,9 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
         if (!password_verify($current_password, $db_password)) {
             $errorMessage[] = "Incorrect current password.";
         }
+        $errors = validateImage($image, $target_directory, $errorMessage);
+        $errorMessage = $errors;
+        
         return $errorMessage;
     }
 }
@@ -208,4 +227,58 @@ function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selected
     return $errorMessage;
 }
 
+function validateImage($image, $target_directory, $errorMessage) {
+    
+    if (!empty($_FILES["image"]["name"])) {
+        if ($image) {
+            // upload file to folder
+            $target_file = $target_directory . $image;
+            $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+    
+            $check = getimagesize($_FILES["image"]["tmp_name"]);
+            if ($check !== false) {
+                $allowed_file_types = array("jpg", "jpeg", "png", "gif");
+                if (!in_array($file_type, $allowed_file_types)) {
+                    $errorMessage[] = "Only JPG, JPEG, PNG, GIF files are allowed.";
+                }
+                if (file_exists($target_file)) {
+                    $errorMessage[] = "Image already exists. Try to change the file name.";
+                }
+                if ($_FILES['image']['size'] > (512 * 1024)) {
+                    $errorMessage[] = "Image must be less than 512 KB in size.";
+                }
+                list($width, $height) = getimagesize($_FILES["image"]["tmp_name"]);
+                if ($width !== $height) {
+                    $errorMessage[] = "Image must be square in dimensions.";
+                }
+                if (!is_dir($target_directory)) {
+                    mkdir($target_directory, 0777, true);
+                }
+
+            } else {
+                $errorMessage[] = "Submitted file is not an image.";
+            }
+
+            if (empty($errorMessage)) {
+                // Upload the file only when there are no error messages
+                if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                    // File uploaded successfully
+                } else {
+                    $errorMessage[] = "Unable to upload the photo. Update the record to upload the photo.";
+                }
+            }
+        }
+    }
+
+    return $errorMessage;
+}
+
+
+
 ?>
+
+
+
+
+
+
