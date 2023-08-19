@@ -22,7 +22,7 @@ include 'menu/validate_login.php';
         $id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
         include 'config/database.php';
         try {
-            $query = "SELECT Customer_ID, username, password, firstname, lastname, gender, birthdate, email, status FROM customers WHERE Customer_ID = ? LIMIT 0,1";
+            $query = "SELECT Customer_ID, username, password, firstname, lastname, gender, birthdate, email, status, profile_image FROM customers WHERE Customer_ID = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
             $stmt->bindParam(1, $id);
             $stmt->execute();
@@ -36,6 +36,8 @@ include 'menu/validate_login.php';
             $birthdate = $row['birthdate'];
             $email = $row['email'];
             $status = $row['status'];
+            $uploadedImage = $row['profile_image'];
+            $img_directory = "uploaded_customer_img/" . $uploadedImage;
 
         } catch (PDOException $exception) {
             die('ERROR: ' . $exception->getMessage());
@@ -54,9 +56,12 @@ include 'menu/validate_login.php';
                 $current_password = $_POST['current_password'];
                 $new_password = $_POST['new_password'];
                 $confirm_new_password = $_POST['confirm_new_password'];
+                // image field
+                $image = !empty($_FILES["image"]["name"]) ? basename($_FILES["image"]["name"]) : $uploadedImage;
+                $image = htmlspecialchars(strip_tags($image));
 
                 include 'menu/validate_function.php';
-                $errorMessage = validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $status, $db_password, $current_password, $new_password, $confirm_new_password);         
+                $errorMessage = validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $status, $db_password, $current_password, $new_password, $confirm_new_password, $image);         
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
@@ -80,16 +85,27 @@ include 'menu/validate_login.php';
                     $stmt->bindParam(':birthdate', $birthdate);
                     $stmt->bindParam(':status', $status);
                     $stmt->bindParam(':id', $id);
+                    $stmt->bindParam(':image', $image);
             
                     if (!empty($hashed_password)) {
                         $stmt->bindParam(':password', $hashed_password);
                     }
+
+                    if ($uploadedImage !== 'defaultcustomerimg.jpg' && $image !== $uploadedImage) {
+                        // Remove the existing image
+                        if (file_exists($img_directory)) {
+                            unlink($img_directory);
+                        }
+                        // Upload the new image
+                        $targetDirectory = "uploaded_customer_img/";
+                        $targetFile = $targetDirectory . basename($_FILES["image"]["name"]);
+                        move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile);
+                    }
             
                     if ($stmt->execute()) {
-                        echo "<div class='alert alert-success m-3'>Record was updated.</div>";
-                        $_POST['current_password'] = '';
-                        $_POST['new_password'] = '';
-                        $_POST['confirm_new_password'] = '';
+                        // record updated
+                        header("Location: customer_read_one.php?id={$id}&action=record_updated");
+                        exit();
                     } else {
                         echo "<div class='alert alert-danger m-3'>Unable to update record. Please try again.</div>";
                     }
@@ -100,7 +116,7 @@ include 'menu/validate_login.php';
         }
         ?>
 
-        <form class="p-3" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}");?>" method="post">
+        <form class="p-3" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}");?>" method="post" enctype="multipart/form-data">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td class="col-4">Username</td>
@@ -141,6 +157,14 @@ include 'menu/validate_login.php';
                             <option value="Inactive" <?php echo ($status == 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
                             <option value="Pending" <?php echo ($status == 'Pending') ? 'selected' : ''; ?>>Pending</option>
                         </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Profile Image</td>
+                    <td>
+                        <img src="<?php echo htmlspecialchars($img_directory, ENT_QUOTES); ?>" width="200" height="200">
+                        <br><br>
+                        <input type="file" name="image"/>
                     </td>
                 </tr>
                 <tr>

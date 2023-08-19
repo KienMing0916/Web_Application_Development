@@ -62,8 +62,9 @@ include 'menu/validate_login.php';
                     $stmt->bindParam(':id', $id);
                     // Execute the query
                     if($stmt->execute()){
-                        echo "<div class='alert alert-success m-3'>Record was updated.</div>";
-
+                        // record updated
+                        header("Location: category_read_one.php?id={$id}&action=record_updated");
+                        exit();
                     }else{
                         echo "<div class='alert alert-danger m-3'>Unable to update record. Please try again.</div>";
                     }  

@@ -72,6 +72,7 @@ include 'menu/validate_login.php';
                     $orderSummaryStmt->bindParam(":total_amount", $formattedTotalAmount);
                     $orderSummaryStmt->execute();
                     $order_id = $con->lastInsertId();
+
     
                     for ($i = 0; $i < $selectedProductRow; $i++) {
                         $orderDetailsQuery = "INSERT INTO order_details SET Order_ID=:order_id, Product_ID=:product_id, quantity=:quantity";

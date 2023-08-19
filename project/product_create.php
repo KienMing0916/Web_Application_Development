@@ -21,9 +21,11 @@ include 'menu/validate_login.php';
         <?php
         if($_POST){
             include 'config/database.php';
+            include 'menu/validate_function.php';
+
             try{
                 //query for insert
-                $query = "INSERT INTO products SET name=:name, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date, created=:created, Category_ID=:category_id";
+                $query = "INSERT INTO products SET name=:name, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date, created=:created, Category_ID=:category_id, product_image=:image";
                 $stmt = $con->prepare($query);
 
                 $name = $_POST['name'];
@@ -33,13 +35,15 @@ include 'menu/validate_login.php';
                 $manufacture_date = $_POST['manufacture_date'];
                 $expired_date = $_POST['expired_date'];
                 $category_id = $_POST['category_id'];
-
                 //Datetime objects
                 $dateStart = new DateTime($manufacture_date);
                 $dateEnd = new DateTime($expired_date);
+                //image field
+                $image = !empty($_FILES["image"]["name"]) ? basename($_FILES["image"]["name"]) : "defaultproductimg.jpg";
+                //$image = !empty($_FILES["image"]["name"]) ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"]) : "defaultproductimg.jpg";
+                $image = htmlspecialchars(strip_tags($image));
 
-                include 'menu/validate_function.php';
-                $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id);
+                $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
@@ -58,15 +62,18 @@ include 'menu/validate_login.php';
                     $stmt->bindParam(':promotion_price', $promotion_price);
                     $stmt->bindParam(':manufacture_date', $manufacture_date);
                     $stmt->bindParam(':expired_date', $expired_date);
+                    $stmt->bindParam(':image', $image);
                     $created = date('Y-m-d H:i:s'); // get the current date and time
                     $stmt->bindParam(':created', $created);
                     $stmt->bindParam(':category_id', $category_id);
                     
                     // Execute the query
                     if ($stmt->execute()) {
-                        echo "<div class='alert alert-success m-3'>Record was saved.</div>";
-                        $_POST = array();
-                    } else {
+                        //record saved
+                        $product_id = $con->lastInsertId();
+                        header("Location: product_read_one.php?id={$product_id}&action=record_saved");
+                        exit();
+                    }else {
                         echo "<div class='alert alert-danger m-3'>Unable to save the record.</div>";
                     }
                 }
@@ -78,7 +85,7 @@ include 'menu/validate_login.php';
         ?>
 
         <div class="p-3">
-            <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="POST">
+            <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="POST" enctype="multipart/form-data">
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td class="col-4">Name</td>
@@ -126,6 +133,11 @@ include 'menu/validate_login.php';
                             </select>
                         </td>
                     </tr>
+                    <tr>
+                        <td>Product Image</td>
+                        <td><input type="file" name="image"/></td>
+                    </tr>
+
                     <tr>
                         <td></td>
                         <td>

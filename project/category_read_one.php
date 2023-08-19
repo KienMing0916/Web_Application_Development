@@ -5,7 +5,7 @@ include 'menu/validate_login.php';
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Read Category</title>
+    <title>Category Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>
@@ -15,11 +15,21 @@ include 'menu/validate_login.php';
         ?>
 
         <div class="page-header p-3 pb-1">
-            <h1>Read Category</h1>
+            <h1>Category Details</h1>
         </div>
          
         <?php
         $id=isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+        $action = isset($_GET['action']) ? $_GET['action'] : "";
+
+        if ($action == 'record_saved') {
+            echo "<div class='alert alert-success m-3'>Category record was saved.</div>";
+        }
+
+        if ($action == 'record_updated') {
+            echo "<div class='alert alert-success m-3'>Category record was updated.</div>";
+        }
+
         include 'config/database.php';
         try {
             // prepare select query

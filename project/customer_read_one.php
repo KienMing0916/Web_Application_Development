@@ -5,7 +5,7 @@ include 'menu/validate_login.php';
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Read Customer</title>
+    <title>Customer Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>
@@ -15,14 +15,24 @@ include 'menu/validate_login.php';
         ?>
 
         <div class="page-header p-3 pb-1">
-            <h1>Read Customer</h1>
+            <h1>Customer Details</h1>
         </div>
          
         <?php
         $id=isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
+        $action = isset($_GET['action']) ? $_GET['action'] : "";
+
+        if ($action == 'record_saved') {
+            echo "<div class='alert alert-success m-3'>Customer record was saved.</div>";
+        }
+
+        if ($action == 'record_updated') {
+            echo "<div class='alert alert-success m-3'>Customer record was updated.</div>";
+        }
+
         include 'config/database.php';
         try {
-            $query = "SELECT Customer_ID, username, firstname, lastname, gender, birthdate, registrationdatetime, email, status FROM customers WHERE Customer_ID = :id ";
+            $query = "SELECT Customer_ID, username, firstname, lastname, gender, birthdate, registrationdatetime, email, status, profile_image FROM customers WHERE Customer_ID = :id ";
             $stmt = $con->prepare( $query );
             $stmt->bindParam(":id", $id);
             $stmt->execute();
@@ -36,6 +46,8 @@ include 'menu/validate_login.php';
             $registrationdatetime = $row['registrationdatetime'];
             $email = $row['email'];
             $status = $row['status'];
+            $image = $row['profile_image'];
+            $img_directory = "uploaded_customer_img/" . $image;
         }
         catch(PDOException $exception){
             die('ERROR: ' . $exception->getMessage());
@@ -45,7 +57,7 @@ include 'menu/validate_login.php';
         <div class="p-3">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
-                    <td>Username</td>
+                    <td class='col-3'>Username</td>
                     <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
@@ -75,6 +87,12 @@ include 'menu/validate_login.php';
                 <tr>
                     <td>Status</td>
                     <td><?php echo htmlspecialchars($status, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Profile Image</td>
+                    <td>
+                        <img src="<?php echo htmlspecialchars($img_directory, ENT_QUOTES); ?>" alt="<?php echo htmlspecialchars($username, ENT_QUOTES); ?>" width="200" height="200">
+                    </td>
                 </tr>
                 <tr>
                     <td></td>

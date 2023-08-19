@@ -41,8 +41,10 @@ include 'menu/validate_login.php';
                     $stmt->bindParam(':description', $description);
 
                     if ($stmt->execute()) {
-                        echo "<div class='alert alert-success m-3'>Record was saved.</div>";
-                        $_POST = array();
+                        //record saved
+                        $category_id = $con->lastInsertId();
+                        header("Location: category_read_one.php?id={$category_id}&action=record_saved");
+                        exit();
                     } else {
                         echo "<div class='alert alert-danger m-3'>Unable to save the record.</div>";
                     }

@@ -25,7 +25,7 @@ include 'menu/validate_login.php';
 
         try {
             // prepare select query
-            $query = "SELECT Product_ID, name, description, price, promotion_price, manufacture_date, expired_date, Category_ID FROM products WHERE Product_ID = ? LIMIT 0,1";
+            $query = "SELECT Product_ID, name, description, price, promotion_price, manufacture_date, expired_date, Category_ID, product_image FROM products WHERE Product_ID = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
             // this is the first question mark
             $stmt->bindParam(1, $id);
@@ -39,6 +39,8 @@ include 'menu/validate_login.php';
             $manufacture_date = $row['manufacture_date'];
             $expired_date = $row['expired_date'];
             $category_id = $row['Category_ID'];
+            $uploadedImage = $row['product_image'];
+            $img_directory = "uploaded_product_img/" . $uploadedImage;
         }
         catch(PDOException $exception){
             die('ERROR: ' . $exception->getMessage());
@@ -47,8 +49,10 @@ include 'menu/validate_login.php';
 
         <?php
         if($_POST){
+            include 'menu/validate_function.php';
+
             try{
-                $query = "UPDATE products SET name=:name, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date, Category_ID=:category_id WHERE Product_ID = :id";
+                $query = "UPDATE products SET name=:name, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date, Category_ID=:category_id, product_image=:image WHERE Product_ID = :id";
                 $stmt = $con->prepare($query);
                 // posted values
                 $name = htmlspecialchars(strip_tags($_POST['name']));
@@ -58,10 +62,11 @@ include 'menu/validate_login.php';
                 $manufacture_date = htmlspecialchars(strip_tags($_POST['manufacture_date']));
                 $expired_date = htmlspecialchars(strip_tags($_POST['expired_date'])); 
                 $category_id = htmlspecialchars(strip_tags($_POST['category_id'])); 
+                // image field
+                $image = !empty($_FILES["image"]["name"]) ? basename($_FILES["image"]["name"]) : $uploadedImage;
+                $image = htmlspecialchars(strip_tags($image));
 
-                include 'menu/validate_function.php';
-                $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id);
-
+                $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
@@ -80,10 +85,23 @@ include 'menu/validate_login.php';
                     $stmt->bindParam(':manufacture_date', $manufacture_date);
                     $stmt->bindParam(':expired_date', $expired_date);
                     $stmt->bindParam(':category_id', $category_id);
+                    $stmt->bindParam(':image', $image);
+
+                    if ($uploadedImage !== 'defaultproductimg.jpg' && $image !== $uploadedImage) {
+                        // Remove the existing image
+                        if (file_exists($img_directory)) {
+                            unlink($img_directory);
+                        }
+                        // Upload the new image
+                        $targetDirectory = "uploaded_product_img/";
+                        $targetFile = $targetDirectory . basename($_FILES["image"]["name"]);
+                        move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile);
+                    }
                     // Execute the query
                     if($stmt->execute()){
-                        echo "<div class='alert alert-success m-3'>Record was updated.</div>";
-
+                        // record updated
+                        header("Location: product_read_one.php?id={$id}&action=record_updated");
+                        exit();
                     }else{
                         echo "<div class='alert alert-danger m-3'>Unable to update record. Please try again.</div>";
                     }  
@@ -95,7 +113,7 @@ include 'menu/validate_login.php';
         }
         ?>
 
-        <form class="p-3" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}");?>" method="post">
+        <form class="p-3" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}");?>" method="post" enctype="multipart/form-data">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td class="col-4">Name</td>
@@ -142,6 +160,14 @@ include 'menu/validate_login.php';
                             }
                             ?>
                         </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Product Image</td>
+                    <td>
+                        <img src="<?php echo htmlspecialchars($img_directory, ENT_QUOTES); ?>" width="200" height="200">
+                        <br><br>
+                        <input type="file" name="image"/>
                     </td>
                 </tr>
                 <tr>

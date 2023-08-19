@@ -21,8 +21,10 @@ include 'menu/validate_login.php';
         <?php
         if($_POST){
             include 'config/database.php';
+            include 'menu/validate_function.php';
+
             try{
-                $query = "INSERT INTO customers SET username=:username, password=:password, firstname=:firstname, lastname=:lastname, gender=:gender, birthdate=:birthdate ,email=:email, status=:status";
+                $query = "INSERT INTO customers SET username=:username, password=:password, firstname=:firstname, lastname=:lastname, gender=:gender, birthdate=:birthdate ,email=:email, status=:status, profile_image=:image";
                 // prepare query for execution
                 $stmt = $con->prepare($query);
                 $username = $_POST['username'];
@@ -33,11 +35,13 @@ include 'menu/validate_login.php';
                 $birthdate = $_POST['birthdate'];
                 $email = $_POST['email'];
                 $status = $_POST['status'];
-
                 $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
+                //image field
+                $image = !empty($_FILES["image"]["name"]) ? basename($_FILES["image"]["name"]) : "defaultcustomerimg.jpg";
+                //$image = !empty($_FILES["image"]["name"]) ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"]) : "defaultproductimg.jpg";
+                $image = htmlspecialchars(strip_tags($image));
 
-                include 'menu/validate_function.php';
-                $errorMessage = validateCreateCustomerForm($username, $password, $confirmpassword, $firstname, $lastname, $gender, $birthdate, $email, $status);
+                $errorMessage = validateCreateCustomerForm($username, $password, $confirmpassword, $firstname, $lastname, $gender, $birthdate, $email, $status, $image);
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
@@ -55,12 +59,15 @@ include 'menu/validate_login.php';
                     $stmt->bindParam(':birthdate', $birthdate);
                     $stmt->bindParam(':email', $email);
                     $stmt->bindParam(':status', $status);
+                    $stmt->bindParam(':image', $image);
                     
                     // Execute the query
                     if ($stmt->execute()) {
-                        echo "<div class='alert alert-success m-3'>Customer record was saved.</div>";
-                        $_POST = array();
-                    } else {
+                        //record saved
+                        $customer_id = $con->lastInsertId();
+                        header("Location: customer_read_one.php?id={$customer_id}&action=record_saved");
+                        exit();
+                    }else {
                         echo "<div class='alert alert-danger m-3'>Unable to save the customer record.</div>";
                     }
                 }
@@ -82,7 +89,7 @@ include 'menu/validate_login.php';
         ?>
 
         <div class="p-3">
-            <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="POST">
+            <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="POST" enctype="multipart/form-data">
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td class="col-4">Username</td>
@@ -139,6 +146,10 @@ include 'menu/validate_login.php';
                                 <option value="Pending" <?php echo (isset($_POST['status']) && $_POST['status'] === 'Pending') ? 'selected' : ''; ?>>Pending</option>
                             </select>
                         </td>
+                    </tr>
+                    <tr>
+                        <td>Profile Image</td>
+                        <td><input type="file" name="image"/></td>
                     </tr>
                     <tr>
                         <td></td>
