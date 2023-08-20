@@ -8,6 +8,14 @@ try {
     $findProductStmt->bindParam(1, $id);
     $findProductStmt->execute();
     $result = $findProductStmt->fetchColumn();
+    // Select query to retrieve products image filename
+    $getProductImageQuery = "SELECT product_image FROM products WHERE Product_ID = ?";
+    $getProductImageStmt = $con->prepare($getProductImageQuery);
+    $getProductImageStmt->bindParam(1, $id);
+    $getProductImageStmt->execute();
+    $row = $getProductImageStmt->fetch(PDO::FETCH_ASSOC);
+    $uploadedImage = $row['product_image'];
+    $img_directory = "uploaded_product_img/" . $uploadedImage;
     // delete query
     $deleteProductQuery = "DELETE FROM products WHERE Product_ID = ?";
     $deleteProductStmt = $con->prepare($deleteProductQuery);
@@ -17,6 +25,11 @@ try {
         header('Location: product_read.php?action=product_in_use&result=' . $result);
     }else{
         if($deleteProductStmt->execute()){
+            if ($uploadedImage !== 'defaultproductimg.jpg') {
+                if (file_exists($img_directory)) {
+                    unlink($img_directory);
+                }
+            }
             header('Location: product_read.php?action=deleted');
         }else{
             die('Unable to delete record.');
