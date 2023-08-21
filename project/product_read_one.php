@@ -30,6 +30,10 @@ include 'menu/validate_login.php';
             echo "<div class='alert alert-success m-3'>Product record was updated.</div>";
         }
 
+        if ($action == 'image_deleted') {
+            echo "<div class='alert alert-success m-3'>Image was deleted.</div>";
+        }
+
         include 'config/database.php';
         try {
             // prepare select query

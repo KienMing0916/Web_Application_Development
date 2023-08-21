@@ -51,74 +51,86 @@ include 'menu/validate_login.php';
             include 'menu/validate_function.php';
 
             try{
-                $query = "UPDATE products SET name=:name, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date, Category_ID=:category_id, product_image=:image WHERE Product_ID = :id";
-                $stmt = $con->prepare($query);
-                // posted values
-                $name = htmlspecialchars(strip_tags($_POST['name']));
-                $description = htmlspecialchars(strip_tags($_POST['description']));
-                $price = htmlspecialchars(strip_tags($_POST['price'])); 
-                $promotion_price = htmlspecialchars(strip_tags($_POST['promotion_price']));
-                $manufacture_date = htmlspecialchars(strip_tags($_POST['manufacture_date']));
-                $expired_date = htmlspecialchars(strip_tags($_POST['expired_date'])); 
-                $category_id = htmlspecialchars(strip_tags($_POST['category_id'])); 
-                // image field
-                $image = !empty($_FILES["image"]["name"]) ? "uploaded_product_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "";
-                $image = htmlspecialchars(strip_tags($image));
-                $defaultImage = 'uploaded_product_img/defaultproductimg.jpg';
+                if(isset($_POST['delete_image'])){
+                    $defaultImage = 'uploaded_product_img/defaultproductimg.jpg';
+                    $queryDeleteImg = "UPDATE products SET product_image=:image WHERE Product_ID = :id";
+                    $deleteImgStmt = $con->prepare($queryDeleteImg);
+                    $deleteImgStmt->bindParam(':id', $id);
+                    $deleteImgStmt->bindParam(':image', $defaultImage);
+                    $deleteImgStmt->execute();
 
-                $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);
-
-                if(!empty($errorMessage)) {
-                    echo "<div class='alert alert-danger m-3'>";
-                        foreach ($errorMessage as $displayErrorMessage) {
-                            echo $displayErrorMessage . "<br>";
-                        }
-                    echo "</div>";
-                }else {
-                    $price = number_format((float)$price, 2);   
-                    $promotion_price = number_format((float)$promotion_price, 2);
-                    $stmt->bindParam(':id', $id);
-                    $stmt->bindParam(':name', $name);
-                    $stmt->bindParam(':description', $description);
-                    $stmt->bindParam(':price', $price);
-                    $stmt->bindParam(':promotion_price', $promotion_price);
-                    $stmt->bindParam(':manufacture_date', $manufacture_date);
-                    $stmt->bindParam(':expired_date', $expired_date);
-                    $stmt->bindParam(':category_id', $category_id);
-
-                    if (isset($_POST['delete_image'])) {
-                        // Delete the image file
+                    if($deleteImgStmt->execute()){
+                        // delete image file
                         if ($uploadedImage !== 'uploaded_product_img/defaultproductimg.jpg') {
                             if (file_exists($uploadedImage)) {
                                 unlink($uploadedImage);
                             }
                         }
-                        $stmt->bindParam(':image', $defaultImage);
-                    
+                        // record deleted
+                        header("Location: product_read_one.php?id={$id}&action=image_deleted");
+                        exit();
                     }else{
+                        echo "<div class='alert alert-danger m-3'>Unable to delete product image. Please try again.</div>";
+                    }                    
+
+                }else{
+                    $query = "UPDATE products SET name=:name, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date, Category_ID=:category_id, product_image=:image WHERE Product_ID = :id";
+                    $stmt = $con->prepare($query);
+                    // posted values
+                    $name = htmlspecialchars(strip_tags($_POST['name']));
+                    $description = htmlspecialchars(strip_tags($_POST['description']));
+                    $price = htmlspecialchars(strip_tags($_POST['price'])); 
+                    $promotion_price = htmlspecialchars(strip_tags($_POST['promotion_price']));
+                    $manufacture_date = htmlspecialchars(strip_tags($_POST['manufacture_date']));
+                    $expired_date = htmlspecialchars(strip_tags($_POST['expired_date'])); 
+                    $category_id = htmlspecialchars(strip_tags($_POST['category_id'])); 
+                    // image field
+                    $image = !empty($_FILES["image"]["name"]) ? "uploaded_product_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "";
+                    $image = htmlspecialchars(strip_tags($image));
+    
+                    $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);
+    
+                    if(!empty($errorMessage)) {
+                        echo "<div class='alert alert-danger m-3'>";
+                            foreach ($errorMessage as $displayErrorMessage) {
+                                echo $displayErrorMessage . "<br>";
+                            }
+                        echo "</div>";
+                    }else {
+                        $price = number_format((float)$price, 2);   
+                        $promotion_price = number_format((float)$promotion_price, 2);
+                        $stmt->bindParam(':id', $id);
+                        $stmt->bindParam(':name', $name);
+                        $stmt->bindParam(':description', $description);
+                        $stmt->bindParam(':price', $price);
+                        $stmt->bindParam(':promotion_price', $promotion_price);
+                        $stmt->bindParam(':manufacture_date', $manufacture_date);
+                        $stmt->bindParam(':expired_date', $expired_date);
+                        $stmt->bindParam(':category_id', $category_id);
+
                         if($image === ""){
                             $stmt->bindParam(':image', $uploadedImage);
                         }else{
                             $stmt->bindParam(':image', $image);
                         }
-                    }
-
-
-                    if ($uploadedImage !== 'uploaded_product_img/defaultproductimg.jpg' && $image !== $uploadedImage) {
-                        // Remove the existing image
-                        if (file_exists($uploadedImage) && $image !== "") {
-                            unlink($uploadedImage);
+    
+                        if ($uploadedImage !== 'uploaded_product_img/defaultproductimg.jpg' && $image !== $uploadedImage) {
+                            // Remove the existing image
+                            if (file_exists($uploadedImage) && $image !== "") {
+                                unlink($uploadedImage);
+                            }
                         }
-                    }
-                    // Execute the query
-                    if($stmt->execute()){
-                        // record updated
-                        header("Location: product_read_one.php?id={$id}&action=record_updated");
-                        exit();
-                    }else{
-                        echo "<div class='alert alert-danger m-3'>Unable to update record. Please try again.</div>";
-                    }  
-                }       
+
+                        // Execute the query
+                        if($stmt->execute()){
+                            // record updated
+                            header("Location: product_read_one.php?id={$id}&action=record_updated");
+                            exit();
+                        }else{
+                            echo "<div class='alert alert-danger m-3'>Unable to update record. Please try again.</div>";
+                        }  
+                    }   
+                }    
             }
             catch(PDOException $exception){
                 die('ERROR: ' . $exception->getMessage());
