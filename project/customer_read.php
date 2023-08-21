@@ -70,7 +70,7 @@ include 'menu/validate_login.php';
                             echo "<td>{$Customer_ID}</td>";
                             echo "<td>{$username}</td>";
                             echo "<td>";
-                                echo "<img src='" . htmlspecialchars('uploaded_customer_img/' . $profile_image, ENT_QUOTES) . "' alt='" . htmlspecialchars($username, ENT_QUOTES) . "' width='100' height='100'>";
+                                echo "<img src='" . htmlspecialchars($profile_image, ENT_QUOTES) . "' alt='" . htmlspecialchars($username, ENT_QUOTES) . "' width='100' height='100'>";
                             echo "</td>";
                             echo "<td>{$firstname}</td>";
                             echo "<td>{$lastname}</td>";

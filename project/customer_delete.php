@@ -15,7 +15,6 @@ try {
     $getProfileImageStmt->execute();
     $row = $getProfileImageStmt->fetch(PDO::FETCH_ASSOC);
     $uploadedImage = $row['profile_image'];
-    $img_directory = "uploaded_customer_img/" . $uploadedImage;
     // delete query
     $deleteCustomerQuery = "DELETE FROM customers WHERE Customer_ID = ?";
     $deleteCustomerStmt = $con->prepare($deleteCustomerQuery);
@@ -25,9 +24,9 @@ try {
         header('Location: customer_read.php?action=customer_in_use&result=' . $result);
     }else{
         if($deleteCustomerStmt->execute()){
-            if ($uploadedImage !== 'defaultcustomerimg.jpg') {
-                if (file_exists($img_directory)) {
-                    unlink($img_directory);
+            if ($uploadedImage !== 'uploaded_customer_img/defaultcustomerimg.jpg') {
+                if (file_exists($uploadedImage)) {
+                    unlink($uploadedImage);
                 }
             }
             header('Location: customer_read.php?action=deleted');

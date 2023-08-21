@@ -37,8 +37,7 @@ include 'menu/validate_login.php';
                 $status = $_POST['status'];
                 $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
                 //image field
-                $image = !empty($_FILES["image"]["name"]) ? basename($_FILES["image"]["name"]) : "defaultcustomerimg.jpg";
-                //$image = !empty($_FILES["image"]["name"]) ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"]) : "defaultproductimg.jpg";
+                $image = !empty($_FILES["image"]["name"]) ? "uploaded_customer_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "uploaded_customer_img/defaultcustomerimg.jpg";
                 $image = htmlspecialchars(strip_tags($image));
 
                 $errorMessage = validateCreateCustomerForm($username, $password, $confirmpassword, $firstname, $lastname, $gender, $birthdate, $email, $status, $image);

@@ -37,7 +37,6 @@ include 'menu/validate_login.php';
             $email = $row['email'];
             $status = $row['status'];
             $uploadedImage = $row['profile_image'];
-            $img_directory = "uploaded_customer_img/" . $uploadedImage;
 
         } catch (PDOException $exception) {
             die('ERROR: ' . $exception->getMessage());
@@ -59,7 +58,7 @@ include 'menu/validate_login.php';
                 $new_password = $_POST['new_password'];
                 $confirm_new_password = $_POST['confirm_new_password'];
                 // image field
-                $image = !empty($_FILES["image"]["name"]) ? basename($_FILES["image"]["name"]) : $uploadedImage;
+                $image = !empty($_FILES["image"]["name"]) ? "uploaded_customer_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "uploaded_customer_img/defaultcustomerimg.jpg";
                 $image = htmlspecialchars(strip_tags($image));
 
                 $errorMessage = validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $status, $db_password, $current_password, $new_password, $confirm_new_password, $image);         
@@ -92,10 +91,10 @@ include 'menu/validate_login.php';
                         $stmt->bindParam(':password', $hashed_password);
                     }
 
-                    if ($uploadedImage !== 'defaultcustomerimg.jpg' && $image !== $uploadedImage) {
+                    if ($uploadedImage !== 'uploaded_customer_img/defaultcustomerimg.jpg' && $image !== $uploadedImage) {
                         // Remove the existing image
-                        if (file_exists($img_directory)) {
-                            unlink($img_directory);
+                        if (file_exists($uploadedImage)) {
+                            unlink($uploadedImage);
                         }
                         // Upload the new image
                         $targetDirectory = "uploaded_customer_img/";
@@ -163,7 +162,7 @@ include 'menu/validate_login.php';
                 <tr>
                     <td>Profile Image</td>
                     <td>
-                        <img src="<?php echo htmlspecialchars($img_directory, ENT_QUOTES); ?>" width="200" height="200">
+                        <img src="<?php echo htmlspecialchars($uploadedImage, ENT_QUOTES); ?>" width="200" height="200">
                         <br><br>
                         <input type="file" name="image"/>
                     </td>

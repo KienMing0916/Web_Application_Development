@@ -40,7 +40,6 @@ include 'menu/validate_login.php';
             $expired_date = $row['expired_date'];
             $category_id = $row['Category_ID'];
             $uploadedImage = $row['product_image'];
-            $img_directory = "uploaded_product_img/" . $uploadedImage;
         }
         catch(PDOException $exception){
             die('ERROR: ' . $exception->getMessage());
@@ -89,8 +88,8 @@ include 'menu/validate_login.php';
 
                     if ($uploadedImage !== 'defaultproductimg.jpg' && $image !== $uploadedImage) {
                         // Remove the existing image
-                        if (file_exists($img_directory)) {
-                            unlink($img_directory);
+                        if (file_exists($uploadedImage)) {
+                            unlink($uploadedImage);
                         }
                         // Upload the new image
                         $targetDirectory = "uploaded_product_img/";
@@ -165,7 +164,7 @@ include 'menu/validate_login.php';
                 <tr>
                     <td>Product Image</td>
                     <td>
-                        <img src="<?php echo htmlspecialchars($img_directory, ENT_QUOTES); ?>" width="200" height="200">
+                        <img src="<?php echo htmlspecialchars($uploadedImage, ENT_QUOTES); ?>" width="200" height="200">
                         <br><br>
                         <input type="file" name="image"/>
                     </td>

@@ -47,7 +47,6 @@ include 'menu/validate_login.php';
             $email = $row['email'];
             $status = $row['status'];
             $image = $row['profile_image'];
-            $img_directory = "uploaded_customer_img/" . $image;
         }
         catch(PDOException $exception){
             die('ERROR: ' . $exception->getMessage());
@@ -91,7 +90,7 @@ include 'menu/validate_login.php';
                 <tr>
                     <td>Profile Image</td>
                     <td>
-                        <img src="<?php echo htmlspecialchars($img_directory, ENT_QUOTES); ?>" alt="<?php echo htmlspecialchars($username, ENT_QUOTES); ?>" width="200" height="200">
+                        <img src="<?php echo htmlspecialchars($image, ENT_QUOTES); ?>" alt="<?php echo htmlspecialchars($username, ENT_QUOTES); ?>" width="200" height="200">
                     </td>
                 </tr>
                 <tr>

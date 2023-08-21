@@ -50,7 +50,6 @@ include 'menu/validate_login.php';
             $image = $row['product_image'];
             $category_id = $row['Category_ID'];
             $category_name = $row['category_name'];
-            $img_directory = "uploaded_product_img/" . $image;
         }
         
         catch(PDOException $exception){
@@ -95,7 +94,7 @@ include 'menu/validate_login.php';
                 <tr>
                     <td>Product Image</td>
                     <td>
-                        <img src="<?php echo htmlspecialchars($img_directory, ENT_QUOTES); ?>" alt="<?php echo htmlspecialchars($name, ENT_QUOTES); ?>" width="200" height="200">
+                        <img src="<?php echo htmlspecialchars($image, ENT_QUOTES); ?>" alt="<?php echo htmlspecialchars($name, ENT_QUOTES); ?>" width="200" height="200">
                     </td>
                 </tr>
                 <tr>

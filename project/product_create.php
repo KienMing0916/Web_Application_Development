@@ -39,8 +39,7 @@ include 'menu/validate_login.php';
                 $dateStart = new DateTime($manufacture_date);
                 $dateEnd = new DateTime($expired_date);
                 //image field
-                $image = !empty($_FILES["image"]["name"]) ? basename($_FILES["image"]["name"]) : "defaultproductimg.jpg";
-                //$image = !empty($_FILES["image"]["name"]) ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"]) : "defaultproductimg.jpg";
+                $image = !empty($_FILES["image"]["name"]) ? "uploaded_product_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "uploaded_product_img/defaultcustomerimg.jpg";
                 $image = htmlspecialchars(strip_tags($image));
 
                 $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);

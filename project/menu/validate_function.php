@@ -232,8 +232,7 @@ function validateImage($image, $target_directory, $errorMessage) {
     if (!empty($_FILES["image"]["name"])) {
         if ($image) {
             // upload file to folder
-            $target_file = $target_directory . $image;
-            $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+            $file_type = pathinfo($image, PATHINFO_EXTENSION);
     
             $check = getimagesize($_FILES["image"]["tmp_name"]);
             if ($check !== false) {
@@ -241,7 +240,7 @@ function validateImage($image, $target_directory, $errorMessage) {
                 if (!in_array($file_type, $allowed_file_types)) {
                     $errorMessage[] = "Only JPG, JPEG, PNG, GIF files are allowed.";
                 }
-                if (file_exists($target_file)) {
+                if (file_exists($image)) {
                     $errorMessage[] = "Image already exists. Try to change the file name.";
                 }
                 if ($_FILES['image']['size'] > (512 * 1024)) {
@@ -261,7 +260,7 @@ function validateImage($image, $target_directory, $errorMessage) {
 
             if (empty($errorMessage)) {
                 // Upload the file only when there are no error messages
-                if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                if (move_uploaded_file($_FILES["image"]["tmp_name"], $image)) {
                     // File uploaded successfully
                 } else {
                     $errorMessage[] = "Unable to upload the photo. Update the record to upload the photo.";
