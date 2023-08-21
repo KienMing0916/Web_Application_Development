@@ -62,8 +62,12 @@ include 'menu/validate_login.php';
                 $expired_date = htmlspecialchars(strip_tags($_POST['expired_date'])); 
                 $category_id = htmlspecialchars(strip_tags($_POST['category_id'])); 
                 // image field
-                $image = !empty($_FILES["image"]["name"]) ? "uploaded_product_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : $uploadedImage;
+                $image = !empty($_FILES["image"]["name"]) ? "uploaded_product_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "uploaded_product_img/defaultproductimg.jpg";
                 $image = htmlspecialchars(strip_tags($image));
+
+                echo '<pre>';
+                var_dump($image);
+                exit;
 
                 $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);
 
@@ -86,16 +90,12 @@ include 'menu/validate_login.php';
                     $stmt->bindParam(':category_id', $category_id);
                     $stmt->bindParam(':image', $image);
 
-                    // if ($uploadedImage !== 'defaultproductimg.jpg' && $image !== $uploadedImage) {
-                    //     // Remove the existing image
-                    //     if (file_exists($uploadedImage)) {
-                    //         unlink($uploadedImage);
-                    //     }
-                    //     // Upload the new image
-                    //     $targetDirectory = "uploaded_product_img/";
-                    //     $targetFile = $targetDirectory . basename($_FILES["image"]["name"]);
-                    //     move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile);
-                    // }
+                    if ($uploadedImage !== 'uploaded_product_img/defaultproductimg.jpg' && $image !== $uploadedImage) {
+                        // Remove the existing image
+                        if (file_exists($uploadedImage)) {
+                            unlink($uploadedImage);
+                        }
+                    }
                     // Execute the query
                     if($stmt->execute()){
                         // record updated
