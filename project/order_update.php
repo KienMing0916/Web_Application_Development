@@ -57,6 +57,8 @@ include 'menu/validate_login.php';
         }
 
         if ($_POST) {
+            include 'menu/validate_function.php';
+            
             try {
                 //No changing available for customer name.
                 $selectedCustomerID = "No changing available for customer name.";
@@ -69,7 +71,6 @@ include 'menu/validate_login.php';
                     $selectedProductID = '';
                 }
 
-                include 'menu/validate_function.php';
                 $errorMessage = validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedProductID, $selectedProductQuantity, $products);
 
                 if(!empty($errorMessage)) {

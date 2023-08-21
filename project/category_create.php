@@ -21,13 +21,14 @@ include 'menu/validate_login.php';
         <?php
         if($_POST){
             include 'config/database.php';
+            include 'menu/validate_function.php';
+            
             try{
                 $query = "INSERT INTO categories SET category_name=:category_name, description=:description";
                 $stmt = $con->prepare($query);
                 $category_name = $_POST['category_name'];
                 $description = $_POST['description'];
 
-                include 'menu/validate_function.php';
                 $errorMessage = validateCategoryForm($category_name, $description);
 
                 if(!empty($errorMessage)) {

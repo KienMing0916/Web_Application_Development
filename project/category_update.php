@@ -39,6 +39,8 @@ include 'menu/validate_login.php';
 
         <?php
         if($_POST){
+            include 'menu/validate_function.php';
+            
             try{
                 $query = "UPDATE categories SET category_name=:category_name, description=:description WHERE Category_ID = :id";
                 $stmt = $con->prepare($query);
@@ -46,7 +48,6 @@ include 'menu/validate_login.php';
                 $category_name = htmlspecialchars(strip_tags($_POST['category_name']));
                 $description = htmlspecialchars(strip_tags($_POST['description']));
 
-                include 'menu/validate_function.php';
                 $errorMessage = validateCategoryForm($category_name, $description);
 
 

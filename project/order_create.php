@@ -38,6 +38,8 @@ include 'menu/validate_login.php';
         $totalAmount = 0;
 
         if ($_POST) {
+            include 'menu/validate_function.php';
+            
             try {
                 $selectedCustomerID = isset($_POST['customer']) ? $_POST['customer'] : '';
                 $selectedProductQuantity = isset($_POST['quantity']) ? $_POST['quantity'] : 1;
@@ -49,7 +51,6 @@ include 'menu/validate_login.php';
                     $selectedProductID = '';
                 }
 
-                include 'menu/validate_function.php';
                 $errorMessage = validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedProductID, $selectedProductQuantity, $products);
 
                 if(!empty($errorMessage)) {

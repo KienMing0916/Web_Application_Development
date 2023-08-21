@@ -44,6 +44,8 @@ include 'menu/validate_login.php';
         }
 
         if ($_POST) {
+            include 'menu/validate_function.php';
+            
             try {
                 $query = "UPDATE customers SET username=:username, firstname=:firstname, lastname=:lastname, gender=:gender, birthdate=:birthdate, email=:email, status=:status, profile_image=:image";       
                 $username = htmlspecialchars(strip_tags($_POST['username']));
@@ -60,7 +62,6 @@ include 'menu/validate_login.php';
                 $image = !empty($_FILES["image"]["name"]) ? basename($_FILES["image"]["name"]) : $uploadedImage;
                 $image = htmlspecialchars(strip_tags($image));
 
-                include 'menu/validate_function.php';
                 $errorMessage = validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $status, $db_password, $current_password, $new_password, $confirm_new_password, $image);         
 
                 if(!empty($errorMessage)) {
