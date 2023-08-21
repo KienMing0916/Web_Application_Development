@@ -98,7 +98,7 @@ include 'menu/validate_login.php';
         </div>
 
         <div class="bg-white text-center py-4">
-            <h1>Welcome to XXX</h1>
+            <h1>Welcome to KM Supermarket</h1>
             <p class="lead">Welcome to our dynamic and innovative e-commerce website! We are dedicated to providing a seamless shopping experience and connecting customers with a wide range of quality products. Our goal is to make your shopping hassle-free and enjoyable.</p>
             <a href="order_create.php" class="btn btn-primary btn-lg">Make an order now</a>
         </div>
