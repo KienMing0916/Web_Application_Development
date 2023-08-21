@@ -22,7 +22,7 @@ include 'menu/validate_login.php';
         include 'config/database.php';
 
         $searchKeyword = isset($_GET['search']) ? $_GET['search'] : '';
-        $query = "SELECT products.Product_ID, products.name, products.description, products.price, products.promotion_price, categories.category_name 
+        $query = "SELECT products.Product_ID, products.name, products.description, products.price, products.promotion_price, categories.category_name, products.product_image 
                   FROM products INNER JOIN categories ON products.Category_ID = categories.Category_ID";
 
         if (!empty($searchKeyword)) {
@@ -62,6 +62,7 @@ include 'menu/validate_login.php';
                     echo "<th>Description</th>";
                     echo "<th>Selling Price (RM)</th>";
                     echo "<th class='col-1'>Category Name</th>";
+                    echo "<th class='col-1'>Product Image</th>";
                     echo "<th>Action</th>";
                 echo "</tr>";
 
@@ -83,7 +84,9 @@ include 'menu/validate_login.php';
                             echo "<td class='text-end'>" . number_format((float)$price, 2, '.', '') . "</td>";
                         }
                         echo "<td>{$category_name}</td>";
-
+                        echo "<td>";
+                            echo "<img src='" . htmlspecialchars('uploaded_product_img/' . $product_image, ENT_QUOTES) . "' alt='" . htmlspecialchars($name, ENT_QUOTES) . "' width='100' height='100'>";
+                        echo "</td>";
                         echo "<td class='col-3'>";
                             echo "<a href='product_read_one.php?id={$Product_ID}' class='btn btn-info m-r-1em text-white mx-2'>Read</a>";
                             echo "<a href='product_update.php?id={$Product_ID}' class='btn btn-primary m-r-1em mx-2'>Edit</a>";

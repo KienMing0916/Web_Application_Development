@@ -22,7 +22,7 @@ include 'menu/validate_login.php';
         include 'config/database.php';
 
         $searchKeyword = isset($_GET['search']) ? $_GET['search'] : '';
-        $query = "SELECT Customer_ID, username, firstname, lastname, email, status FROM customers";
+        $query = "SELECT Customer_ID, username, firstname, lastname, email, status, profile_image FROM customers";
         if (!empty($searchKeyword)) {
             $query .= " WHERE username LIKE :keyword OR firstname LIKE :keyword OR lastname LIKE :keyword OR email LIKE :keyword";
             $searchKeyword = "%{$searchKeyword}%";
@@ -61,6 +61,7 @@ include 'menu/validate_login.php';
                         echo "<th>Last Name</th>";
                         echo "<th>Email</th>";
                         echo "<th>Status</th>";
+                        echo "<th>Profile Image</th>";
                         echo "<th>Action</th>";
                     echo "</tr>";
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -72,6 +73,9 @@ include 'menu/validate_login.php';
                             echo "<td>{$lastname}</td>";
                             echo "<td>{$email}</td>";
                             echo "<td>{$status}</td>";
+                            echo "<td>";
+                                echo "<img src='" . htmlspecialchars('uploaded_customer_img/' . $profile_image, ENT_QUOTES) . "' alt='" . htmlspecialchars($username, ENT_QUOTES) . "' width='100' height='100'>";
+                            echo "</td>";
                 
                             echo "<td class='col-3'>";
                                 echo "<a href='customer_read_one.php?id={$Customer_ID}' class='btn btn-info m-r-1em text-white mx-2'>Read</a>";
