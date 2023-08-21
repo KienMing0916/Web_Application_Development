@@ -18,15 +18,8 @@ function validateProductForm($name, $description, $price, $promotion_price, $man
             $errorMessage[] = "Prices can only be numbers.";
         }
     }
-    if(empty($promotion_price)) {
-        $errorMessage[] = "Promotion price field is empty.";
-    }else if($promotion_price <= 0) {
-        $errorMessage[] = "Please enter a valid promotion price.";
-    }else {
-        if(!is_numeric($promotion_price)) {
-            $errorMessage[] = "Promotion prices can only be numbers.";
-        }
-    }
+
+
     if(empty($manufacture_date)) {
         $errorMessage[] = "Manufacture date field is empty.";
     }

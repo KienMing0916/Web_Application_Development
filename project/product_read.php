@@ -79,12 +79,17 @@ include 'menu/validate_login.php';
                         if ($promotion_price < $price && ($promotion_price != 0)){
                             echo"<td>
                                     <div class='d-flex justify-content-end'>
-                                        <p class='text-decoration-line-through mx-1'>" . number_format((float)$price, 2, '.', '') . "</p>
-                                        <p class='me-2'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
+                                        <p class='text-decoration-line-through mx-1 mb-0'>" . number_format((float)$price, 2, '.', '') . "</p>
+                                        <p class='me-2 mb-0'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
                                     </div>
                                 </td>";
                         }else{
-                            echo "<td class='text-end'>" . number_format((float)$price, 2, '.', '') . "</td>";
+                            echo"<td>
+                                    <div class='d-flex justify-content-end'>
+                                        <p class='mx-1 mb-0 me-2'>" . number_format((float)$price, 2, '.', '') . "</p>
+                                        
+                                    </div>
+                                </td>";
                         }
                         echo "<td>{$category_name}</td>";
                         echo "<td class='col-3'>";

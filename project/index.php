@@ -199,12 +199,22 @@ include 'menu/validate_login.php';
                         echo "<td>{$name}</td>";
                         echo "<td>{$category_name}</td>";
                         echo "<td>{$total_quantity_sold}</td>";
-                        echo"<td>
-                                <div class='d-flex justify-content-end'>
-                                    <p class='text-decoration-line-through mx-1 mb-0'>" . number_format((float)$price, 2, '.', '') . "</p>
-                                    <p class='me-2 mb-0'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
-                                </div>
-                            </td>";
+
+                        if ($promotion_price < $price && ($promotion_price != 0)){
+                            echo"<td>
+                                    <div class='d-flex justify-content-end'>
+                                        <p class='text-decoration-line-through mx-1 mb-0'>" . number_format((float)$price, 2, '.', '') . "</p>
+                                        <p class='me-2 mb-0'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
+                                    </div>
+                                </td>";
+                        }else{
+                            echo"<td>
+                                    <div class='d-flex justify-content-end'>
+                                        <p class='mx-1 mb-0 me-2'>" . number_format((float)$price, 2, '.', '') . "</p>
+                                        
+                                    </div>
+                                </td>";
+                        }
                         echo "</tr>";
                     }
                 echo "</table>";
@@ -230,12 +240,22 @@ include 'menu/validate_login.php';
                         echo "<td>{$Product_ID}</td>";
                         echo "<td>{$name}</td>";
                         echo "<td>{$category_name}</td>";
-                        echo"<td>
-                                <div class='d-flex justify-content-end'>
-                                    <p class='text-decoration-line-through mx-1 mb-0'>" . number_format((float)$price, 2, '.', '') . "</p>
-                                    <p class='me-2 mb-0'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
-                                </div>
-                            </td>";
+                        
+                        if ($promotion_price < $price && ($promotion_price != 0)){
+                            echo"<td>
+                                    <div class='d-flex justify-content-end'>
+                                        <p class='text-decoration-line-through mx-1 mb-0'>" . number_format((float)$price, 2, '.', '') . "</p>
+                                        <p class='me-2 mb-0'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
+                                    </div>
+                                </td>";
+                        }else{
+                            echo"<td>
+                                    <div class='d-flex justify-content-end'>
+                                        <p class='mx-1 mb-0 me-2'>" . number_format((float)$price, 2, '.', '') . "</p>
+                                        
+                                    </div>
+                                </td>";
+                        }
                         echo "</tr>";
                     }
                 echo "</table>";
