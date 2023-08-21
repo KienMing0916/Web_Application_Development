@@ -64,6 +64,7 @@ include 'menu/validate_login.php';
                 // image field
                 $image = !empty($_FILES["image"]["name"]) ? "uploaded_product_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "";
                 $image = htmlspecialchars(strip_tags($image));
+                $defaultImage = 'uploaded_product_img/defaultproductimg.jpg';
 
                 $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);
 
@@ -85,11 +86,23 @@ include 'menu/validate_login.php';
                     $stmt->bindParam(':expired_date', $expired_date);
                     $stmt->bindParam(':category_id', $category_id);
 
-                    if($image === ""){
-                        $stmt->bindParam(':image', $uploadedImage);
+                    if (isset($_POST['delete_image'])) {
+                        // Delete the image file
+                        if ($uploadedImage !== 'uploaded_product_img/defaultproductimg.jpg') {
+                            if (file_exists($uploadedImage)) {
+                                unlink($uploadedImage);
+                            }
+                        }
+                        $stmt->bindParam(':image', $defaultImage);
+                    
                     }else{
-                        $stmt->bindParam(':image', $image);
+                        if($image === ""){
+                            $stmt->bindParam(':image', $uploadedImage);
+                        }else{
+                            $stmt->bindParam(':image', $image);
+                        }
                     }
+
 
                     if ($uploadedImage !== 'uploaded_product_img/defaultproductimg.jpg' && $image !== $uploadedImage) {
                         // Remove the existing image
@@ -174,6 +187,7 @@ include 'menu/validate_login.php';
                     <td></td>
                     <td>
                         <input type='submit' value='Save Changes' class='btn btn-primary' />
+                        <button type="submit" name="delete_image" class="btn btn-secondary">Delete Product Image</button>
                         <a href='product_read.php' class='btn btn-danger'>Back to product list</a>
                     </td>
                 </tr>
