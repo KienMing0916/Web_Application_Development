@@ -20,7 +20,7 @@ if (isset($_SESSION['Customer_ID'])) {
             <div class="d-flex align-items-center ms-1">
                 <a class="navbar-brand ms-2" href="#">
                     <img src="img/factorylogo.png" alt="factorylogo" width="50" height="40" class="ms-3">
-                    <span style="vertical-align: middle;">KM</span>
+                    <span style="vertical-align: middle;">KM Supermarket</span>
                 </a>
             </div>
         </nav>

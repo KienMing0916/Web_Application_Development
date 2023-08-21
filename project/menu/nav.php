@@ -10,7 +10,7 @@ if (isset($_GET['logout'])) {
     <div class="d-flex align-items-center ms-1">
         <a class="navbar-brand ms-2" href="index.php">
             <img src="img/factorylogo.png" alt="factorylogo" width="50" height="40" class="ms-3">
-            <span style="vertical-align: middle;">KM</span>
+            <span style="vertical-align: middle;">KM Supermarket</span>
         </a>
     </div>
     <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
