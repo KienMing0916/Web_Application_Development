@@ -29,7 +29,7 @@ include 'menu/validate_login.php';
             $query .= " WHERE products.name LIKE :keyword";
             $searchKeyword = "%{$searchKeyword}%";
         }
-        $query .= " ORDER BY products.Product_ID ASC";
+        $query .= " ORDER BY products.Product_ID DESC";
         $stmt = $con->prepare($query);
         if (!empty($searchKeyword)) {
             $stmt->bindParam(':keyword', $searchKeyword);

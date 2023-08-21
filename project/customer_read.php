@@ -27,7 +27,7 @@ include 'menu/validate_login.php';
             $query .= " WHERE username LIKE :keyword OR firstname LIKE :keyword OR lastname LIKE :keyword OR email LIKE :keyword";
             $searchKeyword = "%{$searchKeyword}%";
         }
-        $query .= " ORDER BY CUSTOMER_ID ASC";
+        $query .= " ORDER BY CUSTOMER_ID DESC";
         $stmt = $con->prepare($query);
         if (!empty($searchKeyword)) {
             $stmt->bindParam(':keyword', $searchKeyword);
