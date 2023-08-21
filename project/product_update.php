@@ -131,8 +131,8 @@ include 'menu/validate_login.php';
                         }  
                     }   
                 }    
-            }
-            catch(PDOException $exception){
+                
+            }catch(PDOException $exception){
                 die('ERROR: ' . $exception->getMessage());
             }
         }

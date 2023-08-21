@@ -31,7 +31,7 @@ include 'menu/validate_login.php';
         }
 
         if ($action == 'image_deleted') {
-            echo "<div class='alert alert-success m-3'>Image was deleted.</div>";
+            echo "<div class='alert alert-success m-3'>Product image was deleted.</div>";
         }
 
         include 'config/database.php';

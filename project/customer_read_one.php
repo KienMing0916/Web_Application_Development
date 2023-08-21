@@ -30,6 +30,10 @@ include 'menu/validate_login.php';
             echo "<div class='alert alert-success m-3'>Customer record was updated.</div>";
         }
 
+        if ($action == 'image_deleted') {
+            echo "<div class='alert alert-success m-3'>Profile image was deleted.</div>";
+        }
+
         include 'config/database.php';
         try {
             $query = "SELECT Customer_ID, username, firstname, lastname, gender, birthdate, registrationdatetime, email, status, profile_image FROM customers WHERE Customer_ID = :id ";
