@@ -96,10 +96,6 @@ include 'menu/validate_login.php';
                         if (file_exists($uploadedImage)) {
                             unlink($uploadedImage);
                         }
-                        // Upload the new image
-                        $targetDirectory = "uploaded_customer_img/";
-                        $targetFile = $targetDirectory . basename($_FILES["image"]["name"]);
-                        move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile);
                     }
             
                     if ($stmt->execute()) {
