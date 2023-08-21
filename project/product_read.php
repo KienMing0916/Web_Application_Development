@@ -59,10 +59,10 @@ include 'menu/validate_login.php';
                 echo "<tr>";
                     echo "<th>ID</th>";
                     echo "<th class='col-2'>Product Name</th>";
+                    echo "<th class='col-1'>Product Image</th>";
                     echo "<th>Description</th>";
                     echo "<th>Selling Price (RM)</th>";
                     echo "<th class='col-1'>Category Name</th>";
-                    echo "<th class='col-1'>Product Image</th>";
                     echo "<th>Action</th>";
                 echo "</tr>";
 
@@ -71,6 +71,9 @@ include 'menu/validate_login.php';
                     echo "<tr>";
                         echo "<td>{$Product_ID}</td>";
                         echo "<td>{$name}</td>";
+                        echo "<td>";
+                            echo "<img src='" . htmlspecialchars('uploaded_product_img/' . $product_image, ENT_QUOTES) . "' alt='" . htmlspecialchars($name, ENT_QUOTES) . "' width='100' height='100'>";
+                        echo "</td>";
                         echo "<td>{$description}</td>";
                         // line 75 d-flex justify-content-center can't write to td, otherwise it won't take full height of td
                         if ($promotion_price < $price && ($promotion_price != 0)){
@@ -84,9 +87,6 @@ include 'menu/validate_login.php';
                             echo "<td class='text-end'>" . number_format((float)$price, 2, '.', '') . "</td>";
                         }
                         echo "<td>{$category_name}</td>";
-                        echo "<td>";
-                            echo "<img src='" . htmlspecialchars('uploaded_product_img/' . $product_image, ENT_QUOTES) . "' alt='" . htmlspecialchars($name, ENT_QUOTES) . "' width='100' height='100'>";
-                        echo "</td>";
                         echo "<td class='col-3'>";
                             echo "<a href='product_read_one.php?id={$Product_ID}' class='btn btn-info m-r-1em text-white mx-2'>Read</a>";
                             echo "<a href='product_update.php?id={$Product_ID}' class='btn btn-primary m-r-1em mx-2'>Edit</a>";
