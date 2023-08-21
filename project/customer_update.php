@@ -58,8 +58,7 @@ include 'menu/validate_login.php';
                 $new_password = $_POST['new_password'];
                 $confirm_new_password = $_POST['confirm_new_password'];
                 // image field
-                $image = !empty($_FILES["image"]["name"]) ? "uploaded_customer_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "uploaded_customer_img/defaultcustomerimg.jpg";
-                $image = htmlspecialchars(strip_tags($image));
+                $image = !empty($_FILES["image"]["name"]) ? "uploaded_customer_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "";
 
                 $errorMessage = validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $status, $db_password, $current_password, $new_password, $confirm_new_password, $image);         
 
@@ -85,7 +84,12 @@ include 'menu/validate_login.php';
                     $stmt->bindParam(':birthdate', $birthdate);
                     $stmt->bindParam(':status', $status);
                     $stmt->bindParam(':id', $id);
-                    $stmt->bindParam(':image', $image);
+                    
+                    if($image === ""){
+                        $stmt->bindParam(':image', $uploadedImage);
+                    }else{
+                        $stmt->bindParam(':image', $image);
+                    }
             
                     if (!empty($hashed_password)) {
                         $stmt->bindParam(':password', $hashed_password);
@@ -93,7 +97,7 @@ include 'menu/validate_login.php';
 
                     if ($uploadedImage !== 'uploaded_customer_img/defaultcustomerimg.jpg' && $image !== $uploadedImage) {
                         // Remove the existing image
-                        if (file_exists($uploadedImage)) {
+                        if (file_exists($uploadedImage) && $image !== "") {
                             unlink($uploadedImage);
                         }
                     }

@@ -62,7 +62,7 @@ include 'menu/validate_login.php';
                 $expired_date = htmlspecialchars(strip_tags($_POST['expired_date'])); 
                 $category_id = htmlspecialchars(strip_tags($_POST['category_id'])); 
                 // image field
-                $image = !empty($_FILES["image"]["name"]) ? "uploaded_product_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "uploaded_product_img/defaultproductimg.jpg";
+                $image = !empty($_FILES["image"]["name"]) ? "uploaded_product_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "";
                 $image = htmlspecialchars(strip_tags($image));
 
                 $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);
@@ -74,7 +74,7 @@ include 'menu/validate_login.php';
                         }
                     echo "</div>";
                 }else {
-                    $price = number_format((float)$price, 2);
+                    $price = number_format((float)$price, 2);   
                     $promotion_price = number_format((float)$promotion_price, 2);
                     $stmt->bindParam(':id', $id);
                     $stmt->bindParam(':name', $name);
@@ -84,11 +84,16 @@ include 'menu/validate_login.php';
                     $stmt->bindParam(':manufacture_date', $manufacture_date);
                     $stmt->bindParam(':expired_date', $expired_date);
                     $stmt->bindParam(':category_id', $category_id);
-                    $stmt->bindParam(':image', $image);
+
+                    if($image === ""){
+                        $stmt->bindParam(':image', $uploadedImage);
+                    }else{
+                        $stmt->bindParam(':image', $image);
+                    }
 
                     if ($uploadedImage !== 'uploaded_product_img/defaultproductimg.jpg' && $image !== $uploadedImage) {
                         // Remove the existing image
-                        if (file_exists($uploadedImage)) {
+                        if (file_exists($uploadedImage) && $image !== "") {
                             unlink($uploadedImage);
                         }
                     }
