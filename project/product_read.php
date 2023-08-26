@@ -6,6 +6,7 @@ include 'menu/validate_login.php';
 <html>
 <head>
     <title>List of Products</title>
+    <link href="css/style.css" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>
@@ -55,7 +56,7 @@ include 'menu/validate_login.php';
         
         if($num > 0){
             echo "<div class='p-3'>";
-                echo "<table class='table table-hover table-responsive table-bordered'>";//start table
+                echo "<table class='table table-hover table-responsive table-bordered'>";
                 echo "<tr>";
                     echo "<th>ID</th>";
                     echo "<th class='col-2'>Product Name</th>";
@@ -70,7 +71,7 @@ include 'menu/validate_login.php';
                     extract($row);
                     echo "<tr>";
                         echo "<td>{$Product_ID}</td>";
-                        echo "<td>{$name}</td>";
+                        echo "<td class='col-2'><a href='product_read_one.php?id={$Product_ID}' class='item-link'>{$name}</a></td>";
                         echo "<td>";
                             echo "<img src='" . htmlspecialchars($product_image, ENT_QUOTES) . "' alt='" . htmlspecialchars($name, ENT_QUOTES) . "' width='100' height='100'>";
                         echo "</td>";

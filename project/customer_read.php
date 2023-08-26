@@ -6,6 +6,7 @@ include 'menu/validate_login.php';
 <html>
 <head>
     <title>List of Customers</title>
+    <link href="css/style.css" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>
@@ -68,7 +69,7 @@ include 'menu/validate_login.php';
                         extract($row);
                         echo "<tr>";
                             echo "<td>{$Customer_ID}</td>";
-                            echo "<td>{$username}</td>";
+                            echo "<td class='col-2'><a href='customer_read_one.php?id={$Customer_ID}' class='item-link'>{$username}</a></td>";
                             echo "<td>";
                                 echo "<img src='" . htmlspecialchars($profile_image, ENT_QUOTES) . "' alt='" . htmlspecialchars($username, ENT_QUOTES) . "' width='100' height='100'>";
                             echo "</td>";

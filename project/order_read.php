@@ -6,6 +6,7 @@ include 'menu/validate_login.php';
 <html>
 <head>
     <title>List of order summary</title>
+    <link href="css/style.css" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>
@@ -66,7 +67,7 @@ include 'menu/validate_login.php';
                     extract($row);
                     echo "<tr>";
                         echo "<td>{$Order_ID}</td>";
-                        echo "<td>{$firstname} {$lastname}</td>";
+                        echo "<td class='col-2'><a href='order_details_read.php?id={$Order_ID}' class='item-link'>{$firstname} {$lastname}</a></td>";
                         echo "<td>{$order_date}</td>";
                         echo"<td>
                             <div class='d-flex justify-content-end'>
