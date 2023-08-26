@@ -32,7 +32,7 @@ include 'menu/validate_login.php';
         }
 
         include 'config/database.php';
-        $query = "SELECT order_details.OrderDetail_ID, order_details.Order_ID, products.name, products.price, products.promotion_price, order_details.quantity FROM order_details INNER JOIN products ON order_details.Product_ID = products.Product_ID WHERE order_details.Order_ID =:id ORDER BY order_details.OrderDetail_ID ASC";
+        $query = "SELECT order_details.OrderDetail_ID, order_details.Order_ID, products.name, order_details.quantity, order_details.price, order_details.promotion_price FROM order_details INNER JOIN products ON order_details.Product_ID = products.Product_ID WHERE order_details.Order_ID =:id ORDER BY order_details.OrderDetail_ID ASC";
         $stmt = $con->prepare($query);
         $stmt->bindParam(":id", $id);
         $stmt->execute();
@@ -67,18 +67,33 @@ include 'menu/validate_login.php';
 
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                         extract($row);
-                        $subTotal = $promotion_price * $quantity;
-                        $totalAmount += $subTotal;
+                        if($promotion_price != 0){
+                            $subTotal = $promotion_price * $quantity;
+                            $totalAmount += $subTotal;
+                        }else{
+                            $subTotal = $price * $quantity;
+                            $totalAmount += $subTotal;
+                        }
                         echo "<tr>";
                                 echo "<td>{$rowNumber}</td>";
                                 echo "<td>{$name}</td>";
-                                // d-flex justify-content-center can't write to td, otherwise it won't take full height of td
-                                echo"<td>
-                                    <div class='d-flex justify-content-end'>
-                                        <p class='text-decoration-line-through mx-1'>" . number_format((float)$price, 2, '.', '') . "</p>
-                                        <p class='me-4'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
-                                    </div>
-                                    </td>";
+                                
+                                if ($promotion_price < $price && ($promotion_price != 0)){
+                                    echo"<td>
+                                            <div class='d-flex justify-content-end'>
+                                                <p class='text-decoration-line-through mx-1 mb-0'>" . number_format((float)$price, 2, '.', '') . "</p>
+                                                <p class='me-2 mb-0'>" . number_format((float)$promotion_price, 2, '.', '') . "</p>
+                                            </div>
+                                        </td>";
+                                }else{
+                                    echo"<td>
+                                            <div class='d-flex justify-content-end'>
+                                                <p class='mx-1 mb-0 me-2'>" . number_format((float)$price, 2, '.', '') . "</p>
+                                                
+                                            </div>
+                                        </td>";
+                                }
+
                                 echo "<td>{$quantity}</td>";
                                 echo"<td>
                                     <div class='d-flex justify-content-end'>
