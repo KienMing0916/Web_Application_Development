@@ -1,16 +1,8 @@
-<?php
-if (isset($_GET['logout'])) {
-    session_destroy();
-    header("Location: login.php");
-    exit();
-}
-?>
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="d-flex align-items-center ms-1">
         <a class="navbar-brand ms-2" href="index.php">
             <img src="img/factorylogo.png" alt="factorylogo" width="50" height="40" class="ms-3">
-            <span style="vertical-align: middle;">KM Supermarket</span>
+            <span style="vertical-align: middle;"><strong><i>KM Speedmart</i></strong></span>
         </a>
     </div>
     <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +42,7 @@ if (isset($_GET['logout'])) {
                 </ul>
             </li>
             <li class="nav-item p-1">
-                <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/contactus.php') echo 'active'; ?>" href="contactus.php">Contact Us</a>
+                <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/contact_us.php') echo 'active'; ?>" href="contact_us.php">Contact Us</a>
             </li>
             <li class="nav-item p-1">
                 <a class="nav-link" href="?logout=true">Logout</a>
