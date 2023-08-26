@@ -43,7 +43,7 @@ include 'menu/validate_login.php';
         echo '<div class="p-3 pb-1">
             <form method="GET" action="">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="search" placeholder="Search customer name..." value="' . str_replace('%', '', $searchKeyword) . '">
+                    <input type="text" class="form-control" name="search" placeholder="Search order..." value="' . str_replace('%', '', $searchKeyword) . '">
                     <button class="btn btn-primary" type="submit">Search</button>
                 </div>
             </form>
