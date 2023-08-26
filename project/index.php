@@ -81,13 +81,13 @@ include 'menu/validate_login.php';
         <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="d-block w-100" src="img/factory.jpg" alt="companyimg1">
+                    <img class="d-block w-100" src="img/assemblyline.jpg" alt="companyimg1">
                 </div>
                 <div class="carousel-item">
-                    <img class="d-block w-100" src="img/sportacademy.jpg" alt="companyimg2">
+                    <img class="d-block w-100" src="img/academy.jpg" alt="companyimg2">
                 </div>
                 <div class="carousel-item">
-                    <img class="d-block w-100" src="img/assemblyline.jpg" alt="companyimg3">
+                    <img class="d-block w-100" src="img/factory.jpg" alt="companyimg3">
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
