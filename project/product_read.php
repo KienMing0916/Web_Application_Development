@@ -77,7 +77,7 @@ include 'menu/validate_login.php';
                             echo "<img src='" . htmlspecialchars($product_image, ENT_QUOTES) . "' alt='" . htmlspecialchars($name, ENT_QUOTES) . "' width='100' height='100'>";
                         echo "</td>";
                         echo "<td>{$description}</td>";
-                        // line 75 d-flex justify-content-center can't write to td, otherwise it won't take full height of td
+
                         if ($promotion_price < $price && ($promotion_price != 0)){
                             echo"<td>
                                     <div class='d-flex justify-content-end'>
