@@ -34,7 +34,7 @@ include 'menu/validate_login.php';
         $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
         $productsRowCount = $productStmt->rowCount();
         $organizedProducts = array();
-        // after delete the the product, the array element may not following the Product_ID, therefore need to reorganize using Product_ID
+        // after delete some of the product, the array element may not following the Product_ID, therefore need to reorganize using Product_ID
         foreach ($products as $product) {
             $productID = $product['Product_ID'];
             $organizedProducts[$productID] = $product;
