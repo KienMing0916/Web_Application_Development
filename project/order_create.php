@@ -33,6 +33,12 @@ include 'menu/validate_login.php';
         $productStmt->execute();
         $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
         $productsRowCount = $productStmt->rowCount();
+        $organizedProducts = array();
+        // after delete the the product, the array element may not following the Product_ID, therefore need to reorganize using Product_ID
+        foreach ($products as $product) {
+            $productID = $product['Product_ID'];
+            $organizedProducts[$productID] = $product;
+        }
 
         $selectedProductRow = 1;
         $subTotal = 0;
@@ -52,7 +58,7 @@ include 'menu/validate_login.php';
                     $selectedProductID = '';
                 }
 
-                $errorMessage = validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedProductID, $selectedProductQuantity, $products);
+                $errorMessage = validateOrderForm($selectedProductRow, $selectedCustomerID, $selectedProductID, $selectedProductQuantity, $organizedProducts);
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
@@ -60,13 +66,19 @@ include 'menu/validate_login.php';
                             echo $displayErrorMessage . "<br>";
                         }
                     echo "</div>";
+
                 }else {
 
                     for ($x = 0; $x < $selectedProductRow; $x++) {
-                        $subtotal =  ($products[$selectedProductID[$x] - 1]['promotion_price'] != 0) ?  $products[$selectedProductID[$x] - 1]['promotion_price'] * $selectedProductQuantity[$x] : $products[$selectedProductID[$x] - 1]['price'] * $selectedProductQuantity[$x];
+                        $productIndex = $selectedProductID[$x];
+                        $price = $organizedProducts[$productIndex]['price'];
+                        $promotionPrice = $organizedProducts[$productIndex]['promotion_price'];
+                        $selectedPrice = ($promotionPrice != 0) ? $promotionPrice : $price;
+                        $subtotal = $selectedPrice * $selectedProductQuantity[$x];
                         $totalAmount += $subtotal;
-                        $formattedTotalAmount = number_format((float)$totalAmount, 2, '.', '');
                     }
+
+                    $formattedTotalAmount = number_format((float)$totalAmount, 2, '.', '');
 
                     $ordersummaryQuery = "INSERT INTO order_summary SET Customer_ID=:customer_id, total_amount=:total_amount";
                     $orderSummaryStmt = $con->prepare($ordersummaryQuery);
@@ -77,11 +89,13 @@ include 'menu/validate_login.php';
 
     
                     for ($i = 0; $i < $selectedProductRow; $i++) {
-                        $orderDetailsQuery = "INSERT INTO order_details SET Order_ID=:order_id, Product_ID=:product_id, quantity=:quantity";
+                        $orderDetailsQuery = "INSERT INTO order_details SET Order_ID=:order_id, Product_ID=:product_id, quantity=:quantity, price=:price, promotion_price=:promotion_price";
                         $orderDetailsStmt = $con->prepare($orderDetailsQuery);
                         $orderDetailsStmt->bindParam(":order_id", $order_id);
                         $orderDetailsStmt->bindParam(":product_id", $selectedProductID[$i]);
                         $orderDetailsStmt->bindParam(":quantity", $selectedProductQuantity[$i]);
+                        $orderDetailsStmt->bindParam(":price", $organizedProducts[$selectedProductID[$i]]['price']);
+                        $orderDetailsStmt->bindParam(":promotion_price", $organizedProducts[$selectedProductID[$i]]['promotion_price']);
                         $orderDetailsStmt->execute();
                     }
                     //order placed successfully
