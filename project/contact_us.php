@@ -17,79 +17,64 @@ include 'menu/validate_login.php';
         <div class="page-header p-3 pb-1">
             <h1>Contact Us</h1>
         </div>
-      
+
         <?php
-        if($_POST){
-            $firstName = $_POST['firstName'];
-            $lastName = $_POST['lastName'];
-            $email = $_POST['email'];
-            $phonenumber = $_POST['phonenumber'];
-            $address = $_POST['address'];
-            $message = $_POST['message'];
+        if ($_POST) {
+            include 'config/database.php';
+            include 'menu/validate_function.php';
 
-            $errorMessage = array();
+            try {
+                $query = "INSERT INTO contacts SET firstname=:firstname, lastname=:lastname, email=:email, phonenumber=:phonenumber, address=:address, message=:message";
+                $stmt = $con->prepare($query);
+                $firstname = $_POST['firstname'];
+                $lastname = $_POST['lastname'];
+                $email = $_POST['email'];
+                $phonenumber = $_POST['phonenumber'];
+                $address = $_POST['address'];
+                $message = $_POST['message'];
+                // bind the parameters
+                $stmt->bindParam(':firstname', $firstname);
+                $stmt->bindParam(':lastname', $lastname);
+                $stmt->bindParam(':email', $email);
+                $stmt->bindParam(':phonenumber', $phonenumber);
+                $stmt->bindParam(':address', $address);
+                $stmt->bindParam(':message', $message);
 
-            if(empty($firstName)) {
-                $errorMessage[] = "First name field is empty.";
-            }
-            if(empty($lastName)) {
-                $errorMessage[] = "Last name field is empty.";
-            }
-            if(empty($email)) {
-                $errorMessage[] = "Email field is empty.";
-            }else {
-                if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $errorMessage[] = "Invalid email format.";
+                $errorMessage = array();
+
+                $errorMessage = validateEmailForm($firstname, $lastname, $email, $phonenumber, $address, $message);
+
+                if (!empty($errorMessage)) {
+                    echo "<div class='alert alert-danger m-3'>";
+                    foreach ($errorMessage as $displayErrorMessage) {
+                        echo $displayErrorMessage . "<br>";
+                    }
+                    echo "</div>";
+                }else {
+                    if ($stmt->execute()) {
+                        echo "<div class='alert alert-success m-3'>Record saved.</div>";
+                        $_POST = array();
+                    }else {
+                        echo "<div class='alert alert-danger m-3'>Unable to save record.</div>";
+                    }
                 }
-            }
-            if(empty($phonenumber)) {
-                $errorMessage[] = "Phone number field is empty.";
-            }
-            if(empty($address)) {
-                $errorMessage[] = "Address field is empty.";
-            }
-            if(empty($message)) {
-                $errorMessage[] = "Message field is empty.";
-            }
-
-
-            if(!empty($errorMessage)) {
-                echo "<div class='alert alert-danger m-3'>";
-                foreach ($errorMessage as $displayErrorMessage) {
-                    echo $displayErrorMessage . "<br>";
-                }
-                echo "</div>";
-            } else {
-                //Send the email
-                // $to = 'your-email@example.com';
-                // $subject = 'Contact Form Submission';
-                // $messageBody = "First Name: $firstName\n";
-                // $messageBody .= "Last Name: $lastName\n";
-                // $messageBody .= "Email: $email\n";
-                // $messageBody .= "phonenumber: $phonenumber\n";
-                // $messageBody .= "Address: $address\n";
-                // $messageBody .= "Message: $message\n";
-                // $headers = "From: $email";
-
-                if (mail($to, $subject, $messageBody, $headers)) {
-                    echo "<div class='alert alert-success m-3'>Message sent successfully!</div>";
-                } else {
-                    echo "<div class='alert alert-danger m-3'>Failed to send the message. Please try again.</div>";
-                }
+            } catch (PDOException $exception) {
+                die('ERROR: ' . $exception->getMessage());
             }
         }
         ?>
 
         <div class="container p-3">
-            <form method="post">
+            <form action="" method="post">
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="firstName" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo isset($_POST['firstName']) ? $_POST['firstName'] : ''; ?>">
+                        <input type="text" class="form-control" id="firstname" name="firstname" value="<?php echo isset($_POST['firstname']) ? $_POST['firstname'] : ''; ?>">
+
                     </div>
                     <div class="col-md-6">
                         <label for="lastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo isset($_POST['lastName']) ? $_POST['lastName'] : ''; ?>">
+                        <input type="text" class="form-control" id="lastname" name="lastname" value="<?php echo isset($_POST['lastname']) ? $_POST['lastname'] : ''; ?>">
                     </div>
                 </div>
                 <div class="row mb-3">
