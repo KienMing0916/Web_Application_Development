@@ -16,8 +16,8 @@ if (isset($_SESSION['Customer_ID'])) {
     
 </head>
 <body>
-    <div class="container p-0" style="background: linear-gradient(to bottom, #f2f2f2, #d9d9d9);">     
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container p-0 vh-100" style="background: linear-gradient(to bottom, #f2f2f2, #d9d9d9);">     
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
             <div class="d-flex align-items-center ms-1">
                 <a class="navbar-brand ms-2" href="#">
                     <img src="img/factorylogo.png" alt="factorylogo" width="50" height="40" class="ms-3">
