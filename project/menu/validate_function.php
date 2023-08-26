@@ -224,7 +224,7 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
 
 // accept $selectedProductRow, $selectedProductID, $selectedProductQuantity as references instead values
 // called on line 54 of order_create.php and line 74 of order_update.php
-function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selectedProductID, &$selectedProductQuantity, $products){
+function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selectedProductID, &$selectedProductQuantity, $organizedProducts){
     $errorMessage = array();
     $selectedProductRowWithoutDuplicate = array_filter(array_unique($selectedProductID));
     $countedProduct = array_count_values($selectedProductID);
@@ -239,7 +239,7 @@ function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selected
             if(!array_key_exists($key, $selectedProductRowWithoutDuplicate)){
                 // this condition is set to block unselected products (Exp two empty product fields)
                 if($val != ''){ 
-                    $errorMessage[] = "Duplicate product was chosen - " . $products[$val - 1]['name'] . ".";
+                    $errorMessage[] = "Duplicate product was chosen - " . $organizedProducts[$val]['name'] . ".";
                     unset($selectedProductID[$key]);
                     unset($selectedProductQuantity[$key]);
                     $selectedProductRow = isset($selectedProductRowWithoutDuplicate) ? count($selectedProductRowWithoutDuplicate) + $countedEmptyProductFields : count($_POST['product']);
