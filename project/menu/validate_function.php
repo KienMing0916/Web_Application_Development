@@ -1,4 +1,44 @@
 <?php
+// called on line 45 of contact_us.php
+function validateEmailForm($firstname, $lastname, $email, $phonenumber, $address, $message){
+    $errorMessage = array();
+
+    if (empty($firstname)) {
+        $errorMessage[] = "First name field is empty.";
+    }else if (!ctype_alpha($firstname)) {
+        $errorMessage[] = "First name cannot contain numbers.";
+    }
+    if (empty($lastname)) {
+        $errorMessage[] = "Lastname field is empty.";
+    }else if (!ctype_alpha($lastname)) {
+        $errorMessage[] = "Last name cannot contain numbers.";
+    }
+    if(empty($email)) {
+        $errorMessage[] = "Email field is empty.";
+    }else {
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errorMessage[] = "Invalid email format.";
+        }
+    }
+    if (empty($phonenumber)) {
+        $errorMessage[] = "Phone number field is empty.";
+    }else if (!preg_match('/^0(?:\d-?){8,9}\d$/', $phonenumber)) {
+        $errorMessage[] = "Phone number is not in the correct Malaysia format.";
+    }
+
+    if(empty($address)) {
+        $errorMessage[] = "Address field is empty.";
+    }
+    if (empty($message)) {
+        $errorMessage[] = "Message field is empty.";
+    } elseif (strlen($message) > 150) {
+        $errorMessage[] = "Message cannot exceed 150 characters.";
+    }
+
+    return $errorMessage;
+}
+
+// called on line 45 of product_create.php and line 91 of product_update.php
 function validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image) {
     $errorMessage = array();
     $target_directory = "uploaded_product_img/";
@@ -6,8 +46,10 @@ function validateProductForm($name, $description, $price, $promotion_price, $man
     if(empty($name)) {
         $errorMessage[] = "Name field is empty.";
     }
-    if(empty($description)) {
+    if (empty($description)) {
         $errorMessage[] = "Description field is empty.";
+    }else if (strlen($description) > 100) {
+        $errorMessage[] = "Description cannot exceed 100 characters.";
     }
     if(empty($price)) {
         $errorMessage[] = "Price field is empty.";
@@ -18,8 +60,6 @@ function validateProductForm($name, $description, $price, $promotion_price, $man
             $errorMessage[] = "Prices can only be numbers.";
         }
     }
-
-
     if(empty($manufacture_date)) {
         $errorMessage[] = "Manufacture date field is empty.";
     }
@@ -42,6 +82,7 @@ function validateProductForm($name, $description, $price, $promotion_price, $man
     return $errorMessage;
 }
 
+// called on line 32 of category_create.php and line 51 of category_update.php
 function validateCategoryForm($category_name, $description) {
     $errorMessage = array();
 
@@ -50,11 +91,14 @@ function validateCategoryForm($category_name, $description) {
     }
     if(empty($description)) {
         $errorMessage[] = "Description field is empty.";
+    }else if (strlen($description) > 100) {
+        $errorMessage[] = "Description cannot exceed 100 characters.";
     }
 
     return $errorMessage;
 }
 
+// called on line 43 of customer_create.php
 function validateCreateCustomerForm($username, $password, $confirmpassword, $firstname, $lastname, $gender, $birthdate, $email, $status, $image) {
     $errorMessage = array();
     $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/";
@@ -112,6 +156,7 @@ function validateCreateCustomerForm($username, $password, $confirmpassword, $fir
     return $errorMessage;
 }
 
+// called on line 85 of customer_update.php
 function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $status, $db_password, $current_password, $new_password, $confirm_new_password, $image) {
     $errorMessage = array();
     $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/";
@@ -177,7 +222,8 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
     }
 }
 
-//accept $selectedProductRow, $selectedProductID, $selectedProductQuantity as references instead values
+// accept $selectedProductRow, $selectedProductID, $selectedProductQuantity as references instead values
+// called on line 54 of order_create.php and line 74 of order_update.php
 function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selectedProductID, &$selectedProductQuantity, $products){
     $errorMessage = array();
     $selectedProductRowWithoutDuplicate = array_filter(array_unique($selectedProductID));
@@ -220,6 +266,7 @@ function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selected
     return $errorMessage;
 }
 
+// called on line 79, 153, 197, 204, 210 of validate_function.php
 function validateImage($image, $target_directory, $errorMessage) {
     
     if (!empty($_FILES["image"]["name"])) {
@@ -264,9 +311,6 @@ function validateImage($image, $target_directory, $errorMessage) {
 
     return $errorMessage;
 }
-
-
-
 ?>
 
 
