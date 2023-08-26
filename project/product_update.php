@@ -154,12 +154,12 @@ include 'menu/validate_login.php';
                 </tr>
                 <tr>
                     <td>Selling Price (RM)</td>
-                    <td><input type='text' name='price' step="0.01" value="<?php echo htmlspecialchars($price, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td><input type='number' name='price' step="0.01" value="<?php echo htmlspecialchars(number_format((float)$price, 2, '.', ''), ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
 
                 <tr>
                     <td>Promotion Price (RM)</td>
-                    <td><input type='text' name='promotion_price' step="0.01" value="<?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td><input type='number' name='promotion_price' step="0.01" value="<?php echo htmlspecialchars(number_format((float)$promotion_price, 2, '.', ''), ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>Manufacture Date</td>
