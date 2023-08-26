@@ -2,6 +2,8 @@
 $action = isset($_GET['action']) ? $_GET['action'] : "";
 $result = isset($_GET['result']) ? $_GET['result'] : "";
 
+// when delete button clicked
+// included on line 63 of category_read.php, line 54 of product_read, line 52 of customer_read.php and order_read.php
 if ($action == 'deleted') {
     echo "<div class='alert alert-success m-3'>Record was deleted.</div>";
 }
