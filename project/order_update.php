@@ -83,7 +83,11 @@ include 'menu/validate_login.php';
                 }else {
 
                     for ($x = 0; $x < $selectedProductRow; $x++) {
-                        $subtotal =  ($products[$selectedProductID[$x] - 1]['promotion_price'] != 0) ?  $products[$selectedProductID[$x] - 1]['promotion_price'] * $selectedProductQuantity[$x] : $products[$selectedProductID[$x] - 1]['price'] * $selectedProductQuantity[$x];
+                        $productIndex = $selectedProductID[$x] - 1;
+                        $price = $products[$productIndex]['price'];
+                        $promotionPrice = $products[$productIndex]['promotion_price'];
+                        $selectedPrice = ($promotionPrice != 0) ? $promotionPrice : $price;
+                        $subtotal = $selectedPrice * $selectedProductQuantity[$x];
                         $totalAmount += $subtotal;
                         $formattedTotalAmount = number_format((float)$totalAmount, 2, '.', '');
                     }
@@ -99,15 +103,18 @@ include 'menu/validate_login.php';
                     $updateOrderDateStmt->bindParam(":total_amount", $formattedTotalAmount);
                     $updateOrderDateStmt->bindParam(":id", $id);
                     $updateOrderDateStmt->execute();
-    
+
                     for ($i = 0; $i < $selectedProductRow; $i++) {
-                        $orderDetailsQuery = "INSERT INTO order_details SET Order_ID=:id, Product_ID=:product_id, quantity=:quantity";
+                        $orderDetailsQuery = "INSERT INTO order_details SET Order_ID=:id, Product_ID=:product_id, quantity=:quantity, price=:price, promotion_price=:promotion_price";
                         $orderDetailsStmt = $con->prepare($orderDetailsQuery);
                         $orderDetailsStmt->bindParam(":id", $id);
                         $orderDetailsStmt->bindParam(":product_id", $selectedProductID[$i]);
                         $orderDetailsStmt->bindParam(":quantity", $selectedProductQuantity[$i]);
+                        $orderDetailsStmt->bindParam(":price", $products[$selectedProductID[$i] - 1]['price']);
+                        $orderDetailsStmt->bindParam(":promotion_price", $products[$selectedProductID[$i] - 1]['promotion_price']);
                         $orderDetailsStmt->execute();
                     }
+
                     // order updated successfully
                     header("Location: order_details_read.php?id={$id}&action=update_order_successfully");
                     exit();
