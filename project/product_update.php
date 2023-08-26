@@ -52,26 +52,30 @@ include 'menu/validate_login.php';
 
             try{
                 if(isset($_POST['delete_image'])){
-                    $defaultImage = 'uploaded_product_img/defaultproductimg.jpg';
-                    $queryDeleteImg = "UPDATE products SET product_image=:image WHERE Product_ID = :id";
-                    $deleteImgStmt = $con->prepare($queryDeleteImg);
-                    $deleteImgStmt->bindParam(':id', $id);
-                    $deleteImgStmt->bindParam(':image', $defaultImage);
-                    $deleteImgStmt->execute();
-
-                    if($deleteImgStmt->execute()){
-                        // delete image file
-                        if ($uploadedImage !== 'uploaded_product_img/defaultproductimg.jpg') {
-                            if (file_exists($uploadedImage)) {
-                                unlink($uploadedImage);
-                            }
-                        }
-                        // record deleted
-                        header("Location: product_read_one.php?id={$id}&action=image_deleted");
-                        exit();
+                    if($uploadedImage === 'uploaded_product_img/defaultproductimg.jpg'){
+                        echo "<div class='alert alert-danger m-3'>No product image found.</div>";
                     }else{
-                        echo "<div class='alert alert-danger m-3'>Unable to delete product image. Please try again.</div>";
-                    }                    
+                        $defaultImage = 'uploaded_product_img/defaultproductimg.jpg';
+                        $queryDeleteImg = "UPDATE products SET product_image=:image WHERE Product_ID = :id";
+                        $deleteImgStmt = $con->prepare($queryDeleteImg);
+                        $deleteImgStmt->bindParam(':id', $id);
+                        $deleteImgStmt->bindParam(':image', $defaultImage);
+                        $deleteImgStmt->execute();
+    
+                        if($deleteImgStmt->execute()){
+                            // delete image file
+                            if ($uploadedImage !== 'uploaded_product_img/defaultproductimg.jpg') {
+                                if (file_exists($uploadedImage)) {
+                                    unlink($uploadedImage);
+                                }
+                            }
+                            // record deleted
+                            header("Location: product_read_one.php?id={$id}&action=image_deleted");
+                            exit();
+                        }else{
+                            echo "<div class='alert alert-danger m-3'>Unable to delete product image. Please try again.</div>";
+                        }    
+                    }       
 
                 }else{
                     $query = "UPDATE products SET name=:name, description=:description, price=:price, promotion_price=:promotion_price, manufacture_date=:manufacture_date, expired_date=:expired_date, Category_ID=:category_id, product_image=:image WHERE Product_ID = :id";

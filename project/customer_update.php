@@ -47,26 +47,32 @@ include 'menu/validate_login.php';
             
             try {
                 if(isset($_POST['delete_image'])){
-                    $defaultImage = 'uploaded_customer_img/defaultcustomerimg.jpg';
-                    $queryDeleteImg = "UPDATE customers SET profile_image=:image WHERE Customer_ID = :id";
-                    $deleteImgStmt = $con->prepare($queryDeleteImg);
-                    $deleteImgStmt->bindParam(':id', $id);
-                    $deleteImgStmt->bindParam(':image', $defaultImage);
-                    $deleteImgStmt->execute();
-
-                    if($deleteImgStmt->execute()){
-                        // delete image file
-                        if ($uploadedImage !== 'uploaded_customer_img/defaultcustomerimg.jpg') {
-                            if (file_exists($uploadedImage)) {
-                                unlink($uploadedImage);
-                            }
-                        }
-                        // record deleted
-                        header("Location: customer_read_one.php?id={$id}&action=image_deleted");
-                        exit();
+                    if($uploadedImage === 'uploaded_customer_img/defaultcustomerimg.jpg'){
+                        echo "<div class='alert alert-danger m-3'>No profile image found.</div>";
                     }else{
-                        echo "<div class='alert alert-danger m-3'>Unable to delete profile image. Please try again.</div>";
-                    }                    
+                        $defaultImage = 'uploaded_customer_img/defaultcustomerimg.jpg';
+                        $queryDeleteImg = "UPDATE customers SET profile_image=:image WHERE Customer_ID = :id";
+                        $deleteImgStmt = $con->prepare($queryDeleteImg);
+                        $deleteImgStmt->bindParam(':id', $id);
+                        $deleteImgStmt->bindParam(':image', $defaultImage);
+                        $deleteImgStmt->execute();
+    
+                        if($deleteImgStmt->execute()){
+                            // delete image file
+                            if ($uploadedImage !== 'uploaded_customer_img/defaultcustomerimg.jpg') {
+                                if (file_exists($uploadedImage)) {
+                                    unlink($uploadedImage);
+                                }
+                            }
+                            // record deleted
+                            header("Location: customer_read_one.php?id={$id}&action=image_deleted");
+                            exit();
+                        }else{
+                            echo "<div class='alert alert-danger m-3'>Unable to delete profile image. Please try again.</div>";
+                        }   
+
+                    }
+                 
                 }else{
                     $query = "UPDATE customers SET username=:username, firstname=:firstname, lastname=:lastname, gender=:gender, birthdate=:birthdate, email=:email, status=:status, profile_image=:image";       
                     $username = htmlspecialchars(strip_tags($_POST['username']));
