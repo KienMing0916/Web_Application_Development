@@ -24,7 +24,7 @@ include 'menu/validate_login.php';
         $searchKeyword = isset($_GET['search']) ? $_GET['search'] : '';
         $query = "SELECT Customer_ID, username, firstname, lastname, email, status, profile_image FROM customers";
         if (!empty($searchKeyword)) {
-            $query .= " WHERE username LIKE :keyword OR firstname LIKE :keyword OR lastname LIKE :keyword OR email LIKE :keyword";
+            $query .= " WHERE username LIKE :keyword OR firstname LIKE :keyword OR lastname LIKE :keyword OR email LIKE :keyword OR status LIKE :keyword";
             $searchKeyword = "%{$searchKeyword}%";
         }
         $query .= " ORDER BY CUSTOMER_ID DESC";
