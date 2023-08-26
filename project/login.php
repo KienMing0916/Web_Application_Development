@@ -11,6 +11,7 @@ if (isset($_SESSION['Customer_ID'])) {
 <html>
 <head>
     <title>Home</title>
+    <link rel="icon" type="image/x-icon" href="img/factorylogo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     
 </head>
@@ -20,7 +21,7 @@ if (isset($_SESSION['Customer_ID'])) {
             <div class="d-flex align-items-center ms-1">
                 <a class="navbar-brand ms-2" href="#">
                     <img src="img/factorylogo.png" alt="factorylogo" width="50" height="40" class="ms-3">
-                    <span style="vertical-align: middle;">KM Supermarket</span>
+                    <span style="vertical-align: middle;"><strong><i>KM Speedmart</i></strong></span>
                 </a>
             </div>
         </nav>
@@ -75,7 +76,7 @@ if (isset($_SESSION['Customer_ID'])) {
                         }
     
                         if($row['status'] !== 'Active') {
-                            echo "<div class='alert alert-danger m-3'>" . $row['status'] . " account.</div>";
+                            echo "<div class='alert alert-danger m-3'>". $row['status'] . " account.</div>";
                             return;
                         }
     
@@ -97,11 +98,11 @@ if (isset($_SESSION['Customer_ID'])) {
                 <form method="POST" action="login.php">
                     <div class="mb-3">
                         <label for="useraccount" class="form-label">Username / Email</label>
-                        <input type="text" class="form-control" id="useraccount" name="useraccount" value="<?php echo isset($_POST['useraccount']) ? $_POST['useraccount'] : ''; ?>" required>
+                        <input type="text" class="form-control" id="useraccount" name="useraccount" value="<?php echo isset($_POST['useraccount']) ? $_POST['useraccount'] : ''; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <input type="password" class="form-control" id="password" name="password">
                     </div>
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary">Login</button>

@@ -192,7 +192,7 @@ include 'menu/validate_login.php';
                     <td>
                         <img src="<?php echo htmlspecialchars($uploadedImage, ENT_QUOTES); ?>" width="200" height="200">
                         <br><br>
-                        <input type="file" name="image"/>
+                        <input type="file" name="image" class="form-control" accept="image/*">
                     </td>
                 </tr>
                 <tr>

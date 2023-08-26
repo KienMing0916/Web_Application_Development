@@ -21,7 +21,7 @@ include 'menu/validate_login.php';
 
         <?php
         include 'config/database.php';
-        $customerQuery = "SELECT Customer_ID, firstname, lastname FROM customers";
+        $customerQuery = "SELECT Customer_ID, firstname, lastname FROM customers WHERE status = 'Active'";
         $customerStmt = $con->prepare($customerQuery);
         $customerStmt->execute();
         $customers = $customerStmt->fetchAll(PDO::FETCH_ASSOC);

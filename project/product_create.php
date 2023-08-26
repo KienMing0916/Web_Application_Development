@@ -134,7 +134,7 @@ include 'menu/validate_login.php';
                     </tr>
                     <tr>
                         <td>Product Image</td>
-                        <td><input type="file" name="image"/></td>
+                        <td><input type="file" name="image" class="form-control" accept="image/*"></td>
                     </tr>
 
                     <tr>

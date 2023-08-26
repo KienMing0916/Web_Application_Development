@@ -26,7 +26,7 @@ include 'menu/validate_login.php';
                   FROM products INNER JOIN categories ON products.Category_ID = categories.Category_ID";
 
         if (!empty($searchKeyword)) {
-            $query .= " WHERE products.name LIKE :keyword";
+            $query .= " WHERE products.name LIKE :keyword OR categories.category_name LIKE :keyword";
             $searchKeyword = "%{$searchKeyword}%";
         }
         $query .= " ORDER BY products.Product_ID DESC";

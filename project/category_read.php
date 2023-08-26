@@ -8,6 +8,17 @@ include 'menu/validate_login.php';
     <title>List of Categories</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
+<style>
+    .category-link {
+        color: black;         /* Set the default link color to black */
+        text-decoration: none; /* Remove underline by default */
+    }
+
+    .category-link:hover {
+        text-decoration: underline; /* Add underline on hover */
+    }
+</style>
+
 <body>
     <div class="container p-0 bg-light">
         <?php
@@ -65,11 +76,10 @@ include 'menu/validate_login.php';
                     extract($row);
                     echo "<tr>";
                         echo "<td>{$Category_ID}</td>";
-                        echo "<td class='col-2'>{$category_name}</td>";
+                        echo "<td class='col-2'><a href='category_read_one.php?id={$Category_ID}' class='category-link'>{$category_name}</a></td>";
                         echo "<td>{$description}</td>";
 
                         echo "<td class='col-3'>";
-                            //tempo
                             echo "<a href='category_read_one.php?id={$Category_ID}' class='btn btn-info m-r-1em text-white mx-2'>Read</a>";
                             echo "<a href='category_update.php?id={$Category_ID}' class='btn btn-primary m-r-1em mx-2'>Edit</a>";
                             echo "<a href='#' onclick='category_delete({$Category_ID});'  class='btn btn-danger mx-2'>Delete</a>";

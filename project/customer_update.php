@@ -124,7 +124,7 @@ include 'menu/validate_login.php';
                             }
                         }
                 
-                        if ($stmt->execute()) {
+                        if ($stmt->execute()) { 
                             // record updated
                             header("Location: customer_read_one.php?id={$id}&action=record_updated");
                             exit();
@@ -135,7 +135,17 @@ include 'menu/validate_login.php';
                 }
 
             }catch(PDOException $exception){
-                die('ERROR: ' . $exception->getMessage());
+                if ($exception->getCode() == 23000){
+                    //error code 23000 could be a duplicate username or email. Find keyword username or email to differentiate the error message.
+                    if (strpos($exception->getMessage(), 'username') != false) {
+                        echo "<div class='alert alert-danger m-3'>Username already taken. Please enter a new username.</div>";
+                    }else if (strpos($exception->getMessage(), 'email') != false) {
+                        echo "<div class='alert alert-danger m-3'>Email already taken. Please enter a new email.</div>";
+                    }
+                }else{
+                    echo "<div class='alert alert-danger m-3'>ERROR: " . $exception->getMessage() . "</div>";
+                    //die('ERROR: ' . $exception->getMessage());
+                }
             }
         }
         ?>
@@ -188,7 +198,7 @@ include 'menu/validate_login.php';
                     <td>
                         <img src="<?php echo htmlspecialchars($uploadedImage, ENT_QUOTES); ?>" width="200" height="200">
                         <br><br>
-                        <input type="file" name="image"/>
+                        <input type="file" name="image" class="form-control" accept="image/*">
                     </td>
                 </tr>
                 <tr>
