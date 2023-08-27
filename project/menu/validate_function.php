@@ -55,8 +55,8 @@ function validateProductForm($name, $description, $price, $promotion_price, $man
     }
     if (empty($description)) {
         $errorMessage[] = "Description field is empty.";
-    }else if (strlen($description) > 150) {
-        $errorMessage[] = "Description cannot exceed 150 characters.";
+    }else if (strlen($description) > 200) {
+        $errorMessage[] = "Description cannot exceed 200 characters.";
     }
     if(empty($price)) {
         $errorMessage[] = "Price field is empty.";
@@ -100,8 +100,8 @@ function validateCategoryForm($category_name, $description) {
     }
     if(empty($description)) {
         $errorMessage[] = "Description field is empty.";
-    }else if (strlen($description) > 150) {
-        $errorMessage[] = "Description cannot exceed 150 characters.";
+    }else if (strlen($description) > 200) {
+        $errorMessage[] = "Description cannot exceed 200 characters.";
     }
 
     return $errorMessage;

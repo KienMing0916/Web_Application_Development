@@ -85,7 +85,7 @@ include 'menu/validate_login.php';
                 </tr>
                 <tr>
                     <td>Description</td>
-                    <td><textarea name='description' class='form-control' maxlength="150"><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></textarea></td>
+                    <td><textarea name='description' class='form-control' maxlength="200"><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></textarea></td>
                 </tr>
                 <tr>
                     <td></td>

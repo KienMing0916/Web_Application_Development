@@ -67,7 +67,7 @@ include 'menu/validate_login.php';
                     </tr>
                     <tr>
                         <td>Description</td>
-                        <td><textarea name='description' id='description' class='form-control' maxlength="150"><?php echo isset($_POST['description']) ? $_POST['description'] : ''; ?></textarea></td>
+                        <td><textarea name='description' id='description' class='form-control' maxlength="200"><?php echo isset($_POST['description']) ? $_POST['description'] : ''; ?></textarea></td>
                     </tr>
                     <tr>
                         <td></td>
