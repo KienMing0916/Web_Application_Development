@@ -224,7 +224,7 @@ include 'menu/validate_login.php';
                     <td></td>
                     <td>
                         <input type='submit' value='Save Changes' class='btn btn-primary' />
-                        <button type="submit" name="delete_image" class="btn btn-secondary">Delete Profile Image</button>
+                        <button type="submit" name="delete_image" class="btn btn-secondary">Delete profile image</button>
                         <a href='customer_read.php' class='btn btn-danger'>Back to customer list</a>
                     </td>
                 </tr>
