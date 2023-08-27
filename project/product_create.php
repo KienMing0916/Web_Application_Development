@@ -89,11 +89,11 @@ include 'menu/validate_login.php';
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td class="col-4">Name</td>
-                        <td class="col-8"><input type='text' name='name' id='name' class='form-control' value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>" /></td>
+                        <td class="col-8"><input type='text' name='name' id='name' class='form-control' maxlength="50" value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>" /></td>
                     </tr>
                     <tr>
                         <td>Description</td>
-                        <td><textarea name='description' id='description' class='form-control'><?php echo isset($_POST['description']) ? $_POST['description'] : ''; ?></textarea></td>
+                        <td><textarea name='description' id='description' class='form-control' maxlength="150"><?php echo isset($_POST['description']) ? $_POST['description'] : ''; ?></textarea></td>
                     </tr>
                     <tr>
                         <td>Selling Price (RM)</td>

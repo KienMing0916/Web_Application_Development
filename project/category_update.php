@@ -51,7 +51,6 @@ include 'menu/validate_login.php';
 
                 $errorMessage = validateCategoryForm($category_name, $description);
 
-
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
                         foreach ($errorMessage as $displayErrorMessage) {
@@ -82,11 +81,11 @@ include 'menu/validate_login.php';
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td class="col-4">Category Name</td>
-                    <td><input type='text' name='category_name' value="<?php echo htmlspecialchars($category_name, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td><input type='text' name='category_name' maxlength="50" value="<?php echo htmlspecialchars($category_name, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>Description</td>
-                    <td><textarea name='description' class='form-control'><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></textarea></td>
+                    <td><textarea name='description' class='form-control' maxlength="150"><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></textarea></td>
                 </tr>
                 <tr>
                     <td></td>

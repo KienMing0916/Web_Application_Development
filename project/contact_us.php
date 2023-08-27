@@ -41,8 +41,6 @@ include 'menu/validate_login.php';
                 $stmt->bindParam(':address', $address);
                 $stmt->bindParam(':message', $message);
 
-                $errorMessage = array();
-
                 $errorMessage = validateEmailForm($firstname, $lastname, $email, $phonenumber, $address, $message);
 
                 if (!empty($errorMessage)) {
@@ -70,12 +68,13 @@ include 'menu/validate_login.php';
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="firstName" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="firstname" name="firstname" value="<?php echo isset($_POST['firstname']) ? $_POST['firstname'] : ''; ?>">
+                        <input type="text" class="form-control" id="firstname" name="firstname" maxlength="30" value="<?php echo isset($_POST['firstname']) ? htmlspecialchars($_POST['firstname']) : ''; ?>">
 
                     </div>
                     <div class="col-md-6">
                         <label for="lastName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="lastname" name="lastname" value="<?php echo isset($_POST['lastname']) ? $_POST['lastname'] : ''; ?>">
+                        <input type="text" class="form-control" id="lastname" name="lastname" maxlength="30" value="<?php echo isset($_POST['lastname']) ? htmlspecialchars($_POST['lastname']) : ''; ?>">
+
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -91,13 +90,13 @@ include 'menu/validate_login.php';
                 <div class="row mb-3">
                     <div class="col">
                         <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="address" name="address" value="<?php echo isset($_POST['address']) ? $_POST['address'] : ''; ?>">
+                        <input type="text" class="form-control" id="address" name="address" maxlength="150" value="<?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : ''; ?>">
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col">
                         <label for="message" class="form-label">Message</label>
-                        <textarea class="form-control" id="message" name="message" rows="5"><?php echo isset($_POST['message']) ? $_POST['message'] : ''; ?></textarea>
+                        <textarea class="form-control" id="message" name="message" maxlength="150" rows="4"><?php echo isset($_POST['message']) ? $_POST['message'] : ''; ?></textarea>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>

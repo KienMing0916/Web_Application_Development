@@ -161,15 +161,15 @@ include 'menu/validate_login.php';
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td class="col-4">Username</td>
-                    <td><input type='text' name='username' value="<?php echo htmlspecialchars($username, ENT_QUOTES); ?>" class='form-control' /></td>
+                    <td><input type='text' name='username' minlength="5" maxlength="20" value="<?php echo htmlspecialchars($username, ENT_QUOTES); ?>" class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>First Name</td>
-                    <td><input type='text' name='firstname' value="<?php echo htmlspecialchars($firstname, ENT_QUOTES); ?>" class='form-control' /></td>
+                    <td><input type='text' name='firstname' maxlength="30" value="<?php echo htmlspecialchars($firstname, ENT_QUOTES); ?>" class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>Last Name</td>
-                    <td><input type='text' name='lastname' value="<?php echo htmlspecialchars($lastname, ENT_QUOTES); ?>" class='form-control' /></td>
+                    <td><input type='text' name='lastname' maxlength="30" value="<?php echo htmlspecialchars($lastname, ENT_QUOTES); ?>" class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>Gender</td>

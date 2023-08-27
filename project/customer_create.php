@@ -93,7 +93,7 @@ include 'menu/validate_login.php';
                 <table class='table table-hover table-responsive table-bordered'>
                     <tr>
                         <td class="col-4">Username</td>
-                        <td class="col-8"><input type='text' name='username' id='username' class='form-control' value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''; ?>" /></td>
+                        <td class="col-8"><input type='text' name='username' id='username' class='form-control' minlength="5" maxlength="20" value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''; ?>" /></td>
                     </tr>
                     <tr>
                         <td>Password</td>
@@ -105,11 +105,11 @@ include 'menu/validate_login.php';
                     </tr>
                     <tr>
                         <td>First Name</td>
-                        <td><input type='text' name='firstname'  id='firstname' class='form-control' value="<?php echo isset($_POST['firstname']) ? $_POST['firstname'] : ''; ?>" /></td>
+                        <td><input type='text' name='firstname'  id='firstname' class='form-control' maxlength="30" value="<?php echo isset($_POST['firstname']) ? $_POST['firstname'] : ''; ?>" /></td>
                     </tr>
                     <tr>
                         <td>Last Name</td>
-                        <td><input type='text' name='lastname' id='lastname' class='form-control' value="<?php echo isset($_POST['lastname']) ? $_POST['lastname'] : ''; ?>" /></td>
+                        <td><input type='text' name='lastname' id='lastname' class='form-control' maxlength="30" value="<?php echo isset($_POST['lastname']) ? $_POST['lastname'] : ''; ?>" /></td>
                     </tr>
                     <tr>
                         <td>Gender</td>
