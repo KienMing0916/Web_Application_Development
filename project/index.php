@@ -5,7 +5,7 @@ include 'menu/validate_login.php';
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>KM Speedmart - Home</title>
+    <title>SpeedMart Express - Home</title>
     <link rel="icon" type="image/x-icon" href="img/factorylogo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
@@ -99,7 +99,7 @@ include 'menu/validate_login.php';
         </div>
 
         <div class="bg-white text-center py-4">
-            <h1>Welcome to KM Speedmart</h1>
+            <h1>Welcome to SpeedMart Express</h1>
             <p class="lead p-3">We are dedicated to providing a seamless shopping experience and connecting customers with a wide range of quality products. Our goal is to make your shopping hassle-free and enjoyable.</p>
             <a href="order_create.php" class="btn btn-primary btn-lg">Make an order now</a>
         </div>

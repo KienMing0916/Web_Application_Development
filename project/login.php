@@ -10,7 +10,7 @@ if (isset($_SESSION['Customer_ID'])) {
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>KM Speedmart - Login</title>
+    <title>SpeedMart Express - Login</title>
     <link rel="icon" type="image/x-icon" href="img/factorylogo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     
@@ -21,7 +21,7 @@ if (isset($_SESSION['Customer_ID'])) {
             <div class="d-flex align-items-center ms-1">
                 <a class="navbar-brand ms-2" href="#">
                     <img src="img/factorylogo.png" alt="factorylogo" width="50" height="40" class="ms-3">
-                    <span style="vertical-align: middle;"><strong><i>KM Speedmart</i></strong></span>
+                    <span style="vertical-align: middle;"><strong><i>SpeedMart Express</i></strong></span>
                 </a>
             </div>
         </nav>
