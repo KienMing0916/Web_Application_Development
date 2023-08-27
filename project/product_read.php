@@ -73,7 +73,7 @@ include 'menu/validate_login.php';
                     echo "<tr>";
                         echo "<td>{$Product_ID}</td>";
                         echo "<td class='col-2'><a href='product_read_one.php?id={$Product_ID}' class='item-link'>{$name}</a></td>";
-                        echo "<td>";
+                        echo "<td class='p-3'>";
                             echo "<img src='" . htmlspecialchars($product_image, ENT_QUOTES) . "' alt='" . htmlspecialchars($name, ENT_QUOTES) . "' width='100' height='100'>";
                         echo "</td>";
                         echo "<td>{$description}</td>";

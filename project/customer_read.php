@@ -71,7 +71,7 @@ include 'menu/validate_login.php';
                         echo "<tr>";
                             echo "<td>{$Customer_ID}</td>";
                             echo "<td class='col-2'><a href='customer_read_one.php?id={$Customer_ID}' class='item-link'>{$username}</a></td>";
-                            echo "<td>";
+                            echo "<td class='p-3'>";
                                 echo "<img src='" . htmlspecialchars($profile_image, ENT_QUOTES) . "' alt='" . htmlspecialchars($username, ENT_QUOTES) . "' width='100' height='100'>";
                             echo "</td>";
                             echo "<td>{$firstname}</td>";
