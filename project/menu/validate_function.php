@@ -5,14 +5,14 @@ function validateEmailForm($firstname, $lastname, $email, $phonenumber, $address
     if (empty($firstname)) {
         $errorMessage[] = "First name field is empty.";
     }else if (!ctype_alpha($firstname)) {
-        $errorMessage[] = "First name can only be letters.";
+        $errorMessage[] = "First name can only be letters and no spaces allowed.";
     }else if (strlen($firstname) > 30) {
         $errorMessage[] = "First name cannot be more than 30 characters.";
     }
     if (empty($lastname)) {
         $errorMessage[] = "Lastname field is empty.";
     }else if (!ctype_alpha($lastname)) {
-        $errorMessage[] = "Last name can only be letters.";
+        $errorMessage[] = "Last name can only be letters and no spaces allowed.";
     }else if (strlen($lastname) > 30) {
         $errorMessage[] = "Last name cannot be more than 30 characters.";
     }
@@ -141,14 +141,14 @@ function validateCreateCustomerForm($username, $usernameCount, $password, $confi
     if(empty($firstname)) {
         $errorMessage[] = "First name field is empty.";
     }else if (!ctype_alpha($firstname)) {
-        $errorMessage[] = "First name can only be letters.";
+        $errorMessage[] = "First name can only be letters and no spaces allowed.";
     }else if (strlen($firstname) > 30) {
         $errorMessage[] = "First name cannot be more than 30 characters.";
     }
     if(empty($lastname)) {
         $errorMessage[] = "Last name field is empty.";
     }else if (!ctype_alpha($lastname)) {
-        $errorMessage[] = "Last name can only be letters.";
+        $errorMessage[] = "Last name can only be letters and no spaces allowed.";
     }else if (strlen($lastname) > 30) {
         $errorMessage[] = "Last name cannot be more than 30 characters.";
     }
@@ -197,14 +197,14 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
     if(empty($firstname)) {
         $errorMessage[] = "First name field is empty.";
     }else if (!ctype_alpha($firstname)) {
-        $errorMessage[] = "First name can only be letters.";
+        $errorMessage[] = "First name can only be letters and no spaces allowed.";
     }else if (strlen($firstname) > 30) {
         $errorMessage[] = "First name cannot be more than 30 characters.";
     }
     if(empty($lastname)) {
         $errorMessage[] = "Last name field is empty.";
     }else if (!ctype_alpha($lastname)) {
-        $errorMessage[] = "Last name can only be letters.";
+        $errorMessage[] = "Last name can only be letters and no spaces allowed.";
     }else if (strlen($lastname) > 30) {
         $errorMessage[] = "Last name cannot be more than 30 characters.";
     }
