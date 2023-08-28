@@ -75,7 +75,7 @@ include 'menu/validate_login.php';
                     }
                  
                 }else{
-                    $query = "UPDATE customers SET username=:username, firstname=:firstname, lastname=:lastname, gender=:gender, birthdate=:birthdate, email=:email, status=:status, profile_image=:image";       
+                    $query = "UPDATE customers SET firstname=:firstname, lastname=:lastname, gender=:gender, birthdate=:birthdate, email=:email, status=:status, profile_image=:image";       
                     $username = htmlspecialchars(strip_tags($_POST['username']));
                     $firstname = htmlspecialchars(strip_tags($_POST['firstname']));
                     $lastname = htmlspecialchars(strip_tags($_POST['lastname']));
@@ -89,7 +89,15 @@ include 'menu/validate_login.php';
                     // image field
                     $image = !empty($_FILES["image"]["name"]) ? "uploaded_customer_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "";
 
-                    $errorMessage = validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $status, $db_password, $current_password, $new_password, $confirm_new_password, $image);         
+                    // Check if the email already exists
+                    $emailQuery = "SELECT COUNT(*) FROM customers WHERE email = :email AND Customer_ID != :id";
+                    $emailStmt = $con->prepare($emailQuery);
+                    $emailStmt->bindParam(':email', $email);
+                    $emailStmt->bindParam(':id', $id);
+                    $emailStmt->execute();
+                    $emailCount = $emailStmt->fetchColumn();
+
+                    $errorMessage = validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $emailCount, $status, $db_password, $current_password, $new_password, $confirm_new_password, $image);         
 
                     if(!empty($errorMessage)) {
                         echo "<div class='alert alert-danger m-3'>";
@@ -105,7 +113,6 @@ include 'menu/validate_login.php';
 
                         $query .= " WHERE Customer_ID = :id";
                         $stmt = $con->prepare($query);
-                        $stmt->bindParam(':username', $username);
                         $stmt->bindParam(':firstname', $firstname);
                         $stmt->bindParam(':lastname', $lastname);
                         $stmt->bindParam(':gender', $gender);
@@ -142,17 +149,8 @@ include 'menu/validate_login.php';
                 }
 
             }catch(PDOException $exception){
-                if ($exception->getCode() == 23000){
-                    //error code 23000 could be a duplicate username or email. Find keyword username or email to differentiate the error message.
-                    if (strpos($exception->getMessage(), 'username') != false) {
-                        echo "<div class='alert alert-danger m-3'>Username already taken. Please enter a new username.</div>";
-                    }else if (strpos($exception->getMessage(), 'email') != false) {
-                        echo "<div class='alert alert-danger m-3'>Email already taken. Please enter a new email.</div>";
-                    }
-                }else{
-                    echo "<div class='alert alert-danger m-3'>ERROR: " . $exception->getMessage() . "</div>";
-                    //die('ERROR: ' . $exception->getMessage());
-                }
+                echo "<div class='alert alert-danger m-3'>ERROR: " . $exception->getMessage() . "</div>";
+                die('ERROR: ' . $exception->getMessage());
             }
         }
         ?>
@@ -161,7 +159,7 @@ include 'menu/validate_login.php';
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td class="col-4">Username</td>
-                    <td><input type='text' name='username' minlength="5" maxlength="20" value="<?php echo htmlspecialchars($username, ENT_QUOTES); ?>" class='form-control' /></td>
+                    <td><input type='text' name='username' minlength="5" maxlength="20" value="<?php echo htmlspecialchars($username, ENT_QUOTES); ?>" class='form-control' readonly/></td>
                 </tr>
                 <tr>
                     <td>First Name</td>

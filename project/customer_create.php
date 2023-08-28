@@ -41,7 +41,20 @@ include 'menu/validate_login.php';
                 $image = !empty($_FILES["image"]["name"]) ? "uploaded_customer_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "uploaded_customer_img/defaultcustomerimg.jpg";
                 $image = htmlspecialchars(strip_tags($image));
 
-                $errorMessage = validateCreateCustomerForm($username, $password, $confirmpassword, $firstname, $lastname, $gender, $birthdate, $email, $status, $image);
+                // Check if the username already exists
+                $usernameQuery = "SELECT COUNT(*) FROM customers WHERE username = :username";
+                $usernameStmt = $con->prepare($usernameQuery);
+                $usernameStmt->bindParam(':username', $username);
+                $usernameStmt->execute();
+                $usernameCount = $usernameStmt->fetchColumn();
+                // Check if the email already exists
+                $emailQuery = "SELECT COUNT(*) FROM customers WHERE email = :email";
+                $emailStmt = $con->prepare($emailQuery);
+                $emailStmt->bindParam(':email', $email);
+                $emailStmt->execute();
+                $emailCount = $emailStmt->fetchColumn();
+
+                $errorMessage = validateCreateCustomerForm($username, $usernameCount, $password, $confirmpassword, $firstname, $lastname, $gender, $birthdate, $email, $emailCount, $status, $image);
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
@@ -73,17 +86,8 @@ include 'menu/validate_login.php';
                 }
             }
             catch(PDOException $exception){
-                if ($exception->getCode() == 23000){
-                    //error code 23000 could be a duplicate username or email. Find keyword username or email to differentiate the error message.
-                    if (strpos($exception->getMessage(), 'username') != false) {
-                        echo "<div class='alert alert-danger m-3'>Username already taken. Please enter a new username.</div>";
-                    }else if (strpos($exception->getMessage(), 'email') != false) {
-                        echo "<div class='alert alert-danger m-3'>Email already taken. Please enter a new email.</div>";
-                    }
-                }else{
-                    echo "<div class='alert alert-danger m-3'>ERROR: " . $exception->getMessage() . "</div>";
-                    //die('ERROR: ' . $exception->getMessage());
-                }
+                echo "<div class='alert alert-danger m-3'>ERROR: " . $exception->getMessage() . "</div>";
+                die('ERROR: ' . $exception->getMessage());
             }
         }
         ?>
