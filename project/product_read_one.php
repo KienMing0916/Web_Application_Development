@@ -78,7 +78,16 @@ include 'menu/validate_login.php';
                 </tr>
                 <tr>
                     <td>Promotion Price (RM)</td>
-                    <td><?php echo htmlspecialchars(number_format((float)$promotion_price, 2, '.', ''), ENT_QUOTES);  ?></td>
+                    
+                    <td>
+                        <?php
+                        if ($promotion_price == "0") {
+                            echo '-';
+                        } else {
+                            echo htmlspecialchars(number_format((float)$promotion_price, 2, '.', ''), ENT_QUOTES);
+                        }
+                        ?>
+                    </td>
                 </tr>
                 <tr>
                     <td>Manufacture Date</td>
