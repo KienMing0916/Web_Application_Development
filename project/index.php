@@ -44,7 +44,7 @@ if (isset($_SESSION['Customer_ID'])) {
                 $errorMessage = array();
     
                 if(empty($useraccountinput)) {
-                    $errorMessage[] = "Please enter your email / username.";
+                    $errorMessage[] = "Please enter your username / email.";
                 }
     
                 if(empty($userpasswordinput)) {
