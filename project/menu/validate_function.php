@@ -1,19 +1,18 @@
 <?php
-// called on line 45 of contact_us.php
 function validateEmailForm($firstname, $lastname, $email, $phonenumber, $address, $message){
     $errorMessage = array();
 
     if (empty($firstname)) {
         $errorMessage[] = "First name field is empty.";
     }else if (!ctype_alpha($firstname)) {
-        $errorMessage[] = "First name cannot contain numbers.";
+        $errorMessage[] = "First name can only be letters.";
     }else if (strlen($firstname) > 30) {
         $errorMessage[] = "First name cannot be more than 30 characters.";
     }
     if (empty($lastname)) {
         $errorMessage[] = "Lastname field is empty.";
     }else if (!ctype_alpha($lastname)) {
-        $errorMessage[] = "Last name cannot contain numbers.";
+        $errorMessage[] = "Last name can only be letters.";
     }else if (strlen($lastname) > 30) {
         $errorMessage[] = "Last name cannot be more than 30 characters.";
     }
@@ -43,7 +42,6 @@ function validateEmailForm($firstname, $lastname, $email, $phonenumber, $address
     return $errorMessage;
 }
 
-// called on line 46 of product_create.php and line 96 of product_update.php
 function validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image) {
     $errorMessage = array();
     $target_directory = "uploaded_product_img/";
@@ -69,15 +67,20 @@ function validateProductForm($name, $description, $price, $promotion_price, $man
     }
     if(empty($manufacture_date)) {
         $errorMessage[] = "Manufacture date field is empty.";
+    }else {
+        $currentDate = date('Y-m-d');
+        if($manufacture_date > $currentDate) {
+            $errorMessage[] = "Manufacture date cannot be in future.";
+        }
     }
-    if(empty($expired_date)) {
-        $errorMessage[] = "Expired date field is empty.";
+
+    if (!empty($expired_date)) {
+        if ($expired_date <= $manufacture_date) {
+            $errorMessage[] = "Expired date must be later than the manufacture date.";
+        }
     }
     if($promotion_price >= $price) {
         $errorMessage[] = "Promotion price must be cheaper than the original price.";
-    }
-    if($expired_date <= $manufacture_date) {
-        $errorMessage[] = "Expired date must be later than the manufacture date.";
     }
     if(empty($category_id)) {
         $errorMessage[] = "No product category found.";
@@ -89,7 +92,6 @@ function validateProductForm($name, $description, $price, $promotion_price, $man
     return $errorMessage;
 }
 
-// called on line 33 of category_create.php and line 52 of category_update.php
 function validateCategoryForm($category_name, $description) {
     $errorMessage = array();
 
@@ -106,9 +108,7 @@ function validateCategoryForm($category_name, $description) {
 
     return $errorMessage;
 }
-
-// called on line 44 of customer_create.php
-function validateCreateCustomerForm($username, $password, $confirmpassword, $firstname, $lastname, $gender, $birthdate, $email, $status, $image) {
+function validateCreateCustomerForm($username, $usernameCount, $password, $confirmpassword, $firstname, $lastname, $gender, $birthdate, $email, $emailCount, $status, $image){
     $errorMessage = array();
     $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/";
     $target_directory = "uploaded_customer_img/";
@@ -118,6 +118,11 @@ function validateCreateCustomerForm($username, $password, $confirmpassword, $fir
     } else if (strlen($username) < 5 || strlen($username) > 20) {
         $errorMessage[] = "Username must be between 5 and 20 characters.";
     }
+
+    if ($usernameCount > 0) {
+        $errorMessage[] = "Username already taken. Please choose a different username.";
+    }
+
     if(empty($password)) {
         $errorMessage[] = "Password field is empty.";
     }else {
@@ -136,14 +141,14 @@ function validateCreateCustomerForm($username, $password, $confirmpassword, $fir
     if(empty($firstname)) {
         $errorMessage[] = "First name field is empty.";
     }else if (!ctype_alpha($firstname)) {
-        $errorMessage[] = "First name cannot contain numbers.";
+        $errorMessage[] = "First name can only be letters.";
     }else if (strlen($firstname) > 30) {
         $errorMessage[] = "First name cannot be more than 30 characters.";
     }
     if(empty($lastname)) {
         $errorMessage[] = "Last name field is empty.";
     }else if (!ctype_alpha($lastname)) {
-        $errorMessage[] = "Last name cannot contain numbers.";
+        $errorMessage[] = "Last name can only be letters.";
     }else if (strlen($lastname) > 30) {
         $errorMessage[] = "Last name cannot be more than 30 characters.";
     }
@@ -164,6 +169,9 @@ function validateCreateCustomerForm($username, $password, $confirmpassword, $fir
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errorMessage[] = "Invalid email format.";
         }
+    }
+    if ($emailCount > 0) {
+        $errorMessage[] = "Email already taken. Please choose a different email.";
     }
     if(empty($status)) {
         $errorMessage[] = "Account status field is empty.";
@@ -175,8 +183,7 @@ function validateCreateCustomerForm($username, $password, $confirmpassword, $fir
     return $errorMessage;
 }
 
-// called on line 92 of customer_update.php
-function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $status, $db_password, $current_password, $new_password, $confirm_new_password, $image) {
+function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $emailCount, $status, $db_password, $current_password, $new_password, $confirm_new_password, $image){
     $errorMessage = array();
     $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/";
     $target_directory = "uploaded_customer_img/";
@@ -186,17 +193,18 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
     } else if (strlen($username) < 5 || strlen($username) > 20) {
         $errorMessage[] = "Username must be between 5 and 20 characters.";
     }
+
     if(empty($firstname)) {
         $errorMessage[] = "First name field is empty.";
     }else if (!ctype_alpha($firstname)) {
-        $errorMessage[] = "First name cannot contain numbers.";
+        $errorMessage[] = "First name can only be letters.";
     }else if (strlen($firstname) > 30) {
         $errorMessage[] = "First name cannot be more than 30 characters.";
     }
     if(empty($lastname)) {
         $errorMessage[] = "Last name field is empty.";
     }else if (!ctype_alpha($lastname)) {
-        $errorMessage[] = "Last name cannot contain numbers.";
+        $errorMessage[] = "Last name can only be letters.";
     }else if (strlen($lastname) > 30) {
         $errorMessage[] = "Last name cannot be more than 30 characters.";
     }
@@ -217,6 +225,9 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errorMessage[] = "Invalid email format.";
         }
+    }
+    if ($emailCount > 0) {
+        $errorMessage[] = "Email already taken. Please choose a different email.";
     }
     if(empty($status)) {
         $errorMessage[] = "Account status field is empty.";
@@ -252,7 +263,6 @@ function validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $
 }
 
 // accept $selectedProductRow, $selectedProductID, $selectedProductQuantity as references instead values
-// called on line 54 of order_create.php and line 74 of order_update.php
 function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selectedProductID, &$selectedProductQuantity, $organizedProducts){
     $errorMessage = array();
     $selectedProductRowWithoutDuplicate = array_filter(array_unique($selectedProductID));
@@ -295,7 +305,6 @@ function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selected
     return $errorMessage;
 }
 
-// called on line 86, 168, 218, 225, 239 of validate_function.php
 function validateImage($image, $target_directory, $errorMessage) {
     
     if (!empty($_FILES["image"]["name"])) {
