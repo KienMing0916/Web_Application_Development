@@ -43,116 +43,165 @@ include 'menu/validate_login.php';
             die('ERROR: ' . $exception->getMessage());
         }
 
-        if ($_POST) {
+        if (isset($_POST['delete_image'])) {
             include 'menu/validate_function.php';
-            
-            try {
-                if(isset($_POST['delete_image'])){
-                    if($uploadedImage === 'uploaded_customer_img/defaultcustomerimg.jpg'){
-                        echo "<div class='alert alert-danger m-3'>No profile image found.</div>";
-                    }else{
-                        $defaultImage = 'uploaded_customer_img/defaultcustomerimg.jpg';
-                        $queryDeleteImg = "UPDATE customers SET profile_image=:image WHERE Customer_ID = :id";
-                        $deleteImgStmt = $con->prepare($queryDeleteImg);
-                        $deleteImgStmt->bindParam(':id', $id);
-                        $deleteImgStmt->bindParam(':image', $defaultImage);
-                        $deleteImgStmt->execute();
-    
-                        if($deleteImgStmt->execute()){
-                            // delete image file
-                            if ($uploadedImage !== 'uploaded_customer_img/defaultcustomerimg.jpg') {
-                                if (file_exists($uploadedImage)) {
-                                    unlink($uploadedImage);
-                                }
-                            }
-                            // record deleted
-                            header("Location: customer_read_one.php?id={$id}&action=image_deleted");
-                            exit();
-                        }else{
-                            echo "<div class='alert alert-danger m-3'>Unable to delete profile image. Please try again.</div>";
-                        }   
+            try {           
+                $query = "UPDATE customers SET firstname=:firstname, lastname=:lastname, gender=:gender, birthdate=:birthdate, email=:email, status=:status, profile_image=:image";       
+                $username = htmlspecialchars(strip_tags($_POST['username']));
+                $firstname = htmlspecialchars(strip_tags($_POST['firstname']));
+                $lastname = htmlspecialchars(strip_tags($_POST['lastname']));
+                $gender = $_POST['gender'];
+                $birthdate = $_POST['birthdate'];
+                $email = htmlspecialchars(strip_tags($_POST['email']));
+                $status = $_POST['status'];
+                $current_password = $_POST['current_password'];
+                $new_password = $_POST['new_password'];
+                $confirm_new_password = $_POST['confirm_new_password'];
+                // image field
+                $defaultImage = 'uploaded_customer_img/defaultcustomerimg.jpg';     
+                $image = !empty($_FILES["image"]["name"]) ? "uploaded_customer_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "";
 
-                    }
-                 
-                }else{
-                    $query = "UPDATE customers SET firstname=:firstname, lastname=:lastname, gender=:gender, birthdate=:birthdate, email=:email, status=:status, profile_image=:image";       
-                    $username = htmlspecialchars(strip_tags($_POST['username']));
-                    $firstname = htmlspecialchars(strip_tags($_POST['firstname']));
-                    $lastname = htmlspecialchars(strip_tags($_POST['lastname']));
-                    $gender = $_POST['gender'];
-                    $birthdate = $_POST['birthdate'];
-                    $email = htmlspecialchars(strip_tags($_POST['email']));
-                    $status = $_POST['status'];
-                    $current_password = $_POST['current_password'];
-                    $new_password = $_POST['new_password'];
-                    $confirm_new_password = $_POST['confirm_new_password'];
-                    // image field
-                    $image = !empty($_FILES["image"]["name"]) ? "uploaded_customer_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "";
+                // Check if the email already exists
+                $emailQuery = "SELECT COUNT(*) FROM customers WHERE email = :email AND Customer_ID != :id";
+                $emailStmt = $con->prepare($emailQuery);
+                $emailStmt->bindParam(':email', $email);
+                $emailStmt->bindParam(':id', $id);
+                $emailStmt->execute();
+                $emailCount = $emailStmt->fetchColumn();
 
-                    // Check if the email already exists
-                    $emailQuery = "SELECT COUNT(*) FROM customers WHERE email = :email AND Customer_ID != :id";
-                    $emailStmt = $con->prepare($emailQuery);
-                    $emailStmt->bindParam(':email', $email);
-                    $emailStmt->bindParam(':id', $id);
-                    $emailStmt->execute();
-                    $emailCount = $emailStmt->fetchColumn();
-
-                    $errorMessage = validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $emailCount, $status, $db_password, $current_password, $new_password, $confirm_new_password, $image);         
-
-                    if(!empty($errorMessage)) {
-                        echo "<div class='alert alert-danger m-3'>";
-                            foreach ($errorMessage as $displayErrorMessage) {
-                                echo $displayErrorMessage . "<br>";
-                            }
-                        echo "</div>";
-                    }else {
-                        if (!empty($current_password) && !empty($new_password) && !empty($confirm_new_password)) {
-                            $query .= ", password=:password ";
-                            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-                        }
-
-                        $query .= " WHERE Customer_ID = :id";
-                        $stmt = $con->prepare($query);
-                        $stmt->bindParam(':firstname', $firstname);
-                        $stmt->bindParam(':lastname', $lastname);
-                        $stmt->bindParam(':gender', $gender);
-                        $stmt->bindParam(':email', $email);
-                        $stmt->bindParam(':birthdate', $birthdate);
-                        $stmt->bindParam(':status', $status);
-                        $stmt->bindParam(':id', $id);
-                        
-                        if($image === ""){
-                            $stmt->bindParam(':image', $uploadedImage);
-                        }else{
-                            $stmt->bindParam(':image', $image);
-                        }
-                
-                        if (!empty($hashed_password)) {
-                            $stmt->bindParam(':password', $hashed_password);
-                        }
-
-                        if ($uploadedImage !== 'uploaded_customer_img/defaultcustomerimg.jpg' && $image !== $uploadedImage) {
-                            // Remove the existing image
-                            if (file_exists($uploadedImage) && $image !== "") {
-                                unlink($uploadedImage);
-                            }
-                        }
-                
-                        if ($stmt->execute()) { 
-                            // record updated
-                            header("Location: customer_read_one.php?id={$id}&action=record_updated");
-                            exit();
-                        } else {
-                            echo "<div class='alert alert-danger m-3'>Unable to update record. Please try again.</div>";
-                        }
-                    } 
+                $errorMessage = validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $emailCount, $status, $db_password, $current_password, $new_password, $confirm_new_password, $image);
+                if($uploadedImage === 'uploaded_customer_img/defaultcustomerimg.jpg'){
+                    $errorMessage[] = "No profile image found.";
                 }
+
+                if (!empty($errorMessage)) {
+                    echo "<div class='alert alert-danger m-3'>";
+                    foreach ($errorMessage as $displayErrorMessage) {
+                        echo $displayErrorMessage . "<br>";
+                    }
+                    echo "</div>";
+                } else {
+                    if (!empty($current_password) && !empty($new_password) && !empty($confirm_new_password)) {
+                        $query .= ", password=:password ";
+                        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+                    }
+
+                    $query .= " WHERE Customer_ID = :id";
+                    $stmt = $con->prepare($query);
+                    $stmt->bindParam(':firstname', $firstname);
+                    $stmt->bindParam(':lastname', $lastname);
+                    $stmt->bindParam(':gender', $gender);
+                    $stmt->bindParam(':email', $email);
+                    $stmt->bindParam(':birthdate', $birthdate);
+                    $stmt->bindParam(':status', $status);
+                    $stmt->bindParam(':image', $defaultImage);
+                    $stmt->bindParam(':id', $id);
+
+                    if (!empty($hashed_password)) {
+                        $stmt->bindParam(':password', $hashed_password);
+                    }                    
+
+                    if ($uploadedImage !== 'uploaded_customer_img/defaultcustomerimg.jpg') {
+                        if (file_exists($uploadedImage)) {
+                            unlink($uploadedImage);
+                        }
+                    }
+
+                    if ($stmt->execute()) {
+                        header("Location: customer_read_one.php?id={$id}&action=record_updated");
+                        exit();
+                    } else {
+                        echo "<div class='alert alert-danger m-3'>Unable to update record. Please try again.</div>";
+                    }
+                }
+
+            } catch (PDOException $exception) {
+                echo "<div class='alert alert-danger m-3'>ERROR: " . $exception->getMessage() . "</div>";
+                die('ERROR: ' . $exception->getMessage());
+            }
+        }
+
+        if(isset($_POST['save_changes'])){
+            include 'menu/validate_function.php';
+            try {
+                $query = "UPDATE customers SET firstname=:firstname, lastname=:lastname, gender=:gender, birthdate=:birthdate, email=:email, status=:status, profile_image=:image";       
+                $username = htmlspecialchars(strip_tags($_POST['username']));
+                $firstname = htmlspecialchars(strip_tags($_POST['firstname']));
+                $lastname = htmlspecialchars(strip_tags($_POST['lastname']));
+                $gender = $_POST['gender'];
+                $birthdate = $_POST['birthdate'];
+                $email = htmlspecialchars(strip_tags($_POST['email']));
+                $status = $_POST['status'];
+                $current_password = $_POST['current_password'];
+                $new_password = $_POST['new_password'];
+                $confirm_new_password = $_POST['confirm_new_password'];
+                // image field
+                $image = !empty($_FILES["image"]["name"]) ? "uploaded_customer_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "";
+                
+                // Check if the email already exists
+                $emailQuery = "SELECT COUNT(*) FROM customers WHERE email = :email AND Customer_ID != :id";
+                $emailStmt = $con->prepare($emailQuery);
+                $emailStmt->bindParam(':email', $email);
+                $emailStmt->bindParam(':id', $id);
+                $emailStmt->execute();
+                $emailCount = $emailStmt->fetchColumn();
+
+                $errorMessage = validateUpdateCustomerForm($username, $firstname, $lastname, $gender, $birthdate, $email, $emailCount, $status, $db_password, $current_password, $new_password, $confirm_new_password, $image);         
+
+                if(!empty($errorMessage)) {
+                    echo "<div class='alert alert-danger m-3'>";
+                        foreach ($errorMessage as $displayErrorMessage) {
+                            echo $displayErrorMessage . "<br>";
+                        }
+                    echo "</div>";
+                }else {
+                    if (!empty($current_password) && !empty($new_password) && !empty($confirm_new_password)) {
+                        $query .= ", password=:password ";
+                        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+                    }
+
+                    $query .= " WHERE Customer_ID = :id";
+                    $stmt = $con->prepare($query);
+                    $stmt->bindParam(':firstname', $firstname);
+                    $stmt->bindParam(':lastname', $lastname);
+                    $stmt->bindParam(':gender', $gender);
+                    $stmt->bindParam(':email', $email);
+                    $stmt->bindParam(':birthdate', $birthdate);
+                    $stmt->bindParam(':status', $status);
+                    $stmt->bindParam(':id', $id);
+                    
+                    if($image === ""){
+                        $stmt->bindParam(':image', $uploadedImage);
+                    }else{
+                        $stmt->bindParam(':image', $image);
+                    }
+            
+                    if (!empty($hashed_password)) {
+                        $stmt->bindParam(':password', $hashed_password);
+                    }
+
+                    if ($uploadedImage !== 'uploaded_customer_img/defaultcustomerimg.jpg' && $image !== $uploadedImage) {
+                        // Remove the existing image
+                        if (file_exists($uploadedImage) && $image !== "") {
+                            unlink($uploadedImage);
+                        }
+                    }
+            
+                    if ($stmt->execute()) { 
+                        // record updated
+                        header("Location: customer_read_one.php?id={$id}&action=record_updated");
+                        exit();
+                    } else {
+                        echo "<div class='alert alert-danger m-3'>Unable to update record. Please try again.</div>";
+                    }
+                } 
 
             }catch(PDOException $exception){
                 echo "<div class='alert alert-danger m-3'>ERROR: " . $exception->getMessage() . "</div>";
                 die('ERROR: ' . $exception->getMessage());
             }
         }
+
         ?>
 
         <form class="p-3" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}");?>" method="post" enctype="multipart/form-data">
@@ -221,7 +270,7 @@ include 'menu/validate_login.php';
                 <tr>
                     <td></td>
                     <td>
-                        <input type='submit' value='Save Changes' class='btn btn-primary' />
+                        <button type="submit" name="save_changes" class="btn btn-primary">Save Changes</button>
                         <button type="submit" name="delete_image" class="btn btn-secondary">Delete profile image</button>
                         <a href='customer_read.php' class='btn btn-danger'>Back to customer list</a>
                     </td>
