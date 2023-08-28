@@ -78,7 +78,6 @@ include 'menu/validate_login.php';
                 </tr>
                 <tr>
                     <td>Promotion Price (RM)</td>
-                    
                     <td>
                         <?php
                         if ($promotion_price == "0") {
