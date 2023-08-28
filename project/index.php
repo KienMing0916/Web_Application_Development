@@ -95,7 +95,7 @@ if (isset($_SESSION['Customer_ID'])) {
         <div class="row m-3 p-5 pt-4 d-flex justify-content-center">
             <div class="col-lg-6 col-md-8 col-sm-10 col-12 p-5 border border-dark border-2 rounded bg-light">
                 <h2 class="text-center pb-3">Login</h2>
-                <form method="POST" action="login.php">
+                <form method="POST" action="index.php">
                     <div class="mb-3">
                         <label for="useraccount" class="form-label">Username / Email</label>
                         <input type="text" class="form-control" id="useraccount" name="useraccount" value="<?php echo isset($_POST['useraccount']) ? $_POST['useraccount'] : ''; ?>">
