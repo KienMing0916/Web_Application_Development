@@ -289,15 +289,15 @@ function validateOrderForm(&$selectedProductRow, $selectedCustomerID, &$selected
         $selectedProductQuantity = array_values($selectedProductQuantity);
     }
 
-    for($i = 0; $i < $selectedProductRow; $i++) {
-        if(empty($selectedProductID[$i])) {
-            $errorMessage[] = "Please select the product for No. " . $i + 1 . ".";
+    for ($i = 0; $i < $selectedProductRow; $i++) {
+        if (empty($selectedProductID[$i])) {
+            $errorMessage[] = "Please select the product for No. " . ($i + 1) . ".";
         }
-        if(empty($selectedProductQuantity[$i]) || !is_numeric($selectedProductQuantity[$i])){
-            $errorMessage[] = "Please enter a number between 1-10 for purchase quantity of product No. " . $i + 1 . ".";
-        }else{
-            if($selectedProductQuantity[$i] <1 || $selectedProductQuantity[$i] >10) {
-                $errorMessage[] = "The purchase quantity of product " . $i + 1 . " cannot be less than 0 or more than 10.";
+        if (empty($selectedProductQuantity[$i]) || !is_numeric($selectedProductQuantity[$i])) {
+            $errorMessage[] = "Please enter a number between 1-10 for purchase quantity of product No. " . ($i + 1) . ".";
+        } else {
+            if ($selectedProductQuantity[$i] < 1 || $selectedProductQuantity[$i] > 10) {
+                $errorMessage[] = "The purchase quantity of product " . ($i + 1) . " cannot be less than 1 or more than 10.";
             }
         }
     }
