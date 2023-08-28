@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="d-flex align-items-center ms-1">
-        <a class="navbar-brand ms-2" href="index.php">
+        <a class="navbar-brand ms-2" href="home.php">
             <img src="img/factorylogo.png" alt="factorylogo" width="50" height="40" class="ms-3">
             <span style="vertical-align: middle;"><strong><i>SpeedMart Express</i></strong></span>
         </a>
@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse justify-content-end pe-3" id="navbarNav">
         <ul class="navbar-nav ps-3">
             <li class="nav-item p-1">
-                <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/index.php') echo 'active'; ?>" href="index.php">Home</a>
+                <a class="nav-link <?php if ($_SERVER['PHP_SELF'] == '/webapplicationdevelopment/project/home.php') echo 'active'; ?>" href="home.php">Home</a>
             </li>
             <li class="nav-item p-1 dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Category</a>
