@@ -121,10 +121,8 @@ function validateCreateCustomerForm($username, $usernameCount, $password, $confi
 
     if (empty($username)) {
         $errorMessage[] = "Username field is empty.";
-    }else if (strlen($username) < 5 || strlen($username) > 20) {
-        $errorMessage[] = "Username must be between 5 and 20 characters.";
-    }else if (!preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
-        $errorMessage[] = "Username can only contain letters, numbers, and underscores.";
+    } else if (!preg_match('/^[a-zA-Z0-9_]{5,20}$/', $username)) {
+        $errorMessage[] = "Username can only contain letters, numbers, and underscores, and must be between 5 and 20 characters.";
     }
     
     if ($usernameCount > 0) {
