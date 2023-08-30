@@ -43,7 +43,14 @@ include 'menu/validate_login.php';
                 $image = !empty($_FILES["image"]["name"]) ? "uploaded_product_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "uploaded_product_img/defaultproductimg.jpg";
                 $image = htmlspecialchars(strip_tags($image));
 
-                $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);
+                // Check if the product name already exists
+                $checkQuery = "SELECT COUNT(*) FROM products WHERE name = :name";
+                $checkStmt = $con->prepare($checkQuery);
+                $checkStmt->bindParam(':name', $name);
+                $checkStmt->execute();
+                $checkCount = $checkStmt->fetchColumn();
+
+                $errorMessage = validateProductForm($name, $checkCount, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";

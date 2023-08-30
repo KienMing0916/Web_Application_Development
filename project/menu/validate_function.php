@@ -42,7 +42,7 @@ function validateEmailForm($firstname, $lastname, $email, $phonenumber, $address
     return $errorMessage;
 }
 
-function validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image) {
+function validateProductForm($name, $checkCount, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image) {
     $errorMessage = array();
     $target_directory = "uploaded_product_img/";
 
@@ -50,6 +50,9 @@ function validateProductForm($name, $description, $price, $promotion_price, $man
         $errorMessage[] = "Product name field is empty.";
     }else if (strlen($name) > 50) {
         $errorMessage[] = "Product name cannot exceed 50 characters.";
+    }
+    if ($checkCount > 0) {
+        $errorMessage[] = "The product name already exists.";
     }
     if (empty($description)) {
         $errorMessage[] = "Description field is empty.";
@@ -92,13 +95,16 @@ function validateProductForm($name, $description, $price, $promotion_price, $man
     return $errorMessage;
 }
 
-function validateCategoryForm($category_name, $description) {
+function validateCategoryForm($category_name, $description, $checkCount) {
     $errorMessage = array();
 
     if(empty($category_name)) {
         $errorMessage[] = "Category name field is empty.";
     }else if (strlen($category_name) > 50) {
         $errorMessage[] = "Category name cannot exceed 50 characters.";
+    }
+    if ($checkCount > 0) {
+        $errorMessage[] = "The product category name already exists.";
     }
     if(empty($description)) {
         $errorMessage[] = "Description field is empty.";

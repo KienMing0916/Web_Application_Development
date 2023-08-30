@@ -65,7 +65,15 @@ include 'menu/validate_login.php';
                 $defaultImage = 'uploaded_product_img/defaultproductimg.jpg';   
                 $image = !empty($_FILES["image"]["name"]) ? "uploaded_product_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "";
 
-                $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);
+                // Check if the product name already exists
+                $checkQuery = "SELECT COUNT(*) FROM products WHERE name = :name AND Product_ID != :id";
+                $checkStmt = $con->prepare($checkQuery);
+                $checkStmt->bindParam(':name', $name);
+                $checkStmt->bindParam(':id', $id);
+                $checkStmt->execute();
+                $checkCount = $checkStmt->fetchColumn();
+
+                $errorMessage = validateProductForm($name, $checkCount, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);
                 if($uploadedImage === 'uploaded_product_img/defaultproductimg.jpg'){
                     $errorMessage[] = "No product image found.";
                 }
@@ -124,7 +132,15 @@ include 'menu/validate_login.php';
                 // image field
                 $image = !empty($_FILES["image"]["name"]) ? "uploaded_product_img/" . sha1_file($_FILES['image']['tmp_name']) . basename($_FILES["image"]["name"]) : "";
 
-                $errorMessage = validateProductForm($name, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);
+                // Check if the product name already exists
+                $checkQuery = "SELECT COUNT(*) FROM products WHERE name = :name AND Product_ID != :id";
+                $checkStmt = $con->prepare($checkQuery);
+                $checkStmt->bindParam(':name', $name);
+                $checkStmt->bindParam(':id', $id);
+                $checkStmt->execute();
+                $checkCount = $checkStmt->fetchColumn();
+
+                $errorMessage = validateProductForm($name, $checkCount, $description, $price, $promotion_price, $manufacture_date, $expired_date, $category_id, $image);
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";

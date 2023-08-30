@@ -30,7 +30,14 @@ include 'menu/validate_login.php';
                 $category_name = $_POST['category_name'];
                 $description = $_POST['description'];
 
-                $errorMessage = validateCategoryForm($category_name, $description);
+                // Check if the category name already exists
+                $checkQuery = "SELECT COUNT(*) FROM categories WHERE category_name = :category_name";
+                $checkStmt = $con->prepare($checkQuery);
+                $checkStmt->bindParam(':category_name', $category_name);
+                $checkStmt->execute();
+                $checkCount = $checkStmt->fetchColumn();
+
+                $errorMessage = validateCategoryForm($category_name, $description, $checkCount);
 
                 if(!empty($errorMessage)) {
                     echo "<div class='alert alert-danger m-3'>";
