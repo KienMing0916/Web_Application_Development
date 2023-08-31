@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: sql211.infinityfree.com
--- Generation Time: Aug 31, 2023 at 02:45 AM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 7.2.22
+-- Host: 127.0.0.1:3306
+-- Generation Time: Aug 31, 2023 at 06:58 AM
+-- Server version: 8.0.31
+-- PHP Version: 8.0.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `if0_34911749_kienming0916`
+-- Database: `kienming916`
 --
 
 -- --------------------------------------------------------
@@ -28,11 +27,13 @@ SET time_zone = "+00:00";
 -- Table structure for table `categories`
 --
 
-CREATE TABLE `categories` (
-  `Category_ID` int(11) NOT NULL,
-  `category_name` varchar(50) NOT NULL,
-  `description` varchar(200) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE IF NOT EXISTS `categories` (
+  `Category_ID` int NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `description` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  PRIMARY KEY (`Category_ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `categories`
@@ -45,8 +46,7 @@ INSERT INTO `categories` (`Category_ID`, `category_name`, `description`) VALUES
 (4, 'Personal Care', 'The personal care category features a variety of products designed to cater to personal hygiene and self-care needs, promoting overall well-being.'),
 (5, 'Household Cleaning', ' Household cleaning products are essential for maintaining a clean and sanitary living space.'),
 (6, 'Stationery', 'The stationery category offers a wide assortment of essential office and school supplies, catering to various organizational and creative needs.'),
-(7, 'Fashion', 'Fashion is a broad category that encompasses a wide range of items related to clothing, accessories, pants and jackets.'),
-(14, 'Frozen Foods', 'Waffles, vegetables, individual meals, ice cream');
+(7, 'Fashion', 'Fashion is a broad category that encompasses a wide range of items related to clothing, accessories, pants and jackets.');
 
 -- --------------------------------------------------------
 
@@ -54,16 +54,18 @@ INSERT INTO `categories` (`Category_ID`, `category_name`, `description`) VALUES
 -- Table structure for table `contacts`
 --
 
-CREATE TABLE `contacts` (
-  `Contact_ID` int(11) NOT NULL,
-  `firstname` varchar(30) NOT NULL,
-  `lastname` varchar(30) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `phonenumber` varchar(20) NOT NULL,
-  `address` varchar(150) NOT NULL,
-  `message` varchar(150) NOT NULL,
-  `datetime` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `contacts`;
+CREATE TABLE IF NOT EXISTS `contacts` (
+  `Contact_ID` int NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `lastname` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `email` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `phonenumber` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `address` varchar(150) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `message` varchar(150) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Contact_ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `contacts`
@@ -73,8 +75,7 @@ INSERT INTO `contacts` (`Contact_ID`, `firstname`, `lastname`, `email`, `phonenu
 (1, 'Sin', 'Kuan', 'sinkuan@gmail.com', '018-2183456', 'New Era University College, Kajang, Selangor', 'I want to purchase 100 units of jacket, please contact me via my phone number ASAP.', '2023-08-26 13:40:26'),
 (2, 'Boo', 'Heng', 'booheng@gmail.com', '011-12345678', 'New Era University College, Kajang, Selangor', 'I want to purchase 100 units of jacket, please contact me via my phone number ASAP.', '2023-08-26 13:40:46'),
 (3, 'Qian', 'Sheng', 'patrick@gmail.com', '013-54573843', 'New Era University College, Kajang, Selangor', 'I want to buy 50 units of pantene shampoo. Contact me ASAP.', '2023-08-26 13:44:10'),
-(4, 'Cai', 'Ming', 'caiming@gmail.com', '011-2345433', 'Kajang', 'Do you sell 100 Plus in bottles?', '2023-08-27 21:09:11'),
-(5, 'Kien', 'Ming', 'kmtan0111@gmail.com', '011-54343332', 'New Era University College, Kajang, Selangor', 'Hi, I want to pruchase 100 units of jacket. Contact me ASAP', '2023-08-28 07:22:54');
+(4, 'Cai', 'Ming', 'caiming@gmail.com', '011-2345433', 'Kajang', 'Do you sell 100 Plus in bottles?', '2023-08-27 21:09:11');
 
 -- --------------------------------------------------------
 
@@ -82,19 +83,23 @@ INSERT INTO `contacts` (`Contact_ID`, `firstname`, `lastname`, `email`, `phonenu
 -- Table structure for table `customers`
 --
 
-CREATE TABLE `customers` (
-  `Customer_ID` int(11) NOT NULL,
-  `username` varchar(20) NOT NULL,
-  `password` varchar(200) NOT NULL,
-  `firstname` varchar(30) NOT NULL,
-  `lastname` varchar(30) NOT NULL,
-  `gender` enum('Male','Female') NOT NULL,
+DROP TABLE IF EXISTS `customers`;
+CREATE TABLE IF NOT EXISTS `customers` (
+  `Customer_ID` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `password` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `firstname` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `lastname` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `gender` enum('Male','Female') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `birthdate` date NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `registrationdatetime` datetime NOT NULL DEFAULT current_timestamp(),
-  `status` enum('Active','Inactive','Pending') NOT NULL DEFAULT 'Active',
-  `profile_image` varchar(200) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `email` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `registrationdatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('Active','Inactive','Pending') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Active',
+  `profile_image` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  PRIMARY KEY (`Customer_ID`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=MyISAM AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `customers`
@@ -127,9 +132,10 @@ INSERT INTO `customers` (`Customer_ID`, `username`, `password`, `firstname`, `la
 (25, 'kyrie', '$2y$10$EblLBIuT2wBy4CkEUkSkjOTQA1/jYsUZvJflI8XkGy2GBjmzVZgcu', 'Kyrie', 'Irving', 'Male', '1992-03-23', 'kyrieirving@gmail.com', '2023-08-19 16:49:18', 'Active', 'uploaded_customer_img/886e87b94a8074eaf10e4c88bad2467ba7d1ae8ekyrie.jpg'),
 (26, 'tukun', '$2y$10$XObYVpCjETifjwcc1js8UO4H8Devz1Z8rO3pl/e7xILOAHCydrlx6', 'Tukun', 'Wong', 'Male', '2005-08-19', 'tukun@gmail.com', '2023-08-19 16:58:19', 'Active', 'uploaded_customer_img/defaultcustomerimg.jpg'),
 (27, 'kevinlim', '$2y$10$tYAig5amTkwJRnIk8IzdLushG4TXGi8IzUoYKpEDXTFDEXIa5oyEa', 'Kevin', 'Lim', 'Male', '2002-12-12', 'kevinlim@gmail.com', '2023-08-19 18:47:44', 'Active', 'uploaded_customer_img/defaultcustomerimg.jpg'),
-(36, 'kaixin', '$2y$10$42KmI9GvGJ/b0kwYdAlQhe3N5MPHBKWiWoFDUX1uczREhNLi/HIFq', 'Kai', 'Xin', 'Female', '2006-12-12', 'kaixin@gmail.com', '2023-08-26 20:41:48', 'Active', 'uploaded_customer_img/8bcb1462b921dbe5db55ee0b078d22805f124032kaixin.jpg'),
+(36, 'kaixin', '$2y$10$42KmI9GvGJ/b0kwYdAlQhe3N5MPHBKWiWoFDUX1uczREhNLi/HIFq', 'Kai', 'Xin', 'Female', '2006-12-12', 'kaixin@gmail.com', '2023-08-26 20:41:48', 'Active', 'uploaded_customer_img/defaultcustomerimg.jpg'),
 (34, 'limsinkuan', '$2y$10$CRlHOwRhs2LhxaBLFuJxL.Ixr41vYbAYF.ZxUzVv7GJDecrGkGD2m', 'Sin', 'Kuan', 'Male', '2002-01-01', 'sinkuan@gmail.com', '2023-08-21 14:25:31', 'Active', 'uploaded_customer_img/3fdb091d3b74cbce00f0cd2e1693d9e0a357aa67lim.jpg'),
-(37, 'leecaiming0711', '$2y$10$aVfuq1kv3.qD5lh4CTMMcuShQO9IrwdOqu8Q5Fy1OQWQA4hP6qfnS', 'Cai', 'Ming', 'Male', '2003-11-07', 'leecaiming@gmail.com', '2023-08-27 21:03:09', 'Active', 'uploaded_customer_img/defaultcustomerimg.jpg');
+(37, 'leecaiming0711', '$2y$10$aVfuq1kv3.qD5lh4CTMMcuShQO9IrwdOqu8Q5Fy1OQWQA4hP6qfnS', 'Cai', 'Ming', 'Male', '2003-11-07', 'caiming@gmail.com', '2023-08-27 21:03:09', 'Active', 'uploaded_customer_img/defaultcustomerimg.jpg'),
+(38, 'booheng_123', '$2y$10$FbWh1kYoBkRLjsCEs8nO1uFTtKSWRphDT6FHr3wk4iwMbZtkfRqBi', 'Boo', 'Heng', 'Male', '2002-07-01', 'booheng123@gmail.com', '2023-08-30 20:25:04', 'Active', 'uploaded_customer_img/defaultcustomerimg.jpg');
 
 -- --------------------------------------------------------
 
@@ -137,14 +143,18 @@ INSERT INTO `customers` (`Customer_ID`, `username`, `password`, `firstname`, `la
 -- Table structure for table `order_details`
 --
 
-CREATE TABLE `order_details` (
-  `OrderDetail_ID` int(11) NOT NULL,
-  `Order_ID` int(11) NOT NULL,
-  `Product_ID` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
+DROP TABLE IF EXISTS `order_details`;
+CREATE TABLE IF NOT EXISTS `order_details` (
+  `OrderDetail_ID` int NOT NULL AUTO_INCREMENT,
+  `Order_ID` int NOT NULL,
+  `Product_ID` int NOT NULL,
+  `quantity` int NOT NULL,
   `price` double NOT NULL,
-  `promotion_price` double NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `promotion_price` double NOT NULL,
+  PRIMARY KEY (`OrderDetail_ID`),
+  KEY `Order_ID` (`Order_ID`),
+  KEY `Product_ID` (`Product_ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=359 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `order_details`
@@ -246,9 +256,9 @@ INSERT INTO `order_details` (`OrderDetail_ID`, `Order_ID`, `Product_ID`, `quanti
 (174, 25, 17, 4, 15, 14),
 (175, 25, 20, 3, 18.99, 17),
 (176, 25, 19, 2, 19.99, 17.99),
-(364, 26, 3, 1, 4.99, 4.5),
-(363, 26, 7, 2, 3.99, 3.95),
-(362, 26, 10, 3, 4, 3.8),
+(177, 26, 10, 3, 4, 3.8),
+(178, 26, 7, 2, 3.99, 3.95),
+(179, 26, 3, 1, 4.99, 4.5),
 (209, 38, 1, 10, 2.99, 2.69),
 (205, 36, 10, 10, 4, 3.8),
 (204, 36, 1, 10, 2.99, 2.69),
@@ -268,11 +278,11 @@ INSERT INTO `order_details` (`OrderDetail_ID`, `Order_ID`, `Product_ID`, `quanti
 (210, 38, 10, 10, 4, 3.8),
 (211, 38, 17, 10, 15, 14),
 (212, 38, 4, 10, 6.99, 6.89),
-(361, 39, 15, 10, 7.99, 7.5),
+(220, 39, 15, 10, 7.99, 7.5),
 (234, 42, 1, 2, 2.99, 2.69),
 (230, 41, 1, 2, 2.99, 2.69),
 (229, 41, 9, 3, 5, 4.2),
-(360, 39, 1, 10, 5, 4),
+(219, 39, 1, 10, 2.99, 2.69),
 (225, 40, 34, 10, 3, 2.8),
 (233, 42, 2, 1, 3.29, 2.99),
 (254, 43, 4, 2, 6.99, 6.89),
@@ -303,11 +313,7 @@ INSERT INTO `order_details` (`OrderDetail_ID`, `Order_ID`, `Product_ID`, `quanti
 (335, 71, 46, 4, 5, 4.9),
 (336, 71, 44, 3, 3, 2.9),
 (358, 74, 52, 10, 12, 0),
-(353, 74, 2, 4, 3.29, 2.99),
-(365, 26, 12, 10, 30, 28),
-(366, 77, 44, 6, 3, 2.9),
-(371, 78, 45, 2, 10, 9.5),
-(370, 78, 1, 5, 5, 4);
+(353, 74, 2, 4, 3.29, 2.99);
 
 -- --------------------------------------------------------
 
@@ -315,12 +321,15 @@ INSERT INTO `order_details` (`OrderDetail_ID`, `Order_ID`, `Product_ID`, `quanti
 -- Table structure for table `order_summary`
 --
 
-CREATE TABLE `order_summary` (
-  `Order_ID` int(11) NOT NULL,
-  `Customer_ID` int(11) NOT NULL,
-  `order_date` datetime NOT NULL DEFAULT current_timestamp(),
-  `total_amount` double NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `order_summary`;
+CREATE TABLE IF NOT EXISTS `order_summary` (
+  `Order_ID` int NOT NULL AUTO_INCREMENT,
+  `Customer_ID` int NOT NULL,
+  `order_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `total_amount` double NOT NULL,
+  PRIMARY KEY (`Order_ID`),
+  KEY `Customer_ID` (`Customer_ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=76 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `order_summary`
@@ -352,7 +361,7 @@ INSERT INTO `order_summary` (`Order_ID`, `Customer_ID`, `order_date`, `total_amo
 (23, 3, '2023-08-07 14:19:31', 101.34),
 (24, 3, '2023-08-07 15:52:07', 146.9),
 (25, 14, '2023-08-11 17:11:19', 211.88),
-(26, 8, '2023-08-28 20:08:19', 303.8),
+(26, 8, '2023-08-12 14:34:09', 23.8),
 (36, 6, '2023-08-12 21:16:14', 64.9),
 (35, 9, '2023-08-12 21:06:48', 56.38),
 (29, 11, '2023-08-12 14:46:15', 135),
@@ -362,7 +371,7 @@ INSERT INTO `order_summary` (`Order_ID`, `Customer_ID`, `order_date`, `total_amo
 (37, 1, '2023-08-12 21:17:46', 50.68),
 (34, 7, '2023-08-12 21:03:40', 8.97),
 (38, 10, '2023-08-12 21:18:29', 273.8),
-(39, 16, '2023-08-28 20:08:07', 115),
+(39, 16, '2023-08-12 21:24:43', 101.9),
 (40, 2, '2023-08-12 21:25:38', 28),
 (41, 5, '2023-08-19 18:55:27', 17.98),
 (42, 5, '2023-08-21 15:53:47', 8.37),
@@ -377,9 +386,7 @@ INSERT INTO `order_summary` (`Order_ID`, `Customer_ID`, `order_date`, `total_amo
 (55, 9, '2023-08-26 18:07:52', 28.4),
 (61, 34, '2023-08-26 18:17:02', 4),
 (71, 1, '2023-08-26 20:02:56', 83.3),
-(74, 37, '2023-08-27 21:05:43', 581.83),
-(77, 3, '2023-08-28 08:15:22', 17.4),
-(78, 15, '2023-08-28 20:24:19', 39);
+(74, 37, '2023-08-27 21:05:43', 581.83);
 
 -- --------------------------------------------------------
 
@@ -387,19 +394,22 @@ INSERT INTO `order_summary` (`Order_ID`, `Customer_ID`, `order_date`, `total_amo
 -- Table structure for table `products`
 --
 
-CREATE TABLE `products` (
-  `Product_ID` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `description` varchar(200) NOT NULL,
+DROP TABLE IF EXISTS `products`;
+CREATE TABLE IF NOT EXISTS `products` (
+  `Product_ID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `description` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `price` double NOT NULL,
   `promotion_price` double NOT NULL,
   `manufacture_date` date NOT NULL,
   `expired_date` date NOT NULL,
   `created` datetime NOT NULL,
-  `modified` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `Category_ID` int(11) NOT NULL,
-  `product_image` varchar(200) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Category_ID` int NOT NULL,
+  `product_image` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  PRIMARY KEY (`Product_ID`),
+  KEY `Category_ID` (`Category_ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=66 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `products`
@@ -407,8 +417,8 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`Product_ID`, `name`, `description`, `price`, `promotion_price`, `manufacture_date`, `expired_date`, `created`, `modified`, `Category_ID`, `product_image`) VALUES
 (1, 'Coca Cola', 'Coca-Cola is a popular carbonated soft drink known for its refreshing taste and effervescence.', 5, 4, '2023-07-18', '2025-07-18', '2015-08-02 12:04:03', '2023-08-27 13:21:06', 1, 'uploaded_product_img/933d424477245b602081e8f173c2c5a45bdde45acoca-cola.jpg'),
-(2, 'Tropicana Orange Juice', 'Tropicana Orange Juice is made from 100% fresh oranges for a natural citrus flavor.', 3.29, 2.99, '2023-07-18', '2025-07-18', '2015-08-02 12:14:29', '2023-08-28 05:43:09', 1, 'uploaded_product_img/300f20b9eac164519f441ee86f6f683976d47374300f20b9eac164519f441ee86f6f683976d47374tropicana.jpg'),
-(3, 'LaCroix Sparkling Water', 'LaCroix Sparkling Water offers a variety of flavors infused with natural essences.', 4.99, 4.5, '2023-07-18', '2025-07-18', '2015-08-02 12:15:04', '2023-08-28 05:44:44', 1, 'uploaded_product_img/defaultproductimg.jpg'),
+(2, 'Tropicana Orange Juice', 'Tropicana Orange Juice is made from 100% fresh oranges for a natural citrus flavor.', 3.29, 2.99, '2023-07-18', '2025-07-18', '2015-08-02 12:14:29', '2023-08-27 13:21:35', 1, 'uploaded_product_img/300f20b9eac164519f441ee86f6f683976d47374tropicana.jpg'),
+(3, 'LaCroix Sparkling Water', 'LaCroix Sparkling Water offers a variety of flavors infused with natural essences.', 4.99, 4.5, '2023-07-18', '2025-07-18', '2015-08-02 12:15:04', '2023-08-27 13:46:36', 1, 'uploaded_product_img/9ff2892d5f9d3e03412018f0504d74ac1271e73dlacroix.jpeg'),
 (4, 'Starbucks Frappuccino', 'Starbucks Frappuccino is a ready-to-drink coffee-based beverage available in various flavors.', 6.99, 6.89, '2023-07-18', '2025-07-18', '2015-08-02 12:16:08', '2023-08-27 14:13:07', 1, 'uploaded_product_img/8b822d4b901ce23d0e767325fa39a5dcc9b84893starbucksfrappuccino.jpeg'),
 (5, 'Gatorade', 'Gatorade is a sports drink formulated to replenish electrolytes and provide hydration during physical activity.', 8, 7.5, '2023-07-18', '2025-07-18', '2015-08-02 12:17:58', '2023-08-27 14:12:57', 1, 'uploaded_product_img/53d89d4c72810ccd7eb37829efa6472953b6bc57gatorade.jpg'),
 (6, 'Lay\'s Classic Potato Chips', 'Lay\'s Classic Potato Chips are thinly sliced and perfectly salted, offering a crispy and savory snack.', 8, 7.5, '2023-07-18', '2024-07-18', '2015-08-02 12:18:21', '2023-08-27 13:46:50', 2, 'uploaded_product_img/b06dc374aeab761d6f46976658daa1ba8073d6edlays.jpeg'),
@@ -418,8 +428,8 @@ INSERT INTO `products` (`Product_ID`, `name`, `description`, `price`, `promotion
 (10, 'Oreos', 'Oreos are iconic sandwich cookies with a sweet cream filling between two chocolate wafers, providing a classic and beloved treat enjoyed by people.', 4, 3.8, '2023-07-18', '2024-02-18', '2023-06-26 05:23:49', '2023-08-27 13:48:36', 2, 'uploaded_product_img/d8aadac152b605fa2df4351335a701889c4c5624oreo.jpeg'),
 (11, 'Campbell\'s Tomato Soup', 'Campbell\'s Tomato Soup is a comforting and classic soup made with ripe tomatoes, offering familiar flavors that are perfect for a cozy meal.', 10, 9.8, '2023-07-18', '2026-07-18', '2023-06-26 05:41:13', '2023-08-27 13:51:22', 3, 'uploaded_product_img/1d0f09e9ca8bd84d8da0eaf4ada8544fb61a2125campbell.png'),
 (12, 'Bumble Bee Solid White Albacore Tuna', 'Bumble Bee Solid White Albacore Tuna is premium-grade tuna packed in water, providing a convenient and versatile source of lean protein.', 30, 28, '2023-07-18', '2026-07-18', '2023-06-26 05:46:26', '2023-08-27 13:51:36', 3, 'uploaded_product_img/ebf36472643ff12edbdccfa6e5d233107d6ae019bumblebeetuna.jpeg'),
-(13, 'Libby\'s Sweet Corn', 'Libby\'s Sweet Corn is tender and sweet corn kernels packed in a can, perfect for adding a burst of sweetness to a variety of dishes.', 15, 12.99, '2023-07-18', '2026-07-18', '2023-06-26 05:48:02', '2023-08-28 05:45:25', 3, 'uploaded_product_img/a3907e2483540cfdaa5e9abcee3ee70ac334fd3da3907e2483540cfdaa5e9abcee3ee70ac334fd3dlibbysweetcorn.jpeg'),
-(14, 'Del Monte Diced Tomatoes', 'Del Monte Diced Tomatoes are vine-ripened tomatoes, diced and packed in their natural juices, ideal for adding a burst of tomato flavor to a wide range of dishes.', 10, 8.5, '2023-07-18', '2026-07-18', '2023-06-26 05:54:57', '2023-08-28 05:44:36', 3, 'uploaded_product_img/defaultproductimg.jpg'),
+(13, 'Libby\'s Sweet Corn', 'Libby\'s Sweet Corn is tender and sweet corn kernels packed in a can, perfect for adding a burst of sweetness to a variety of dishes.', 15, 12.99, '2023-07-18', '2026-07-18', '2023-06-26 05:48:02', '2023-08-27 13:52:27', 3, 'uploaded_product_img/a3907e2483540cfdaa5e9abcee3ee70ac334fd3dlibbysweetcorn.jpeg'),
+(14, 'Del Monte Diced Tomatoes', 'Del Monte Diced Tomatoes are vine-ripened tomatoes, diced and packed in their natural juices, ideal for adding a burst of tomato flavor to a wide range of dishes.', 10, 8.5, '2023-07-18', '2026-07-18', '2023-06-26 05:54:57', '2023-08-27 13:54:42', 3, 'uploaded_product_img/c452ad4bd7ace1723573ee824cc3ba8b42a020b1delmontetomato.jpg'),
 (15, 'Amy\'s Organic Lentil Soup', 'Amy\'s Organic Lentil Soup is a hearty and nutritious soup made with organic lentils and vegetables, providing a delicious and convenient meal option for those seeking a wholesome choice.', 7.99, 7.5, '2023-07-18', '2026-07-18', '2023-06-26 05:56:59', '2023-08-27 14:02:15', 3, 'uploaded_product_img/6afe0c046a3a9eb780dee7b9105741faeb7cad84amykitchen.jpeg'),
 (16, 'Dove Moisturizing Body Wash', 'Dove Moisturizing Body Wash is a gentle and nourishing formula that cleanses and hydrates the skin, leaving it feeling soft, smooth, and refreshed after every use.', 15, 14, '2023-07-19', '2026-07-19', '2023-06-26 05:58:42', '2023-08-27 14:02:04', 4, 'uploaded_product_img/7f1207bf65ef064fc5a5992e738841cec932d817dove.jpeg'),
 (17, 'Pantene Pro-V Shampoo', 'Pantene Pro-V Shampoo is a popular hair care product that helps nourish and strengthen hair, leaving it looking shiny, healthy, and manageable.', 15, 14, '2023-07-19', '2026-07-19', '2023-06-26 06:06:28', '2023-08-27 14:01:52', 4, 'uploaded_product_img/fd95cba896098327c9bf50ed63ff0f06e1e2911apantene.jpeg'),
@@ -436,99 +446,12 @@ INSERT INTO `products` (`Product_ID`, `name`, `description`, `price`, `promotion
 (30, 'Scotch Magic Tape', 'Scotch Magic Tape is a versatile and transparent tape that offers a strong bond for everyday sealing.', 5, 4, '2023-07-19', '2028-07-19', '2023-07-17 07:45:54', '2023-08-27 14:07:34', 6, 'uploaded_product_img/963e586cf9073e10bfc25350a9b19285730ba05escotchmagictape.jpg'),
 (31, 'Spicy Tomato and Lentil Soup', 'Spicy Tomato and Lentil Soup is a hearty and flavorful canned goods product that combines the rich savory taste of tomatoes.', 15, 12.99, '2023-07-20', '2028-07-20', '2023-07-20 13:44:21', '2023-08-27 13:46:13', 3, 'uploaded_product_img/7901e663e3cc36912f63dd76ff9fc0597cfc9318spciytomatolentilsoup.jpg'),
 (33, 'Crispy BBQ Chickpeas', 'Crispy BBQ Chickpeas are an addictive and wholesome snack product that offers a satisfying crunch and robust flavor.', 5, 4.8, '2023-07-20', '2024-07-20', '2023-07-20 13:55:33', '2023-08-27 13:44:20', 2, 'uploaded_product_img/de3fccf43ac20cc323cb083b322ec31246dc2087chickpeas.jpg'),
-(34, 'Recycled Paper Notebook', 'Eco-friendly recycled paper notebooks are the perfect eco-friendly stationery product.', 3, 2.8, '2023-07-20', '2028-07-20', '2023-07-20 13:56:35', '2023-08-28 05:44:54', 6, 'uploaded_product_img/defaultproductimg.jpg'),
-(42, 'Jacket', 'Men Warm Winter Overcoat Lamb Fur Lined Thick Trench Coats Fashion Cowboy Jacket.', 200, 199, '2023-08-19', '2025-08-19', '2023-08-19 07:49:40', '2023-08-27 14:15:25', 7, 'uploaded_product_img/2e9a8618922a454f24664516a6734029dd67bdfbjacket.jpeg'),
-(44, '100 Plus', '100plus is a brand of isotonic sports drink manufactured by Fraser and Neave Limited.', 3, 2.9, '2023-08-19', '2024-08-19', '2023-08-19 08:51:32', '2023-08-27 14:12:43', 1, 'uploaded_product_img/3cf6270be3d4a5715cc494bdb525688b2f2de010100plus.png'),
-(45, 'Lexus', 'Lexus is a nutritious vegetable crackers biscuit enriched with vegetable flakes.', 10, 9.5, '2023-08-19', '2024-08-19', '2023-08-19 08:55:01', '2023-08-27 14:12:35', 2, 'uploaded_product_img/f3a5327162a638394d78d31c8a6df1b9acb2a178lexus.jpg'),
-(46, 'Pringles Spicy', 'Pringles is an American brand of stackable potato-based chips.', 5, 4.9, '2023-08-19', '2024-08-19', '2023-08-19 08:57:18', '2023-08-28 07:27:52', 2, 'uploaded_product_img/000981a444633b97383077a097695b107441ea57pringlesspicy.jpeg'),
-(52, 'Julie\'s', 'Julie\'s is a biscuit brand sold in 80 countries across Asia, Australia, and New Zealand.', 12, 0, '2023-08-19', '2024-02-19', '2023-08-19 11:20:42', '2023-08-28 11:21:43', 2, 'uploaded_product_img/1611a0067b51f1939f3819cdc83efed9ebc7fe45julie.png'),
-(66, 'NestlÃ©\'s vanilla ice cream', 'It is a delectable frozen dessert known for its creamy texture and rich vanilla flavor. Made from high-quality ingredients, it offers a delightful treat that is loved by people.', 15, 14, '2023-08-28', '2024-08-28', '2023-08-28 08:05:40', '2023-08-28 12:05:41', 14, 'uploaded_product_img/defaultproductimg.jpg');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`Category_ID`);
-
---
--- Indexes for table `contacts`
---
-ALTER TABLE `contacts`
-  ADD PRIMARY KEY (`Contact_ID`);
-
---
--- Indexes for table `customers`
---
-ALTER TABLE `customers`
-  ADD PRIMARY KEY (`Customer_ID`),
-  ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`email`);
-
---
--- Indexes for table `order_details`
---
-ALTER TABLE `order_details`
-  ADD PRIMARY KEY (`OrderDetail_ID`),
-  ADD KEY `Order_ID` (`Order_ID`),
-  ADD KEY `Product_ID` (`Product_ID`);
-
---
--- Indexes for table `order_summary`
---
-ALTER TABLE `order_summary`
-  ADD PRIMARY KEY (`Order_ID`),
-  ADD KEY `Customer_ID` (`Customer_ID`);
-
---
--- Indexes for table `products`
---
-ALTER TABLE `products`
-  ADD PRIMARY KEY (`Product_ID`),
-  ADD KEY `Category_ID` (`Category_ID`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `categories`
---
-ALTER TABLE `categories`
-  MODIFY `Category_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
---
--- AUTO_INCREMENT for table `contacts`
---
-ALTER TABLE `contacts`
-  MODIFY `Contact_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `customers`
---
-ALTER TABLE `customers`
-  MODIFY `Customer_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
-
---
--- AUTO_INCREMENT for table `order_details`
---
-ALTER TABLE `order_details`
-  MODIFY `OrderDetail_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=372;
-
---
--- AUTO_INCREMENT for table `order_summary`
---
-ALTER TABLE `order_summary`
-  MODIFY `Order_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
-
---
--- AUTO_INCREMENT for table `products`
---
-ALTER TABLE `products`
-  MODIFY `Product_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+(34, 'Recycled Paper Notebook', 'Eco-friendly recycled paper notebooks are the perfect eco-friendly stationery product.', 3, 2.8, '2023-07-20', '2028-07-20', '2023-07-20 13:56:35', '2023-08-27 13:45:08', 6, 'uploaded_product_img/89f24fdbe980b66c5ff455fa886ee849982a177arecyclednotebook.jpg'),
+(42, 'Jacket', 'Men Warm Winter Overcoat Lamb Fur Lined Thick Trench Coats Fashion Cowboy Jacket.', 200, 199, '2023-08-19', '2025-08-19', '2023-08-19 07:49:40', '2023-08-28 11:11:38', 7, 'uploaded_product_img/2e9a8618922a454f24664516a6734029dd67bdfb2e9a8618922a454f24664516a6734029dd67bdfbjacket.jpeg'),
+(44, '100 Plus', '100plus is a brand of isotonic sports drink manufactured by Fraser and Neave Limited.', 3, 2.9, '2023-08-19', '2024-08-19', '2023-08-19 08:51:32', '2023-08-28 11:12:36', 1, 'uploaded_product_img/3cf6270be3d4a5715cc494bdb525688b2f2de0103cf6270be3d4a5715cc494bdb525688b2f2de010100plus.png'),
+(45, 'Lexus', 'Lexus is a nutritious vegetable crackers biscuit enriched with vegetable flakes.', 10, 9.5, '2023-08-19', '2024-08-19', '2023-08-19 08:55:01', '2023-08-28 11:12:27', 2, 'uploaded_product_img/f3a5327162a638394d78d31c8a6df1b9acb2a178f3a5327162a638394d78d31c8a6df1b9acb2a178lexus.jpg'),
+(46, 'Pringles Spicy', 'Pringles is an American brand of stackable potato-based chips.', 5, 4.9, '2023-08-19', '2024-08-19', '2023-08-19 08:57:18', '2023-08-30 09:11:02', 2, 'uploaded_product_img/defaultproductimg.jpg'),
+(52, 'Julie\'s', 'Julie\'s is a biscuit brand sold in 80 countries across Asia, Australia, and New Zealand.', 12, 0, '2023-08-19', '2024-02-19', '2023-08-19 11:20:42', '2023-08-30 09:10:32', 2, 'uploaded_product_img/defaultproductimg.jpg');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
